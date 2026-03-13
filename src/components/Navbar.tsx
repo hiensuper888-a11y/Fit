@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Dumbbell, ShoppingCart, Globe } from 'lucide-react';
+import { BicepsFlexed, ShoppingCart, Globe } from 'lucide-react';
 
 export const Navbar: React.FC<{
   currentRoute: 'home' | 'article';
@@ -12,9 +12,17 @@ export const Navbar: React.FC<{
     <nav className="sticky top-0 z-50 bg-zinc-900 text-zinc-100 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setCurrentRoute('home')}>
-            <Dumbbell className="h-8 w-8 text-emerald-500" />
-            <span className="font-bold text-xl tracking-tight">{t('app_name')}</span>
+          <div className="flex items-center space-x-3 cursor-pointer group" onClick={() => setCurrentRoute('home')}>
+            <div className="relative">
+              <div className="absolute -inset-1 bg-emerald-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
+              <div className="relative bg-zinc-800 p-1.5 rounded-full border border-emerald-500/30">
+                <BicepsFlexed className="h-6 w-6 text-emerald-500" />
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-black text-xl tracking-tighter leading-none text-white">FIT<span className="text-emerald-500">SUPPS</span></span>
+              <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 leading-none mt-1">Gym & Supplements</span>
+            </div>
           </div>
           
           <div className="hidden md:flex space-x-8">
