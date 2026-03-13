@@ -26,6 +26,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
     setError(null);
     setSuccess(null);
 
+    if (!supabase) {
+      setError('Supabase is not configured. Please check your settings.');
+      setLoading(false);
+      return;
+    }
+
     try {
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({
@@ -50,6 +56,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
   };
 
   const handleOAuthLogin = async (provider: 'google') => {
+    if (!supabase) {
+      setError('Supabase is not configured. Please check your settings.');
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -93,6 +103,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
         <h2 className="text-2xl font-bold text-white mb-6 text-center">
           {isLogin ? t('login') : t('register')}
         </h2>
+
+        {(!supabase) && (
+          <div className="bg-amber-500/10 border border-amber-500/50 text-amber-400 p-4 rounded-lg mb-6 text-sm">
+            <p className="font-bold mb-1">Supabase not configured</p>
+            <p>Please add <strong>VITE_SUPABASE_URL</strong> and <strong>VITE_SUPABASE_ANON_KEY</strong> to the Environment Variables in the Settings menu.</p>
+          </div>
+        )}
 
         {error && (
           <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg mb-4 text-sm flex flex-col gap-2">

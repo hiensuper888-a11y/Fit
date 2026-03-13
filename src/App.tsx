@@ -15,6 +15,11 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabase) {
+      setAuthLoading(false);
+      return;
+    }
+
     // Check active sessions and sets the user
     supabase.auth.getSession()
       .then(({ data: { session } }) => {

@@ -13,6 +13,11 @@ export const Workouts: React.FC = () => {
 
   useEffect(() => {
     const fetchWorkouts = async () => {
+      if (!supabase) {
+        setError('Supabase is not configured. Please check your settings.');
+        setLoading(false);
+        return;
+      }
       try {
         const { data, error } = await supabase
           .from('workouts')
