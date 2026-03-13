@@ -56,6 +56,8 @@ export const translations = {
     cancel: 'Cancel',
     saving: 'Saving...',
     update_success: 'Profile updated successfully!',
+    connecting: 'Connecting...',
+    open_login_page: 'Open Login Page',
   },
   vi: {
     app_name: 'FitSupps',
@@ -112,6 +114,8 @@ export const translations = {
     cancel: 'Hủy',
     saving: 'Đang lưu...',
     update_success: 'Cập nhật hồ sơ thành công!',
+    connecting: 'Đang kết nối...',
+    open_login_page: 'Mở trang đăng nhập',
   },
   zh: {
     app_name: 'FitSupps',
@@ -168,6 +172,8 @@ export const translations = {
     cancel: '取消',
     saving: '保存中...',
     update_success: '资料更新成功！',
+    connecting: '正在连接...',
+    open_login_page: '打开登录页面',
   },
 };
 

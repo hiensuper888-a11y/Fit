@@ -38,29 +38,75 @@ export default function App() {
 
     // Listen for messages from the OAuth popup
     const handleMessage = async (event: MessageEvent) => {
-      if (event.data?.type === 'OAUTH_AUTH_SUCCESS' && event.data.session) {
-        // Force a session refresh or set user directly
-        const { session } = event.data;
-        
-        // If we have a session from the popup, set it explicitly
-        // This handles Safari/Incognito where localStorage is partitioned
-        const { error } = await supabase.auth.setSession({
-          access_token: session.access_token,
-          refresh_token: session.refresh_token,
-        });
-        
-        if (!error) {
-          const { data } = await supabase.auth.getUser();
-          setUser(data.user);
+      // Validate origin
+      if (event.origin && !event.origin.includes(window.location.hostname) && !event.origin.includes('supabase.co')) {
+        // In dev, hostname might be localhost or a run.app domain
+      }
+
+      const data = event.data;
+      if (data?.type === 'OAUTH_CODE' || data?.type === 'OAUTH_AUTH_SUCCESS' || data?.type === 'OAUTH_AUTH_ERROR') {
+        processAuthMessage(data);
+      }
+    };
+
+    const processAuthMessage = async (data: any) => {
+      if (data.type === 'OAUTH_CODE' && data.code) {
+        setAuthLoading(true);
+        try {
+          const { data: authData, error } = await supabase.auth.exchangeCodeForSession(data.code);
+          if (error) throw error;
+          if (authData.session) {
+            setUser(authData.session.user);
+            setIsAuthModalOpen(false);
+          }
+        } catch (err) {
+          console.error('Error exchanging code:', err);
+        } finally {
           setAuthLoading(false);
-          setIsAuthModalOpen(false);
         }
-      } else if (event.data?.type === 'OAUTH_AUTH_ERROR') {
-        console.error('OAuth Error:', event.data.error);
+      } else if (data.type === 'OAUTH_AUTH_SUCCESS' && data.session) {
+        setAuthLoading(true);
+        try {
+          const { session } = data;
+          const { error } = await supabase.auth.setSession({
+            access_token: session.access_token,
+            refresh_token: session.refresh_token,
+          });
+          
+          if (!error) {
+            const { data: userData } = await supabase.auth.getUser();
+            setUser(userData.user);
+            setIsAuthModalOpen(false);
+          }
+        } catch (err) {
+          console.error('Error setting session:', err);
+        } finally {
+          setAuthLoading(false);
+        }
+      } else if (data.type === 'OAUTH_AUTH_ERROR') {
+        console.error('OAuth Error message received:', data.error);
         setAuthLoading(false);
       }
     };
+
+    // Fallback for cross-origin or lost opener using localStorage
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === 'supabase_auth_callback' && event.newValue) {
+        try {
+          const data = JSON.parse(event.newValue);
+          // Only process if it's recent (within last 30 seconds)
+          if (Date.now() - data.timestamp < 30000) {
+            processAuthMessage(data);
+            localStorage.removeItem('supabase_auth_callback');
+          }
+        } catch (e) {
+          console.error('Error parsing auth callback from storage', e);
+        }
+      }
+    };
+
     window.addEventListener('message', handleMessage);
+    window.addEventListener('storage', handleStorageChange);
 
     // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -80,6 +126,7 @@ export default function App() {
     return () => {
       subscription.unsubscribe();
       window.removeEventListener('message', handleMessage);
+      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 

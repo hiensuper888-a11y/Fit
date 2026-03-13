@@ -78,7 +78,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
 
     if (!isPopupBlocked && popup) {
       // Show a loading message in the popup
-      popup.document.write('<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;background:#18181b;color:#fff;">Đang kết nối...</div>');
+      popup.document.write(`
+        <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;background:#18181b;color:#fff;text-align:center;padding:20px;">
+          <div style="border:3px solid #3f3f46;border-top:3px solid #10b981;border-radius:50%;width:30px;height:30px;animation:spin 1s linear infinite;margin-bottom:15px;"></div>
+          <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+          <div>${t('connecting') || 'Đang kết nối...'}</div>
+        </div>
+      `);
     }
 
     try {
@@ -87,6 +93,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
         options: {
           redirectTo: `${window.location.origin}/oauth-callback.html`,
           skipBrowserRedirect: true,
+          queryParams: provider === 'google' 
+            ? { access_type: 'offline', prompt: 'consent' }
+            : { force_login: 'true' },
+          scopes: provider === 'twitter' ? 'tweet.read users.read' : undefined
         },
       });
       
@@ -163,7 +173,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
                   setManualLoginUrl(null);
                 }}
               >
-                Mở trang đăng nhập
+                {t('open_login_page') || 'Mở trang đăng nhập'}
               </a>
             )}
           </div>

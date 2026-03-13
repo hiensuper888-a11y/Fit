@@ -55,6 +55,26 @@
       var loaderEl = document.getElementById('loader');
       var errorBox = document.getElementById('error-box');
 
+      function sendMessage(data) {
+        // Try postMessage first
+        if (window.opener) {
+          window.opener.postMessage(data, '*');
+          return true;
+        }
+        
+        // Fallback to localStorage for cross-origin or lost opener
+        try {
+          localStorage.setItem('supabase_auth_callback', JSON.stringify({
+            ...data,
+            timestamp: Date.now()
+          }));
+          return true;
+        } catch (e) {
+          console.error('Failed to use localStorage fallback', e);
+        }
+        return false;
+      }
+
       function showError(msg, desc) {
         loaderEl.style.display = 'none';
         statusEl.style.color = '#f87171';
@@ -62,49 +82,59 @@
         errorBox.style.display = 'block';
         errorBox.innerHTML = '<strong>' + msg + '</strong><br/>' + (desc || 'Vui lòng kiểm tra lại cấu hình Supabase.');
         
-        if (window.opener) {
-          window.opener.postMessage({ type: 'OAUTH_AUTH_ERROR', error: msg + ': ' + desc }, '*');
-        }
+        sendMessage({ type: 'OAUTH_AUTH_ERROR', error: msg + ': ' + desc });
       }
 
       var hash = window.location.hash;
       var search = window.location.search;
       
-      // Check for errors in URL
-      var params = new URLSearchParams(hash ? hash.substring(1) : search.substring(1));
-      var error = params.get('error');
-      var errorDesc = params.get('error_description');
+      var hashParams = new URLSearchParams(hash ? hash.substring(1) : '');
+      var searchParams = new URLSearchParams(search ? search.substring(1) : '');
+
+      var error = searchParams.get('error') || hashParams.get('error');
+      var errorDesc = searchParams.get('error_description') || hashParams.get('error_description');
 
       if (error || errorDesc) {
         showError(error || 'Lỗi', errorDesc);
-        return; // Stop execution, don't close window automatically so user can read it
+        return;
       }
 
-      if (window.opener) {
-        if (hash) {
-          var accessToken = params.get('access_token');
-          var refreshToken = params.get('refresh_token');
-          
-          if (accessToken) {
-            statusEl.innerText = 'Đăng nhập thành công! Đang chuyển hướng...';
-            window.opener.postMessage({
-              type: 'OAUTH_AUTH_SUCCESS',
-              session: {
-                access_token: accessToken,
-                refresh_token: refreshToken
-              }
-            }, '*');
-            setTimeout(function() { window.close(); }, 1000);
-          } else {
-            showError('Không tìm thấy Access Token', 'URL không chứa thông tin đăng nhập hợp lệ.');
-          }
+      var code = searchParams.get('code');
+      if (code) {
+        statusEl.innerText = 'Xác thực thành công! Đang hoàn tất đăng nhập...';
+        if (sendMessage({ type: 'OAUTH_CODE', code: code })) {
+          setTimeout(function() { window.close(); }, 1500);
         } else {
-          showError('Lỗi Callback', 'Không nhận được dữ liệu trả về từ Supabase.');
+          showError('Lỗi kết nối', 'Không thể gửi thông tin xác thực về cửa sổ chính.');
+        }
+        return;
+      }
+
+      var accessToken = hashParams.get('access_token');
+      var refreshToken = hashParams.get('refresh_token');
+      
+      if (accessToken) {
+        statusEl.innerText = 'Đăng nhập thành công! Đang chuyển hướng...';
+        if (sendMessage({
+          type: 'OAUTH_AUTH_SUCCESS',
+          session: {
+            access_token: accessToken,
+            refresh_token: refreshToken
+          }
+        })) {
+          setTimeout(function() { window.close(); }, 1000);
+        } else {
+          showError('Lỗi kết nối', 'Không thể gửi thông tin đăng nhập về cửa sổ chính.');
         }
       } else {
-        statusEl.innerText = 'Vui lòng quay lại tab gốc.';
-        loaderEl.style.display = 'none';
-        setTimeout(function() { window.location.href = '/'; }, 2000);
+        // If we have neither code nor token, maybe it's just a refresh or a direct visit
+        if (!window.opener && !search && !hash) {
+          statusEl.innerText = 'Vui lòng quay lại tab gốc.';
+          loaderEl.style.display = 'none';
+          setTimeout(function() { window.location.href = '/'; }, 2000);
+        } else {
+          showError('Không tìm thấy thông tin đăng nhập', 'URL không chứa mã xác thực hợp lệ.');
+        }
       }
     };
   </script>
