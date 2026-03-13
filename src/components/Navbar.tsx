@@ -1,12 +1,19 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
-import { BicepsFlexed, ShoppingCart, Globe } from 'lucide-react';
+import { BicepsFlexed, ShoppingCart, Globe, User, LogOut } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 export const Navbar: React.FC<{
   currentRoute: 'home' | 'article';
   setCurrentRoute: (route: 'home' | 'article') => void;
-}> = ({ currentRoute, setCurrentRoute }) => {
+  onOpenAuth: () => void;
+  user: any;
+}> = ({ currentRoute, setCurrentRoute, onOpenAuth, user }) => {
   const { language, setLanguage, t } = useLanguage();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-zinc-900 text-zinc-100 shadow-md">
@@ -31,6 +38,16 @@ export const Navbar: React.FC<{
           </div>
 
           <div className="flex items-center space-x-4">
+            {user ? (
+              <button onClick={handleLogout} className="p-2 hover:bg-zinc-800 rounded-full transition-colors relative group" title={t('logout')}>
+                <LogOut className="h-5 w-5 text-emerald-400" />
+              </button>
+            ) : (
+              <button onClick={onOpenAuth} className="p-2 hover:bg-zinc-800 rounded-full transition-colors relative" title={t('login')}>
+                <User className="h-5 w-5" />
+              </button>
+            )}
+
             <button className="p-2 hover:bg-zinc-800 rounded-full transition-colors relative">
               <ShoppingCart className="h-5 w-5" />
               <span className="absolute top-0 right-0 bg-emerald-500 text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
