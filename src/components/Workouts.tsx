@@ -9,6 +9,7 @@ export const Workouts: React.FC = () => {
   const { t } = useLanguage();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -20,8 +21,9 @@ export const Workouts: React.FC = () => {
 
         if (error) throw error;
         setWorkouts(data || []);
-      } catch (error) {
-        console.error('Error fetching workouts:', error);
+      } catch (err: any) {
+        console.error('Error fetching workouts:', err);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -52,6 +54,12 @@ export const Workouts: React.FC = () => {
         {loading ? (
           <div className="flex justify-center py-20">
             <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+          </div>
+        ) : error ? (
+          <div className="bg-red-50 border border-red-200 text-red-600 p-6 rounded-2xl text-center">
+            <p className="font-bold mb-2">Error loading workouts</p>
+            <p className="text-sm">{error}</p>
+            <p className="mt-4 text-xs text-red-400">Make sure the 'workouts' table exists in your Supabase database.</p>
           </div>
         ) : workouts.length === 0 ? (
           <div className="text-center py-20 text-zinc-500">
