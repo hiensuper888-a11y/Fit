@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useLanguage } from '../i18n/LanguageContext';
-import { X, Loader2 } from 'lucide-react';
+import { X, Loader2, BicepsFlexed } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isMandatory?: boolean;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandatory = false }) => {
   const { t } = useLanguage();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -68,14 +69,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md p-6 relative shadow-2xl">
-        <button 
-          onClick={onClose}
-          className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {!isMandatory && (
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
 
-        <h2 className="text-2xl font-bold text-white mb-6">
+        {isMandatory && (
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute -inset-1 bg-emerald-500 rounded-full blur opacity-25"></div>
+              <div className="relative bg-zinc-800 p-2 rounded-full border border-emerald-500/30">
+                <BicepsFlexed className="h-8 w-8 text-emerald-500" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        <h2 className="text-2xl font-bold text-white mb-6 text-center">
           {isLogin ? t('login') : t('register')}
         </h2>
 

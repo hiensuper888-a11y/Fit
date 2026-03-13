@@ -4,8 +4,8 @@ import { BicepsFlexed, ShoppingCart, Globe, User, LogOut } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export const Navbar: React.FC<{
-  currentRoute: 'home' | 'article';
-  setCurrentRoute: (route: 'home' | 'article') => void;
+  currentRoute: 'home' | 'article' | 'profile';
+  setCurrentRoute: (route: 'home' | 'article' | 'profile') => void;
   onOpenAuth: () => void;
   user: any;
 }> = ({ currentRoute, setCurrentRoute, onOpenAuth, user }) => {
@@ -39,9 +39,22 @@ export const Navbar: React.FC<{
 
           <div className="flex items-center space-x-4">
             {user ? (
-              <button onClick={handleLogout} className="p-2 hover:bg-zinc-800 rounded-full transition-colors relative group" title={t('logout')}>
-                <LogOut className="h-5 w-5 text-emerald-400" />
-              </button>
+              <div className="flex items-center space-x-2">
+                <button 
+                  onClick={() => setCurrentRoute('profile')} 
+                  className={`p-2 hover:bg-zinc-800 rounded-full transition-colors relative ${currentRoute === 'profile' ? 'text-emerald-500 bg-zinc-800' : ''}`} 
+                  title={t('profile')}
+                >
+                  {user.user_metadata?.avatar_url ? (
+                    <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-5 h-5 rounded-full object-cover" />
+                  ) : (
+                    <User className="h-5 w-5" />
+                  )}
+                </button>
+                <button onClick={handleLogout} className="p-2 hover:bg-zinc-800 rounded-full transition-colors relative group" title={t('logout')}>
+                  <LogOut className="h-5 w-5 text-emerald-400" />
+                </button>
+              </div>
             ) : (
               <button onClick={onOpenAuth} className="p-2 hover:bg-zinc-800 rounded-full transition-colors relative" title={t('login')}>
                 <User className="h-5 w-5" />
@@ -57,11 +70,12 @@ export const Navbar: React.FC<{
               <Globe className="h-4 w-4 ml-2 text-zinc-400" />
               <select 
                 value={language} 
-                onChange={(e) => setLanguage(e.target.value as 'en' | 'vi')}
+                onChange={(e) => setLanguage(e.target.value as 'en' | 'vi' | 'zh')}
                 className="bg-transparent text-sm border-none focus:ring-0 cursor-pointer pl-1 pr-2 py-1 outline-none"
               >
                 <option value="vi">VI</option>
                 <option value="en">EN</option>
+                <option value="zh">ZH</option>
               </select>
             </div>
           </div>
