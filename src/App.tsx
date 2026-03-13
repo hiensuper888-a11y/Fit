@@ -25,14 +25,42 @@ export default function App() {
   useEffect(() => {
     // If this is a popup opened for OAuth, close it after processing auth
     if (window.opener && window.opener !== window) {
-      supabase.auth.onAuthStateChange((event) => {
+      supabase.auth.onAuthStateChange((event, session) => {
         if (event === 'SIGNED_IN') {
+          // Send message to opener in case localStorage is partitioned (e.g., Safari iframes)
+          window.opener.postMessage({ type: 'OAUTH_AUTH_SUCCESS', session }, '*');
           setTimeout(() => window.close(), 500);
         }
       });
       // Fallback close after 5 seconds just in case
       setTimeout(() => window.close(), 5000);
     }
+
+    // Listen for messages from the OAuth popup
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.data?.type === 'OAUTH_AUTH_SUCCESS' && event.data.session) {
+        // Force a session refresh or set user directly
+        const { session } = event.data;
+        
+        // If we have a session from the popup, set it explicitly
+        // This handles Safari/Incognito where localStorage is partitioned
+        const { error } = await supabase.auth.setSession({
+          access_token: session.access_token,
+          refresh_token: session.refresh_token,
+        });
+        
+        if (!error) {
+          const { data } = await supabase.auth.getUser();
+          setUser(data.user);
+          setAuthLoading(false);
+          setIsAuthModalOpen(false);
+        }
+      } else if (event.data?.type === 'OAUTH_AUTH_ERROR') {
+        console.error('OAuth Error:', event.data.error);
+        setAuthLoading(false);
+      }
+    };
+    window.addEventListener('message', handleMessage);
 
     // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -44,9 +72,15 @@ export default function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setAuthLoading(false);
+      if (session) {
+        setIsAuthModalOpen(false);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('message', handleMessage);
+    };
   }, []);
 
   // If we are in a popup, just show a loading screen while auth processes

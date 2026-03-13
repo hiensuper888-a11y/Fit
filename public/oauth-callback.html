@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authenticating...</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #18181b;
+      color: #10b981;
+      font-family: system-ui, -apple-system, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .loader {
+      border: 3px solid #3f3f46;
+      border-top: 3px solid #10b981;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+    .error-box {
+      background-color: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #f87171;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      max-width: 400px;
+      word-break: break-word;
+      display: none;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader" id="loader"></div>
+  <div id="status">Đang hoàn tất đăng nhập...</div>
+  <div class="error-box" id="error-box"></div>
+
+  <script>
+    window.onload = function() {
+      var statusEl = document.getElementById('status');
+      var loaderEl = document.getElementById('loader');
+      var errorBox = document.getElementById('error-box');
+
+      function showError(msg, desc) {
+        loaderEl.style.display = 'none';
+        statusEl.style.color = '#f87171';
+        statusEl.innerText = 'Đăng nhập thất bại';
+        errorBox.style.display = 'block';
+        errorBox.innerHTML = '<strong>' + msg + '</strong><br/>' + (desc || 'Vui lòng kiểm tra lại cấu hình Supabase.');
+        
+        if (window.opener) {
+          window.opener.postMessage({ type: 'OAUTH_AUTH_ERROR', error: msg + ': ' + desc }, '*');
+        }
+      }
+
+      var hash = window.location.hash;
+      var search = window.location.search;
+      
+      // Check for errors in URL
+      var params = new URLSearchParams(hash ? hash.substring(1) : search.substring(1));
+      var error = params.get('error');
+      var errorDesc = params.get('error_description');
+
+      if (error || errorDesc) {
+        showError(error || 'Lỗi', errorDesc);
+        return; // Stop execution, don't close window automatically so user can read it
+      }
+
+      if (window.opener) {
+        if (hash) {
+          var accessToken = params.get('access_token');
+          var refreshToken = params.get('refresh_token');
+          
+          if (accessToken) {
+            statusEl.innerText = 'Đăng nhập thành công! Đang chuyển hướng...';
+            window.opener.postMessage({
+              type: 'OAUTH_AUTH_SUCCESS',
+              session: {
+                access_token: accessToken,
+                refresh_token: refreshToken
+              }
+            }, '*');
+            setTimeout(function() { window.close(); }, 1000);
+          } else {
+            showError('Không tìm thấy Access Token', 'URL không chứa thông tin đăng nhập hợp lệ.');
+          }
+        } else {
+          showError('Lỗi Callback', 'Không nhận được dữ liệu trả về từ Supabase.');
+        }
+      } else {
+        statusEl.innerText = 'Vui lòng quay lại tab gốc.';
+        loaderEl.style.display = 'none';
+        setTimeout(function() { window.location.href = '/'; }, 2000);
+      }
+    };
+  </script>
+</body>
+</html>

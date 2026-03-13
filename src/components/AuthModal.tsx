@@ -18,6 +18,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  const [manualLoginUrl, setManualLoginUrl] = useState<string | null>(null);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,6 +27,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
     setLoading(true);
     setError(null);
     setSuccess(null);
+    setManualLoginUrl(null);
 
     try {
       if (isLogin) {
@@ -52,60 +55,69 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
   const handleOAuthLogin = async (provider: 'google' | 'twitter') => {
     setLoading(true);
     setError(null);
+    setManualLoginUrl(null);
 
-    // Open popup synchronously to avoid popup blocker
+    // Try to open popup synchronously to avoid popup blocker
     const width = 500;
     const height = 600;
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
     
-    const popup = window.open(
-      '',
-      'supabase_oauth_popup',
-      `width=${width},height=${height},left=${left},top=${top},toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0`
-    );
-
-    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
-      setError('Trình duyệt đã chặn cửa sổ đăng nhập (Popup). Vui lòng cho phép mở Popup trên thanh địa chỉ để tiếp tục.');
-      setLoading(false);
-      return;
+    let popup: Window | null = null;
+    try {
+      popup = window.open(
+        '',
+        'supabase_oauth_popup',
+        `width=${width},height=${height},left=${left},top=${top},toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0`
+      );
+    } catch (e) {
+      console.warn('Popup blocked synchronously', e);
     }
 
-    // Show a loading message in the popup
-    popup.document.write('<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;background:#18181b;color:#fff;">Đang kết nối...</div>');
+    const isPopupBlocked = !popup || popup.closed || typeof popup.closed === 'undefined';
+
+    if (!isPopupBlocked && popup) {
+      // Show a loading message in the popup
+      popup.document.write('<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;background:#18181b;color:#fff;">Đang kết nối...</div>');
+    }
 
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: `${window.location.origin}/oauth-callback.html`,
           skipBrowserRedirect: true,
-          // Explicitly request OAuth 2.0 scopes for Twitter
-          scopes: provider === 'twitter' ? 'users.read tweet.read' : undefined,
         },
       });
       
       if (error) throw error;
 
       if (data?.url) {
-        // Redirect the popup to the OAuth URL
-        popup.location.href = data.url;
+        if (isPopupBlocked) {
+          // If popup was blocked, show a manual link
+          setManualLoginUrl(data.url);
+          setError('Trình duyệt đã chặn cửa sổ đăng nhập. Vui lòng nhấn vào nút bên dưới để tiếp tục.');
+          setLoading(false);
+        } else if (popup) {
+          // Redirect the popup to the OAuth URL
+          popup.location.href = data.url;
 
-        // Optional: check if popup is closed manually by user
-        const checkPopup = setInterval(() => {
-          if (popup.closed) {
-            clearInterval(checkPopup);
-            setLoading(false);
-          }
-        }, 1000);
+          // Optional: check if popup is closed manually by user
+          const checkPopup = setInterval(() => {
+            if (popup.closed) {
+              clearInterval(checkPopup);
+              setLoading(false);
+            }
+          }, 1000);
+        }
       } else {
-        popup.close();
+        if (popup) popup.close();
         setLoading(false);
       }
     } catch (err: any) {
       console.error('OAuth Error:', err);
       setError(err.message || t('auth_error'));
-      popup.close();
+      if (popup) popup.close();
       setLoading(false);
     }
   };
@@ -138,8 +150,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
         </h2>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg mb-4 text-sm">
-            {error}
+          <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg mb-4 text-sm flex flex-col gap-2">
+            <span>{error}</span>
+            {manualLoginUrl && (
+              <a 
+                href={manualLoginUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-red-500 text-white px-4 py-2 rounded-md text-center font-medium hover:bg-red-600 transition-colors mt-2"
+                onClick={() => {
+                  setError(null);
+                  setManualLoginUrl(null);
+                }}
+              >
+                Mở trang đăng nhập
+              </a>
+            )}
           </div>
         )}
 

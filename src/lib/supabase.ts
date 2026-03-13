@@ -11,8 +11,8 @@ export const supabase = createClient(
   supabaseUrl || '',
   supabaseAnonKey || '',
   {
-    global: {
-      fetch: fetch.bind(window),
+    auth: {
+      flowType: 'implicit',
     },
   }
 );
