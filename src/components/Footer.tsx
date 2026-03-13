@@ -11,7 +11,7 @@ export const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-2 mb-4 md:mb-0">
             <BicepsFlexed className="h-6 w-6 text-emerald-500" />
-            <span className="font-bold text-lg text-zinc-100 tracking-tight">FitSupps</span>
+            <span className="font-bold text-lg text-zinc-100 tracking-tight">{t('app_name')}</span>
           </div>
           
           <div className="flex space-x-6 mb-4 md:mb-0">

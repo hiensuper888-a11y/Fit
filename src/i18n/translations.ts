@@ -2,7 +2,8 @@ export type Language = 'en' | 'vi';
 
 export const translations = {
   en: {
-    app_name: 'FitSupps - Gym & Supplements',
+    app_name: 'FitSupps',
+    sub_name: 'Gym & Supplements',
     nav_home: 'Home',
     nav_shop: 'Shop',
     nav_workouts: 'Workouts',
@@ -28,7 +29,8 @@ export const translations = {
     featured_workouts: 'Featured Workouts',
   },
   vi: {
-    app_name: 'FitSupps - Gym & Supplements',
+    app_name: 'FitSupps',
+    sub_name: 'Gym & Thực phẩm bổ sung',
     nav_home: 'Trang chủ',
     nav_shop: 'Cửa hàng',
     nav_workouts: 'Bài tập',

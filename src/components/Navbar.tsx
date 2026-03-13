@@ -21,7 +21,7 @@ export const Navbar: React.FC<{
             </div>
             <div className="flex flex-col">
               <span className="font-black text-xl tracking-tighter leading-none text-white">FIT<span className="text-emerald-500">SUPPS</span></span>
-              <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 leading-none mt-1">Gym & Supplements</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 leading-none mt-1">{t('sub_name')}</span>
             </div>
           </div>
           
