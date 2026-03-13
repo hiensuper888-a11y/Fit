@@ -52,6 +52,28 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
   const handleOAuthLogin = async (provider: 'google' | 'twitter') => {
     setLoading(true);
     setError(null);
+
+    // Open popup synchronously to avoid popup blocker
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    
+    const popup = window.open(
+      '',
+      'supabase_oauth_popup',
+      `width=${width},height=${height},left=${left},top=${top},toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0`
+    );
+
+    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+      setError('Trình duyệt đã chặn cửa sổ đăng nhập (Popup). Vui lòng cho phép mở Popup trên thanh địa chỉ để tiếp tục.');
+      setLoading(false);
+      return;
+    }
+
+    // Show a loading message in the popup
+    popup.document.write('<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;background:#18181b;color:#fff;">Đang kết nối...</div>');
+
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
@@ -66,24 +88,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
       if (error) throw error;
 
       if (data?.url) {
-        const width = 500;
-        const height = 600;
-        const left = window.screenX + (window.outerWidth - width) / 2;
-        const top = window.screenY + (window.outerHeight - height) / 2;
-        
-        const popup = window.open(
-          data.url,
-          'supabase_oauth_popup',
-          `width=${width},height=${height},left=${left},top=${top},toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0`
-        );
+        // Redirect the popup to the OAuth URL
+        popup.location.href = data.url;
 
-        if (!popup || popup.closed || typeof popup.closed === 'undefined') {
-          throw new Error('Trình duyệt đã chặn cửa sổ đăng nhập (Popup). Vui lòng cho phép mở Popup trên thanh địa chỉ để tiếp tục.');
-        }
-
-        // We don't set loading to false here because we're waiting for the popup to complete
-        // The App component will detect the auth state change and re-render
-        
         // Optional: check if popup is closed manually by user
         const checkPopup = setInterval(() => {
           if (popup.closed) {
@@ -91,10 +98,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
             setLoading(false);
           }
         }, 1000);
+      } else {
+        popup.close();
+        setLoading(false);
       }
     } catch (err: any) {
       console.error('OAuth Error:', err);
       setError(err.message || t('auth_error'));
+      popup.close();
       setLoading(false);
     }
   };
