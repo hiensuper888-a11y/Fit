@@ -23,6 +23,17 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
+    // If this is a popup opened for OAuth, close it after processing auth
+    if (window.opener && window.opener !== window) {
+      supabase.auth.onAuthStateChange((event) => {
+        if (event === 'SIGNED_IN') {
+          setTimeout(() => window.close(), 500);
+        }
+      });
+      // Fallback close after 5 seconds just in case
+      setTimeout(() => window.close(), 5000);
+    }
+
     // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -37,6 +48,16 @@ export default function App() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // If we are in a popup, just show a loading screen while auth processes
+  if (window.opener && window.opener !== window) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-white">
+        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
+        <p>Completing authentication...</p>
+      </div>
+    );
+  }
 
   if (authLoading) {
     return (

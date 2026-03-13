@@ -53,13 +53,43 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
     setLoading(true);
     setError(null);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: window.location.origin,
+          skipBrowserRedirect: true,
         },
       });
+      
       if (error) throw error;
+
+      if (data?.url) {
+        const width = 500;
+        const height = 600;
+        const left = window.screenX + (window.outerWidth - width) / 2;
+        const top = window.screenY + (window.outerHeight - height) / 2;
+        
+        const popup = window.open(
+          data.url,
+          'supabase_oauth_popup',
+          `width=${width},height=${height},left=${left},top=${top},toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0`
+        );
+
+        if (!popup) {
+          throw new Error('Please allow popups for this site to connect your account.');
+        }
+
+        // We don't set loading to false here because we're waiting for the popup to complete
+        // The App component will detect the auth state change and re-render
+        
+        // Optional: check if popup is closed manually by user
+        const checkPopup = setInterval(() => {
+          if (popup.closed) {
+            clearInterval(checkPopup);
+            setLoading(false);
+          }
+        }, 1000);
+      }
     } catch (err: any) {
       setError(err.message || t('auth_error'));
       setLoading(false);
