@@ -58,6 +58,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
         options: {
           redirectTo: window.location.origin,
           skipBrowserRedirect: true,
+          // Explicitly request OAuth 2.0 scopes for Twitter
+          scopes: provider === 'twitter' ? 'users.read tweet.read' : undefined,
         },
       });
       
@@ -75,8 +77,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
           `width=${width},height=${height},left=${left},top=${top},toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0`
         );
 
-        if (!popup) {
-          throw new Error('Please allow popups for this site to connect your account.');
+        if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+          throw new Error('Trình duyệt đã chặn cửa sổ đăng nhập (Popup). Vui lòng cho phép mở Popup trên thanh địa chỉ để tiếp tục.');
         }
 
         // We don't set loading to false here because we're waiting for the popup to complete
@@ -91,6 +93,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
         }, 1000);
       }
     } catch (err: any) {
+      console.error('OAuth Error:', err);
       setError(err.message || t('auth_error'));
       setLoading(false);
     }
