@@ -10,10 +10,10 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('vi'); // Default to Vietnamese
+  const [language, setLanguage] = useState<Language>('vi');
 
   const t = (key: TranslationKey): string => {
-    return translations[language][key] || key;
+    return translations[language][key] || translations['en'][key] || key;
   };
 
   return (
@@ -23,7 +23,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   );
 };
 
-export const useLanguage = (): LanguageContextType => {
+export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {
     throw new Error('useLanguage must be used within a LanguageProvider');

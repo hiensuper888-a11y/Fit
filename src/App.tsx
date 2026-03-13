@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from 'react';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { Navbar } from './components/Navbar';
@@ -10,104 +5,16 @@ import { Hero } from './components/Hero';
 import { Shop } from './components/Shop';
 import { Workouts } from './components/Workouts';
 import { Footer } from './components/Footer';
-import { CreatineArticle } from './components/CreatineArticle';
 import { AuthModal } from './components/AuthModal';
-import { Profile } from './components/Profile';
 import { supabase } from './lib/supabase';
 import { Loader2 } from 'lucide-react';
 
 export default function App() {
-  const [currentRoute, setCurrentRoute] = useState<'home' | 'article' | 'profile'>('home');
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [currentRoute, setCurrentRoute] = useState<'home' | 'shop' | 'workouts' | 'profile'>('home');
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    // If this is a popup opened for OAuth, close it after processing auth
-    if (window.opener && window.opener !== window) {
-      supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_IN') {
-          // Send message to opener in case localStorage is partitioned (e.g., Safari iframes)
-          window.opener.postMessage({ type: 'OAUTH_AUTH_SUCCESS', session }, '*');
-          setTimeout(() => window.close(), 500);
-        }
-      });
-      // Fallback close after 5 seconds just in case
-      setTimeout(() => window.close(), 5000);
-    }
-
-    // Listen for messages from the OAuth popup
-    const handleMessage = async (event: MessageEvent) => {
-      // Validate origin
-      if (event.origin && !event.origin.includes(window.location.hostname) && !event.origin.includes('supabase.co')) {
-        // In dev, hostname might be localhost or a run.app domain
-      }
-
-      const data = event.data;
-      if (data?.type === 'OAUTH_CODE' || data?.type === 'OAUTH_AUTH_SUCCESS' || data?.type === 'OAUTH_AUTH_ERROR') {
-        processAuthMessage(data);
-      }
-    };
-
-    const processAuthMessage = async (data: any) => {
-      if (data.type === 'OAUTH_CODE' && data.code) {
-        setAuthLoading(true);
-        try {
-          const { data: authData, error } = await supabase.auth.exchangeCodeForSession(data.code);
-          if (error) throw error;
-          if (authData.session) {
-            setUser(authData.session.user);
-            setIsAuthModalOpen(false);
-          }
-        } catch (err) {
-          console.error('Error exchanging code:', err);
-        } finally {
-          setAuthLoading(false);
-        }
-      } else if (data.type === 'OAUTH_AUTH_SUCCESS' && data.session) {
-        setAuthLoading(true);
-        try {
-          const { session } = data;
-          const { error } = await supabase.auth.setSession({
-            access_token: session.access_token,
-            refresh_token: session.refresh_token,
-          });
-          
-          if (!error) {
-            const { data: userData } = await supabase.auth.getUser();
-            setUser(userData.user);
-            setIsAuthModalOpen(false);
-          }
-        } catch (err) {
-          console.error('Error setting session:', err);
-        } finally {
-          setAuthLoading(false);
-        }
-      } else if (data.type === 'OAUTH_AUTH_ERROR') {
-        console.error('OAuth Error message received:', data.error);
-        setAuthLoading(false);
-      }
-    };
-
-    // Fallback for cross-origin or lost opener using localStorage
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === 'supabase_auth_callback' && event.newValue) {
-        try {
-          const data = JSON.parse(event.newValue);
-          // Only process if it's recent (within last 30 seconds)
-          if (Date.now() - data.timestamp < 30000) {
-            processAuthMessage(data);
-            localStorage.removeItem('supabase_auth_callback');
-          }
-        } catch (e) {
-          console.error('Error parsing auth callback from storage', e);
-        }
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    window.addEventListener('storage', handleStorageChange);
-
     // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -118,27 +25,12 @@ export default function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setAuthLoading(false);
-      if (session) {
-        setIsAuthModalOpen(false);
-      }
     });
 
     return () => {
       subscription.unsubscribe();
-      window.removeEventListener('message', handleMessage);
-      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
-
-  // If we are in a popup, just show a loading screen while auth processes
-  if (window.opener && window.opener !== window) {
-    return (
-      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-white">
-        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
-        <p>Completing authentication...</p>
-      </div>
-    );
-  }
 
   if (authLoading) {
     return (
@@ -169,7 +61,6 @@ export default function App() {
         <Navbar 
           currentRoute={currentRoute} 
           setCurrentRoute={setCurrentRoute} 
-          onOpenAuth={() => setIsAuthModalOpen(true)}
           user={user}
         />
         <main>
@@ -180,14 +71,19 @@ export default function App() {
               <Workouts />
             </>
           )}
-          {currentRoute === 'article' && <CreatineArticle />}
-          {currentRoute === 'profile' && <Profile user={user} />}
+          {currentRoute === 'shop' && <Shop />}
+          {currentRoute === 'workouts' && <Workouts />}
+          {currentRoute === 'profile' && (
+            <div className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h1 className="text-4xl font-bold mb-8">Profile</h1>
+              <div className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm">
+                <p className="text-zinc-600 mb-4">Email: <span className="text-zinc-900 font-bold">{user.email}</span></p>
+                <p className="text-zinc-600">User ID: <span className="text-zinc-900 font-bold">{user.id}</span></p>
+              </div>
+            </div>
+          )}
         </main>
         <Footer />
-        <AuthModal 
-          isOpen={isAuthModalOpen} 
-          onClose={() => setIsAuthModalOpen(false)} 
-        />
       </div>
     </LanguageProvider>
   );

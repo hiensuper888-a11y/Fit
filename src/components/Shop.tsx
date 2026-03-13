@@ -1,63 +1,113 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
-import { products } from '../data/mockData';
-import { ShoppingBag } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { ShoppingCart, Star, TrendingUp, Loader2 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { Product } from '../types/database';
 
 export const Shop: React.FC = () => {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setProducts(data || []);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
-    <section id="shop" className="py-16 bg-zinc-50">
+    <section className="py-24 bg-zinc-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-end mb-10">
-          <div>
-            <h2 className="text-3xl font-bold text-zinc-900 tracking-tight">{t('shop_title')}</h2>
-            <p className="mt-2 text-zinc-500">{t('popular_products')}</p>
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm uppercase tracking-widest mb-2">
+              <TrendingUp className="w-4 h-4" />
+              <span>{t('shop_title')}</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 tracking-tight">
+              {t('popular_products') || 'Popular Products'}
+            </h2>
           </div>
-          <button className="text-emerald-600 font-medium hover:text-emerald-700 hidden sm:block">
-            {t('view_all')} &rarr;
+          <button className="text-emerald-600 font-bold hover:text-emerald-700 transition-colors flex items-center gap-2 group">
+            {t('view_all') || 'View All'}
+            <ShoppingCart className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product, index) => (
-            <motion.div 
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl shadow-sm border border-zinc-100 overflow-hidden hover:shadow-md transition-shadow group"
-            >
-              <div className="relative aspect-square overflow-hidden bg-zinc-100">
-                <img 
-                  src={product.image} 
-                  alt={product.name[language]} 
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-medium text-zinc-700">
-                  {product.category[language]}
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-20 text-zinc-500">
+            No products found. Please add some to your Supabase 'products' table.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {products.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group bg-white rounded-3xl border border-zinc-200 overflow-hidden hover:shadow-2xl hover:shadow-zinc-200 transition-all hover:-translate-y-2"
+              >
+                <div className="relative aspect-square overflow-hidden">
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    referrerPolicy="no-referrer"
+                  />
+                  {product.tag && (
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-zinc-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-white/10">
+                        {product.tag}
+                      </span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                    <button className="w-full bg-white text-zinc-900 font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-emerald-500 hover:text-white transition-colors">
+                      <ShoppingCart className="w-4 h-4" />
+                      {t('add_to_cart')}
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-zinc-900 line-clamp-1">
-                  {product.name[language]}
-                </h3>
-                <p className="mt-1 text-sm text-zinc-500 line-clamp-2 min-h-[40px]">
-                  {product.description[language]}
-                </p>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="text-xl font-bold text-zinc-900">${product.price.toFixed(2)}</span>
-                  <button className="bg-zinc-900 hover:bg-emerald-500 text-white p-2 rounded-full transition-colors">
-                    <ShoppingBag className="w-5 h-5" />
-                  </button>
+                
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">{product.category}</span>
+                    <div className="flex items-center gap-1 text-zinc-400 text-xs">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-zinc-900 font-bold">{product.rating}</span>
+                      <span>({product.reviews})</span>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-bold text-zinc-900 mb-4 line-clamp-1">{product.name}</h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-zinc-900">${product.price}</span>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
