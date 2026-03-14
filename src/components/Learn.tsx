@@ -2,6 +2,7 @@ import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { motion } from 'framer-motion';
 import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity } from 'lucide-react';
+import { CreatineInfo } from './CreatineInfo';
 
 export const Learn: React.FC = () => {
   const { t } = useLanguage();
