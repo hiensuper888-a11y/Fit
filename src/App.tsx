@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Shop } from './components/Shop';
 import { Workouts } from './components/Workouts';
+import { Activities } from './components/Activities';
 import { Learn } from './components/Learn';
 import { Profile } from './components/Profile';
 import { AdminDashboard } from './components/AdminDashboard';
@@ -89,6 +90,7 @@ export default function App() {
             <Hero />
             <Shop />
             <Workouts />
+            <Activities />
           </>
         )}
         {currentRoute === 'shop' && <Shop />}

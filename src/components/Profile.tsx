@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useLanguage } from '../i18n/LanguageContext';
-import { User, Mail, Phone, MapPin, Heart, Target, Save, Loader2, Upload } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Heart, Target, Save, Loader2, Upload, Lock, Trash2 } from 'lucide-react';
 
 interface ProfileData {
   full_name: string;
@@ -267,6 +267,42 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
               {t('save_profile')}
             </button>
           </form>
+
+          <div className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm mt-8 space-y-6">
+            <h3 className="text-lg font-bold text-zinc-900">Account Security</h3>
+            
+            <div className="space-y-4">
+              <button
+                onClick={() => {
+                  const newPassword = prompt('Enter new password:');
+                  if (newPassword) {
+                    supabase.auth.updateUser({ password: newPassword }).then(({ error }) => {
+                      if (error) setMessage({ type: 'error', text: error.message });
+                      else setMessage({ type: 'success', text: 'Password updated successfully' });
+                    });
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2 bg-white border border-zinc-200 text-zinc-700 font-bold py-3 rounded-xl hover:bg-zinc-50 transition-all"
+              >
+                <Lock className="w-4 h-4" />
+                Change Password
+              </button>
+              
+              <button
+                onClick={() => {
+                  if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                    // Note: Supabase client-side deleteUser is not available for security reasons.
+                    // This needs to be handled via a server-side function or Supabase dashboard.
+                    alert('Account deletion is not supported from the client-side for security reasons. Please delete your account from the Supabase dashboard.');
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2 bg-red-50 text-red-600 font-bold py-3 rounded-xl hover:bg-red-100 transition-all"
+              >
+                <Trash2 className="w-4 h-4" />
+                Delete Account
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

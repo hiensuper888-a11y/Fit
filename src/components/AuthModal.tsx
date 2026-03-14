@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useLanguage } from '../i18n/LanguageContext';
-import { X, Loader2, BicepsFlexed } from 'lucide-react';
+import { X, Loader2, BicepsFlexed, Eye, EyeOff } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -14,6 +14,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -84,17 +85,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto"
-      style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1594882645126-14020914d58d?q=80&w=1920&auto=format&fit=crop')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto bg-black/60 backdrop-blur-sm"
     >
-      <div className="absolute inset-0 bg-black/40"></div>
-      <div className="bg-zinc-900/90 border border-zinc-800 rounded-3xl w-full max-w-md p-8 relative shadow-2xl z-10 my-auto">
-        {/* Decorative background element */}
-        <div className="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl"></div>
+      <div className="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-md p-8 relative shadow-2xl z-10 my-auto overflow-hidden">
+        {/* Animated gradient background */}
+        <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
         
         {!isMandatory && (
           <button 
@@ -105,7 +101,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
           </button>
         )}
 
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-8 relative z-10">
           <div className="relative">
             <div className="absolute -inset-4 bg-emerald-500 rounded-full blur-xl opacity-20 animate-pulse"></div>
             <div className="relative bg-zinc-800 p-4 rounded-2xl border border-emerald-500/30 shadow-inner">
@@ -114,10 +110,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
           </div>
         </div>
 
-        <h2 className="text-3xl font-black text-white mb-2 text-center tracking-tight">
+        <h2 className="text-3xl font-black text-white mb-2 text-center tracking-tight relative z-10">
           {isLogin ? t('login') : t('register')}
         </h2>
-        <p className="text-zinc-500 text-center mb-8 text-sm">
+        <p className="text-zinc-400 text-center mb-8 text-sm relative z-10">
           {isLogin ? 'Welcome back to FitSupps' : 'Start your fitness journey today'}
         </p>
 
@@ -188,15 +184,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
             />
           </div>
 
-          <div>
+          <div className="relative">
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all placeholder:text-zinc-600"
               placeholder={t('password')}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
           </div>
 
           <button

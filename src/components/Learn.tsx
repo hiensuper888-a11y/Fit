@@ -3,6 +3,7 @@ import { useLanguage } from '../i18n/LanguageContext';
 import { motion } from 'framer-motion';
 import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity } from 'lucide-react';
 import { CreatineInfo } from './CreatineInfo';
+import { WheyInfo } from './WheyInfo';
 
 export const Learn: React.FC = () => {
   const { t } = useLanguage();
@@ -25,6 +26,18 @@ export const Learn: React.FC = () => {
       source: "Biomolecules",
       url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7912247/",
       desc: "Nghiên cứu về vai trò của Creatine trong việc hỗ trợ điều trị trầm cảm và lo âu."
+    },
+    {
+      title: "Creatine supplementation for muscle growth and strength",
+      source: "Journal of the International Society of Sports Nutrition",
+      url: "https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0173-z",
+      desc: "Phân tích sâu về khả năng tăng sức mạnh và khối lượng cơ bắp."
+    },
+    {
+      title: "Creatine and Cognitive Performance",
+      source: "Psychopharmacology",
+      url: "https://pubmed.ncbi.nlm.nih.gov/12690748/",
+      desc: "Nghiên cứu về tác động của creatine đối với trí nhớ và khả năng xử lý thông tin."
     }
   ];
 
@@ -223,6 +236,14 @@ export const Learn: React.FC = () => {
                 </div>
               ))}
             </div>
+          </section>
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold text-zinc-900 mb-6">6. Thông tin chi tiết về Creatine</h2>
+            <CreatineInfo />
+          </section>
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold text-zinc-900 mb-6">7. Thông tin chi tiết về Whey Protein</h2>
+            <WheyInfo />
           </section>
         </div>
       </div>
