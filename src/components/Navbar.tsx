@@ -44,12 +44,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
               {t('nav_creatine')}
             </button>
             <button 
-              onClick={() => setCurrentRoute('admin')}
-              className={`text-sm font-medium transition-colors ${currentRoute === 'admin' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
-            >
-              {t('nav_admin')}
-            </button>
-            <button 
               onClick={() => setCurrentRoute('workouts')}
               className={`text-sm font-medium transition-colors ${currentRoute === 'workouts' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
             >
