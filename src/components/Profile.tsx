@@ -9,6 +9,7 @@ interface ProfileData {
   address: string;
   hobbies: string;
   goals: string;
+  avatar_url: string | null;
 }
 
 export const Profile: React.FC<{ user: any }> = ({ user }) => {
@@ -22,6 +23,7 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
     address: '',
     hobbies: '',
     goals: '',
+    avatar_url: null,
   });
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('full_name, phone, address, hobbies, goals')
+        .select('full_name, phone, address, hobbies, goals, avatar_url')
         .eq('id', user.id)
         .single();
 
@@ -50,6 +52,30 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
       console.error('Error loading profile:', error.message);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function uploadAvatar(e: React.ChangeEvent<HTMLInputElement>) {
+    try {
+      if (!e.target.files || e.target.files.length === 0) return;
+      const file = e.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+      await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', user.id);
+      setProfile({ ...profile, avatar_url: publicUrl });
+    } catch (error: any) {
+      setMessage({ type: 'error', text: 'Upload failed: ' + error.message });
     }
   }
 
@@ -95,8 +121,16 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
         <div className="md:col-span-1">
           <div className="bg-white p-6 rounded-3xl border border-zinc-200 shadow-sm sticky top-24">
             <div className="flex flex-col items-center text-center mb-6">
-              <div className="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-md">
-                <User className="w-12 h-12 text-emerald-600" />
+              <div className="relative w-24 h-24 mb-4">
+                <img 
+                  src={profile.avatar_url || 'https://via.placeholder.com/150'} 
+                  alt="Avatar" 
+                  className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
+                />
+                <label className="absolute bottom-0 right-0 bg-emerald-600 p-2 rounded-full cursor-pointer hover:bg-emerald-700 transition-colors">
+                  <Upload className="w-4 h-4 text-white" />
+                  <input type="file" className="hidden" accept="image/*" onChange={uploadAvatar} />
+                </label>
               </div>
               <h3 className="font-bold text-zinc-900 text-lg">{profile.full_name || 'Fitness Enthusiast'}</h3>
               <p className="text-zinc-500 text-sm">{user.email}</p>

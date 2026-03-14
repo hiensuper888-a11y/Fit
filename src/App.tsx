@@ -5,13 +5,15 @@ import { Shop } from './components/Shop';
 import { Workouts } from './components/Workouts';
 import { Learn } from './components/Learn';
 import { Profile } from './components/Profile';
+import { CreatineInfo } from './components/CreatineInfo';
+import { AdminDashboard } from './components/AdminDashboard';
 import { Footer } from './components/Footer';
 import { AuthModal } from './components/AuthModal';
 import { supabase } from './lib/supabase';
 import { Loader2 } from 'lucide-react';
 
 export default function App() {
-  const [currentRoute, setCurrentRoute] = useState<'home' | 'shop' | 'workouts' | 'learn' | 'profile'>('home');
+  const [currentRoute, setCurrentRoute] = useState<'home' | 'shop' | 'workouts' | 'learn' | 'profile' | 'creatine' | 'admin'>('home');
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -83,6 +85,8 @@ export default function App() {
         {currentRoute === 'shop' && <Shop />}
         {currentRoute === 'workouts' && <Workouts />}
         {currentRoute === 'learn' && <Learn />}
+        {currentRoute === 'creatine' && <CreatineInfo />}
+        {currentRoute === 'admin' && <AdminDashboard />}
         {currentRoute === 'profile' && <Profile user={user} />}
       </main>
       <Footer />

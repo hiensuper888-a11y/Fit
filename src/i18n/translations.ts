@@ -53,6 +53,8 @@ export const translations = {
     goals: 'Goals/Wishes',
     save_profile: 'Save Profile',
     profile_updated: 'Profile updated successfully!',
+    nav_creatine: 'Creatine Info',
+    nav_admin: 'Admin',
   },
   vi: {
     app_name: 'FitSupps',
@@ -106,6 +108,8 @@ export const translations = {
     goals: 'Mong muốn',
     save_profile: 'Lưu hồ sơ',
     profile_updated: 'Cập nhật hồ sơ thành công!',
+    nav_creatine: 'Thông tin Creatine',
+    nav_admin: 'Quản trị',
   },
 };
 

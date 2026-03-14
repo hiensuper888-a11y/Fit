@@ -24,8 +24,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
             className="flex items-center cursor-pointer group"
             onClick={() => setCurrentRoute('home')}
           >
-            <BicepsFlexed className="h-8 w-8 text-emerald-600 group-hover:scale-110 transition-transform" />
-            <span className="ml-2 text-xl font-bold tracking-tight text-zinc-900">{t('app_name')}</span>
+            <div className="p-2 bg-emerald-100 rounded-xl group-hover:bg-emerald-200 transition-colors">
+              <BicepsFlexed className="h-6 w-6 text-emerald-600" />
+            </div>
+            <span className="ml-3 text-xl font-black tracking-tight text-zinc-900 group-hover:text-emerald-700 transition-colors">{t('app_name')}</span>
           </div>
 
           <div className="hidden md:flex space-x-8">
@@ -36,10 +38,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
               {t('nav_home')}
             </button>
             <button 
-              onClick={() => setCurrentRoute('shop')}
-              className={`text-sm font-medium transition-colors ${currentRoute === 'shop' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
+              onClick={() => setCurrentRoute('creatine')}
+              className={`text-sm font-medium transition-colors ${currentRoute === 'creatine' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
             >
-              {t('nav_shop')}
+              {t('nav_creatine')}
+            </button>
+            <button 
+              onClick={() => setCurrentRoute('admin')}
+              className={`text-sm font-medium transition-colors ${currentRoute === 'admin' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
+            >
+              {t('nav_admin')}
             </button>
             <button 
               onClick={() => setCurrentRoute('workouts')}
