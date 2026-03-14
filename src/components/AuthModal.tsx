@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useLanguage } from '../i18n/LanguageContext';
-import { X, Loader2, BicepsFlexed, Eye, EyeOff } from 'lucide-react';
+import { X, Loader2, Eye, EyeOff } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -105,7 +105,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
           <div className="relative">
             <div className="absolute -inset-4 bg-emerald-500 rounded-full blur-xl opacity-20 animate-pulse"></div>
             <div className="relative bg-zinc-800 p-4 rounded-2xl border border-emerald-500/30 shadow-inner">
-              <BicepsFlexed className="h-10 w-10 text-emerald-500" />
+              <svg className="h-10 w-10 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M8 10h8"/>
+                <path d="M10 8v4"/>
+                <path d="M14 8v4"/>
+              </svg>
             </div>
           </div>
         </div>

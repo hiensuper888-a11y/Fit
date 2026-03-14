@@ -1,7 +1,7 @@
 import React from 'react';
 import { CurrentDate } from './CurrentDate';
 import { useLanguage } from '../i18n/LanguageContext';
-import { BicepsFlexed, ShoppingCart, User, LogOut, Globe } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Globe } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface NavbarProps {
@@ -27,7 +27,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
             onClick={() => setCurrentRoute('home')}
           >
             <div className="p-2 bg-emerald-100 rounded-xl group-hover:bg-emerald-200 transition-colors">
-              <BicepsFlexed className="h-6 w-6 text-emerald-600" />
+              <svg className="h-6 w-6 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M8 10h8"/>
+                <path d="M10 8v4"/>
+                <path d="M14 8v4"/>
+              </svg>
             </div>
             <span className="ml-3 text-xl font-black tracking-tight text-zinc-900 group-hover:text-emerald-700 transition-colors">{t('app_name')}</span>
           </div>
