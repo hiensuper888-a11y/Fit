@@ -42,14 +42,22 @@ export const CreatineInfo: React.FC = () => {
           </div>
           <p className="text-zinc-600 mb-6">Hãy chọn sản phẩm có các chứng nhận như <strong>Informed-Sport</strong>, <strong>NSF Certified for Sport</strong> để đảm bảo không chứa chất cấm.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-100">
-              <h3 className="font-bold">Optimum Nutrition</h3>
-              <p className="text-sm text-zinc-500">Chứng nhận: Informed-Choice (Anh/Mỹ)</p>
-            </div>
-            <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-100">
-              <h3 className="font-bold">Creapure®</h3>
-              <p className="text-sm text-zinc-500">Chứng nhận: Độ tinh khiết cao (Đức/Châu Âu)</p>
-            </div>
+            {[
+              { name: 'Optimum Nutrition', link: 'https://www.optimumnutrition.com/' },
+              { name: 'MyProtein', link: 'https://www.myprotein.com/' },
+              { name: 'Thorne', link: 'https://www.thorne.com/' },
+              { name: 'Bulk', link: 'https://www.bulk.com/' },
+              { name: 'NOW Foods', link: 'https://www.nowfoods.com/' },
+              { name: 'Nutricost', link: 'https://nutricost.com/' },
+              { name: 'Pure Encapsulations', link: 'https://pureencapsulations.com/' },
+              { name: 'PhD Nutrition', link: 'https://phd.com/' },
+              { name: 'Dymatize', link: 'https://dymatize.com/' },
+              { name: 'MuscleTech', link: 'https://muscletech.com/' },
+            ].map((brand) => (
+              <a key={brand.name} href={brand.link} target="_blank" rel="noreferrer" className="block p-4 bg-zinc-50 rounded-xl border border-zinc-200 hover:border-emerald-500 transition-colors">
+                <span className="font-bold text-zinc-900">{brand.name}</span>
+              </a>
+            ))}
           </div>
         </section>
       </div>

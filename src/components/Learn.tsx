@@ -32,19 +32,25 @@ export const Learn: React.FC = () => {
       name: "Thorne Research",
       cert: "NSF Certified for Sport",
       url: "https://www.thorne.com/products/dp/creatine",
-      desc: "Hãng dược phẩm bổ sung uy tín nhất thế giới, được các đội tuyển chuyên nghiệp tin dùng."
+      desc: "Hãng dược phẩm bổ sung uy tín nhất thế giới, được các đội tuyển chuyên nghiệp tin dùng.",
+      logo: "https://via.placeholder.com/100?text=Thorne",
+      productImage: "https://via.placeholder.com/200?text=Thorne+Creatine"
     },
     {
       name: "Optimum Nutrition (ON)",
       cert: "Informed Choice",
       url: "https://www.optimumnutrition.com/en-us/product/creatine-powder",
-      desc: "Tiêu chuẩn vàng trong ngành thực phẩm bổ sung với độ tinh khiết cao."
+      desc: "Tiêu chuẩn vàng trong ngành thực phẩm bổ sung với độ tinh khiết cao.",
+      logo: "https://via.placeholder.com/100?text=ON",
+      productImage: "https://via.placeholder.com/200?text=ON+Creatine"
     },
     {
       name: "MyProtein (Creapure Line)",
       cert: "Labdoor Ranked",
       url: "https://www.myprotein.com/sports-nutrition/creapure-creatine-monohydrate-powder/10529740.html",
-      desc: "Sử dụng nguyên liệu Creapure từ Đức với chứng nhận tinh khiết 99.99%."
+      desc: "Sử dụng nguyên liệu Creapure từ Đức với chứng nhận tinh khiết 99.99%.",
+      logo: "https://via.placeholder.com/100?text=MyProtein",
+      productImage: "https://via.placeholder.com/200?text=MyProtein+Creatine"
     }
   ];
 
@@ -190,6 +196,9 @@ export const Learn: React.FC = () => {
             <div className="grid grid-cols-1 gap-6">
               {brands.map((brand, i) => (
                 <div key={i} className="flex flex-col md:flex-row gap-6 p-6 bg-white border border-zinc-200 rounded-3xl">
+                  <div className="w-full md:w-32 flex items-center justify-center p-4 bg-zinc-50 rounded-2xl">
+                    <img src={brand.logo} alt={brand.name} className="max-w-full max-h-16" />
+                  </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <h4 className="text-xl font-bold text-zinc-900">{brand.name}</h4>
@@ -206,6 +215,9 @@ export const Learn: React.FC = () => {
                     >
                       Xem sản phẩm <ExternalLink className="w-3 h-3" />
                     </a>
+                  </div>
+                  <div className="w-full md:w-40 flex items-center justify-center p-4 bg-zinc-50 rounded-2xl">
+                    <img src={brand.productImage} alt={brand.name} className="max-w-full max-h-24" />
                   </div>
                 </div>
               ))}

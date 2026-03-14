@@ -1,4 +1,4 @@
-export type Language = 'en' | 'vi';
+export type Language = 'en' | 'vi' | 'zh' | 'ja' | 'de' | 'fr' | 'ru' | 'es';
 
 export const translations = {
   en: {
@@ -8,6 +8,7 @@ export const translations = {
     nav_shop: 'Shop',
     nav_workouts: 'Workouts',
     nav_learn: 'Learn',
+    nav_creatine: 'Creatine Info',
     hero_title: 'Fuel Your Fitness Journey',
     hero_subtitle: 'Premium supplements and expert workout plans to help you reach your goals.',
     shop_title: 'Premium Supplements',
@@ -53,7 +54,6 @@ export const translations = {
     goals: 'Goals/Wishes',
     save_profile: 'Save Profile',
     profile_updated: 'Profile updated successfully!',
-    nav_creatine: 'Creatine Info',
   },
   vi: {
     app_name: 'FitSupps',
@@ -62,6 +62,7 @@ export const translations = {
     nav_shop: 'Cửa hàng',
     nav_workouts: 'Bài tập',
     nav_learn: 'Kiến thức',
+    nav_creatine: 'Thông tin Creatine',
     hero_title: 'Tiếp Nhiên Liệu Cho Hành Trình Thể Hình',
     hero_subtitle: 'Thực phẩm bổ sung cao cấp và kế hoạch tập luyện chuyên gia giúp bạn đạt mục tiêu.',
     shop_title: 'Thực Phẩm Bổ Sung Cao Cấp',
@@ -107,8 +108,8 @@ export const translations = {
     goals: 'Mong muốn',
     save_profile: 'Lưu hồ sơ',
     profile_updated: 'Cập nhật hồ sơ thành công!',
-    nav_creatine: 'Thông tin Creatine',
   },
+  zh: {}, ja: {}, de: {}, fr: {}, ru: {}, es: {}
 };
 
 export type TranslationKey = keyof typeof translations.en;

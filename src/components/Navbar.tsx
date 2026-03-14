@@ -1,4 +1,5 @@
 import React from 'react';
+import { CurrentDate } from './CurrentDate';
 import { useLanguage } from '../i18n/LanguageContext';
 import { BicepsFlexed, ShoppingCart, User, LogOut, Globe } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -58,6 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
           </div>
 
           <div className="flex items-center space-x-4">
+            <CurrentDate />
             <button
               onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')}
               className="p-2 text-zinc-600 hover:text-emerald-600 transition-colors flex items-center gap-1"
