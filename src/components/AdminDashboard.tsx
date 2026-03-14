@@ -7,8 +7,32 @@ export const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchUsers();
+    checkAdminAndFetchUsers();
   }, []);
+
+  async function checkAdminAndFetchUsers() {
+    try {
+      setLoading(true);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      if (profile?.role !== 'admin') {
+        alert('Bạn không có quyền truy cập trang này!');
+        // Có thể thêm logic redirect về trang chủ ở đây
+        return;
+      }
+
+      fetchUsers();
+    } catch (error) {
+      console.error('Error checking admin:', error);
+    }
+  }
 
   async function fetchUsers() {
     try {

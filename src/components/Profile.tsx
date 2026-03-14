@@ -28,6 +28,23 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
 
   useEffect(() => {
     getProfile();
+
+    // Thiết lập lắng nghe thay đổi Realtime
+    const channel = supabase
+      .channel('public:profiles')
+      .on('postgres_changes', { 
+        event: 'UPDATE', 
+        schema: 'public', 
+        table: 'profiles',
+        filter: `id=eq.${user.id}`
+      }, (payload) => {
+        setProfile(payload.new as ProfileData);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user]);
 
   async function getProfile() {
