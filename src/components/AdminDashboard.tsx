@@ -47,10 +47,16 @@ export const AdminDashboard: React.FC = () => {
     }
   }
 
-  async function toggleAdmin(userId: string, currentRole: string) {
-    const newRole = currentRole === 'admin' ? 'user' : 'admin';
-    await supabase.from('profiles').update({ role: newRole }).eq('id', userId);
-    fetchUsers();
+  async function deleteUser(userId: string) {
+    if (!confirm('Bạn có chắc chắn muốn xóa người dùng này?')) return;
+    
+    // Xóa trong bảng profiles (RLS sẽ xử lý nếu bạn đã chạy SQL ở Bước 3)
+    const { error } = await supabase.from('profiles').delete().eq('id', userId);
+    if (error) {
+      alert('Lỗi khi xóa: ' + error.message);
+    } else {
+      fetchUsers();
+    }
   }
 
   if (loading) return <div className="py-24 flex justify-center"><Loader2 className="w-8 h-8 animate-spin" /></div>;
@@ -75,9 +81,12 @@ export const AdminDashboard: React.FC = () => {
                   {user.full_name}
                 </td>
                 <td className="p-4">{user.role}</td>
-                <td className="p-4">
+                <td className="p-4 flex gap-2">
                   <button onClick={() => toggleAdmin(user.id, user.role)} className="text-emerald-600 font-bold">
                     Toggle Admin
+                  </button>
+                  <button onClick={() => deleteUser(user.id)} className="text-red-600 font-bold">
+                    <Trash2 className="w-5 h-5" />
                   </button>
                 </td>
               </tr>
