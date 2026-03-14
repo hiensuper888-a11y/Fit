@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useLanguage } from '../i18n/LanguageContext';
-import { User, Mail, Phone, MapPin, Heart, Target, Save, Loader2 } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Heart, Target, Save, Loader2, Upload } from 'lucide-react';
 
 interface ProfileData {
   full_name: string;
@@ -58,15 +58,24 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
         .eq('id', user.id)
         .single();
 
-      if (error && error.code !== 'PGRST116') {
-        throw error;
+      if (error) {
+        if (error.code === 'PGRST116') {
+          console.warn('Không tìm thấy hồ sơ cho user này, đang tạo hồ sơ mới...');
+          // Tự động tạo hồ sơ trống nếu chưa có
+          const { error: insertError } = await supabase.from('profiles').insert({ id: user.id });
+          if (insertError) throw insertError;
+          getProfile(); // Thử lại
+        } else {
+          throw error;
+        }
       }
 
       if (data) {
         setProfile(data);
       }
     } catch (error: any) {
-      console.error('Error loading profile:', error.message);
+      console.error('Lỗi chi tiết khi tải hồ sơ:', error);
+      setMessage({ type: 'error', text: 'Không thể tải hồ sơ: ' + error.message });
     } finally {
       setLoading(false);
     }
