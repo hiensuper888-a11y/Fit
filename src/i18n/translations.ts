@@ -42,6 +42,9 @@ export const translations = {
     connecting: 'Connecting...',
     popup_blocked: 'The login window was blocked by your browser. Please click the button below to continue.',
     open_login_page: 'Open Login Page',
+    popular_products: 'Popular Products',
+    view_all: 'View All',
+    featured_workouts: 'Featured Workouts',
   },
   vi: {
     app_name: 'FitSupps',
@@ -84,6 +87,9 @@ export const translations = {
     connecting: 'Đang kết nối...',
     popup_blocked: 'Trình duyệt đã chặn cửa sổ đăng nhập. Vui lòng nhấn vào nút bên dưới để tiếp tục.',
     open_login_page: 'Mở trang đăng nhập',
+    popular_products: 'Sản phẩm phổ biến',
+    view_all: 'Xem tất cả',
+    featured_workouts: 'Bài tập tiêu biểu',
   },
 };
 
