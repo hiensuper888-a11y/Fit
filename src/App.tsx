@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { Shop } from './components/Shop';
 import { Workouts } from './components/Workouts';
 import { Learn } from './components/Learn';
+import { Profile } from './components/Profile';
 import { Footer } from './components/Footer';
 import { AuthModal } from './components/AuthModal';
 import { supabase } from './lib/supabase';
@@ -82,15 +83,7 @@ export default function App() {
         {currentRoute === 'shop' && <Shop />}
         {currentRoute === 'workouts' && <Workouts />}
         {currentRoute === 'learn' && <Learn />}
-        {currentRoute === 'profile' && (
-          <div className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-bold mb-8">Profile</h1>
-            <div className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm">
-              <p className="text-zinc-600 mb-4">Email: <span className="text-zinc-900 font-bold">{user.email}</span></p>
-              <p className="text-zinc-600">User ID: <span className="text-zinc-900 font-bold">{user.id}</span></p>
-            </div>
-          </div>
-        )}
+        {currentRoute === 'profile' && <Profile user={user} />}
       </main>
       <Footer />
     </div>
