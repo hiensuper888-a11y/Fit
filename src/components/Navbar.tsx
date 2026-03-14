@@ -47,6 +47,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
             >
               {t('nav_workouts')}
             </button>
+            <button 
+              onClick={() => setCurrentRoute('learn')}
+              className={`text-sm font-medium transition-colors ${currentRoute === 'learn' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
+            >
+              {t('nav_learn')}
+            </button>
           </div>
 
           <div className="flex items-center space-x-4">

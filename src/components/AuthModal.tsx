@@ -44,9 +44,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
         const { error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: window.location.origin,
+          }
         });
         if (error) throw error;
-        setSuccess(`${t('auth_success')} ${t('check_email')}`);
+        setSuccess(`${t('auth_success')} ${t('check_email')} (Hãy kiểm tra cả hòm thư Spam/Rác)`);
       }
     } catch (err: any) {
       setError(err.message || t('auth_error'));

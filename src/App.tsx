@@ -3,13 +3,14 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Shop } from './components/Shop';
 import { Workouts } from './components/Workouts';
+import { Learn } from './components/Learn';
 import { Footer } from './components/Footer';
 import { AuthModal } from './components/AuthModal';
 import { supabase } from './lib/supabase';
 import { Loader2 } from 'lucide-react';
 
 export default function App() {
-  const [currentRoute, setCurrentRoute] = useState<'home' | 'shop' | 'workouts' | 'profile'>('home');
+  const [currentRoute, setCurrentRoute] = useState<'home' | 'shop' | 'workouts' | 'learn' | 'profile'>('home');
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -80,6 +81,7 @@ export default function App() {
         )}
         {currentRoute === 'shop' && <Shop />}
         {currentRoute === 'workouts' && <Workouts />}
+        {currentRoute === 'learn' && <Learn />}
         {currentRoute === 'profile' && (
           <div className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl font-bold mb-8">Profile</h1>
