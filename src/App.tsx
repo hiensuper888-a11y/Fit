@@ -5,14 +5,16 @@ import { Shop } from './components/Shop';
 import { Workouts } from './components/Workouts';
 import { Learn } from './components/Learn';
 import { Profile } from './components/Profile';
+import { AdminDashboard } from './components/AdminDashboard';
 import { Footer } from './components/Footer';
 import { AuthModal } from './components/AuthModal';
 import { supabase } from './lib/supabase';
 import { Loader2 } from 'lucide-react';
 
 export default function App() {
-  const [currentRoute, setCurrentRoute] = useState<'home' | 'shop' | 'workouts' | 'learn' | 'profile'>('home');
+  const [currentRoute, setCurrentRoute] = useState<'home' | 'shop' | 'workouts' | 'learn' | 'profile' | 'admin'>('home');
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
@@ -23,8 +25,16 @@ export default function App() {
 
     // Check active sessions and sets the user
     supabase.auth.getSession()
-      .then(({ data: { session } }) => {
+      .then(async ({ data: { session } }) => {
         setUser(session?.user ?? null);
+        if (session?.user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .single();
+          setIsAdmin(profile?.role === 'admin');
+        }
       })
       .catch((err) => {
         console.error('Error getting session:', err);
@@ -71,6 +81,7 @@ export default function App() {
         currentRoute={currentRoute} 
         setCurrentRoute={setCurrentRoute} 
         user={user}
+        isAdmin={isAdmin}
       />
       <main>
         {currentRoute === 'home' && (
@@ -83,6 +94,7 @@ export default function App() {
         {currentRoute === 'shop' && <Shop />}
         {currentRoute === 'workouts' && <Workouts />}
         {currentRoute === 'learn' && <Learn />}
+        {currentRoute === 'admin' && isAdmin && <AdminDashboard />}
         {currentRoute === 'profile' && <Profile user={user} />}
       </main>
       <Footer />

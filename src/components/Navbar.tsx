@@ -8,9 +8,10 @@ interface NavbarProps {
   currentRoute: string;
   setCurrentRoute: (route: any) => void;
   user: any;
+  isAdmin?: boolean;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, user }) => {
+export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, user, isAdmin }) => {
   const { t, language, setLanguage } = useLanguage();
 
   const handleLogout = async () => {
@@ -50,12 +51,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
             >
               {t('nav_workouts')}
             </button>
-            <button 
-              onClick={() => setCurrentRoute('learn')}
-              className={`text-sm font-medium transition-colors ${currentRoute === 'learn' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
-            >
-              {t('nav_learn')}
-            </button>
+            {isAdmin && (
+              <button 
+                onClick={() => setCurrentRoute('admin')}
+                className={`text-sm font-medium transition-colors ${currentRoute === 'admin' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
+              >
+                Admin
+              </button>
+            )}
           </div>
 
           <div className="flex items-center space-x-4">
