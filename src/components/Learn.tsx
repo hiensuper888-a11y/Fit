@@ -9,6 +9,7 @@ import { MelatoninInfo } from './MelatoninInfo';
 import { YohimbeInfo } from './YohimbeInfo';
 import { MeditationInfo } from './MeditationInfo';
 import { HealthAndLongevityInfo } from './HealthAndLongevityInfo';
+import { InsomniaScience } from './InsomniaScience';
 import { ImpactChart } from './ImpactChart';
 
 interface LearnProps {
@@ -145,6 +146,21 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
       source: "Annals of the New York Academy of Sciences (USA)",
       url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3057175/",
       desc: "Nghiên cứu đột phá chứng minh thiền định có thể làm chậm quá trình lão hóa tế bào bằng cách bảo vệ Telomere."
+    }
+  ];
+
+  const insomniaResearch = [
+    {
+      title: "Mindfulness Meditation for Insomnia: A Meta-analysis",
+      source: "JAMA Internal Medicine (USA)",
+      url: "https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2110998",
+      desc: "Nghiên cứu chứng minh thiền chánh niệm cải thiện đáng kể chất lượng giấc ngủ."
+    },
+    {
+      title: "European guideline for the diagnosis and treatment of insomnia",
+      source: "European Sleep Research Society (Europe)",
+      url: "https://onlinelibrary.wiley.com/doi/full/10.1111/jsr.12594",
+      desc: "Hướng dẫn toàn diện của Châu Âu về chẩn đoán và điều trị mất ngủ."
     }
   ];
 
@@ -325,6 +341,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
   const filteredYohimbe = filterItems(yohimbeResearch, searchQuery);
   const filteredMeditation = filterItems(meditationResearch, searchQuery);
   const filteredHealthLongevity = filterItems(healthLongevityResearch, searchQuery);
+  const filteredInsomnia = filterItems(insomniaResearch, searchQuery);
   const filteredBrands = filterItems(brands, searchQuery);
   const filteredWorkoutResearch = filterItems(workoutResearch, searchQuery);
   const filteredWorkoutMethods = filterItems(workoutMethods, searchQuery);
@@ -536,6 +553,16 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
                   Nghiên cứu về Sức khỏe & Kéo dài tuổi thọ
                 </h3>
                 {renderResearchLinks(filteredHealthLongevity)}
+              </motion.div>
+            )}
+
+            {(!searchQuery || filteredInsomnia.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <Moon className="w-6 h-6 text-indigo-500" />
+                  Nghiên cứu về Mất ngủ & Giấc ngủ
+                </h3>
+                {renderResearchLinks(filteredInsomnia)}
               </motion.div>
             )}
           </motion.section>
@@ -787,6 +814,21 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">10. Sức khỏe Toàn diện & Đảo ngược Lão hóa</h2>
               <HealthAndLongevityInfo />
+            </motion.div>
+          </motion.section>
+        )}
+
+        {(!searchQuery || "mất ngủ".includes(searchQuery.toLowerCase()) || "insomnia".includes(searchQuery.toLowerCase()) || "giấc ngủ".includes(searchQuery.toLowerCase())) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants}>
+              <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">11. Khoa học về Mất ngủ & Cách điều trị</h2>
+              <InsomniaScience />
             </motion.div>
           </motion.section>
         )}

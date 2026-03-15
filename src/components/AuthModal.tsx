@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { useLanguage } from '../i18n/LanguageContext';
-import { X, Loader2, Eye, EyeOff } from 'lucide-react';
+import { useLanguage, Language } from '../i18n/LanguageContext';
+import { X, Loader2, Eye, EyeOff, Globe, Pill } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -10,8 +10,20 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandatory = false }) => {
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
+  const [showLangMenu, setShowLangMenu] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+
+  const languages: { code: Language; label: string; flag: string }[] = [
+    { code: 'en', label: 'English', flag: '🇺🇸' },
+    { code: 'vi', label: 'Tiếng Việt', flag: '🇻🇳' },
+    { code: 'zh', label: '中文', flag: '🇨🇳' },
+    { code: 'ja', label: '日本語', flag: '🇯🇵' },
+    { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+    { code: 'fr', label: 'Français', flag: '🇫🇷' },
+    { code: 'ru', label: 'Русский', flag: '🇷🇺' },
+    { code: 'es', label: 'Español', flag: '🇪🇸' },
+  ];
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -107,14 +119,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
           
           <div className="relative z-10 w-full">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="bg-emerald-500 p-2.5 rounded-xl shadow-lg shadow-emerald-500/30">
-                <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
-                  <path d="m8.5 8.5 7 7" />
-                </svg>
+            <div className="flex items-center gap-3 mb-6 group">
+              <div className="logo-rays-container">
+                <div className="logo-rays"></div>
+                <div className="w-11 h-11 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.5)] group-hover:shadow-[0_0_35px_rgba(16,185,129,0.7)] transition-all duration-500 relative z-10">
+                  <Pill className="w-6 h-6 text-white" />
+                </div>
               </div>
-              <span className="text-2xl font-black tracking-tight text-white">{t('app_name')}</span>
+              <span className="text-2xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors duration-300 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">{t('app_name')}</span>
             </div>
             <h3 className="text-3xl font-serif font-bold text-white mb-4 leading-tight">
               {isLogin ? "Welcome back to your fitness journey." : "Unlock your true physical potential."}
@@ -130,25 +142,63 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
           {/* Animated gradient background */}
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
           
-          {!isMandatory && (
-            <button 
-              onClick={onClose}
-              className="absolute top-6 right-6 text-zinc-500 hover:text-white bg-zinc-800/50 hover:bg-zinc-800 p-2 rounded-full transition-all z-10"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          )}
+          <div className="absolute top-6 right-6 flex items-center gap-2 z-50">
+            <div className="relative">
+              <button
+                onClick={() => setShowLangMenu(!showLangMenu)}
+                className="p-2 text-zinc-500 hover:text-emerald-400 bg-zinc-800/50 hover:bg-zinc-800 rounded-full transition-all flex items-center gap-2 border border-zinc-700/50"
+                title={t('language')}
+              >
+                <Globe className="w-4 h-4" />
+                <span className="text-[10px] font-bold uppercase">{language}</span>
+              </button>
+
+              {showLangMenu && (
+                <div className="absolute right-0 mt-2 w-40 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200">
+                  <div className="grid grid-cols-1 gap-1 px-2">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setLanguage(lang.code);
+                          setShowLangMenu(false);
+                        }}
+                        className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs transition-all ${
+                          language === lang.code 
+                            ? 'bg-emerald-500/10 text-emerald-400 font-bold' 
+                            : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+                        }`}
+                      >
+                        <span>{lang.flag}</span>
+                        <span>{lang.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {!isMandatory && (
+              <button 
+                onClick={onClose}
+                className="text-zinc-500 hover:text-white bg-zinc-800/50 hover:bg-zinc-800 p-2 rounded-full transition-all border border-zinc-700/50"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
 
           <div className="max-w-md w-full mx-auto relative z-10">
             {/* Mobile Logo */}
-            <div className="md:hidden flex items-center justify-center gap-3 mb-8">
-              <div className="bg-emerald-500 p-2 rounded-xl">
-                <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div className="md:hidden flex items-center justify-center gap-3 mb-8 group">
+              <div className="bg-emerald-500 p-2 rounded-xl shadow-lg shadow-emerald-500/30 relative overflow-hidden">
+                <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                <svg className="h-6 w-6 text-white relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
                   <path d="m8.5 8.5 7 7" />
                 </svg>
               </div>
-              <span className="text-2xl font-black tracking-tight text-white">{t('app_name')}</span>
+              <span className="text-2xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors duration-300 drop-shadow-[0_0_10px_rgba(16,185,129,0.3)]">{t('app_name')}</span>
             </div>
 
             <h2 className="text-3xl font-serif font-black text-white mb-2 tracking-tight">

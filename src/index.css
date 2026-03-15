@@ -31,4 +31,97 @@
   .prose-article li::marker {
     @apply text-emerald-500;
   }
+
+  @keyframes rotate-rays {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .logo-rays-container {
+    @apply relative flex items-center justify-center;
+  }
+
+  .logo-rays {
+    @apply absolute top-1/2 left-1/2 w-[300%] h-[300%] pointer-events-none opacity-80;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(16, 185, 129, 0.8) 5deg,
+      transparent 10deg,
+      rgba(16, 185, 129, 0.8) 15deg,
+      transparent 20deg,
+      rgba(16, 185, 129, 0.8) 25deg,
+      transparent 30deg,
+      rgba(16, 185, 129, 0.8) 35deg,
+      transparent 40deg,
+      rgba(16, 185, 129, 0.8) 45deg,
+      transparent 50deg,
+      rgba(16, 185, 129, 0.8) 55deg,
+      transparent 60deg,
+      rgba(16, 185, 129, 0.8) 65deg,
+      transparent 70deg,
+      rgba(16, 185, 129, 0.8) 75deg,
+      transparent 80deg,
+      rgba(16, 185, 129, 0.8) 85deg,
+      transparent 90deg,
+      rgba(16, 185, 129, 0.8) 95deg,
+      transparent 100deg,
+      rgba(16, 185, 129, 0.8) 105deg,
+      transparent 110deg,
+      rgba(16, 185, 129, 0.8) 115deg,
+      transparent 120deg,
+      rgba(16, 185, 129, 0.8) 125deg,
+      transparent 130deg,
+      rgba(16, 185, 129, 0.8) 135deg,
+      transparent 140deg,
+      rgba(16, 185, 129, 0.8) 145deg,
+      transparent 150deg,
+      rgba(16, 185, 129, 0.8) 155deg,
+      transparent 160deg,
+      rgba(16, 185, 129, 0.8) 165deg,
+      transparent 170deg,
+      rgba(16, 185, 129, 0.8) 175deg,
+      transparent 180deg,
+      rgba(16, 185, 129, 0.8) 185deg,
+      transparent 190deg,
+      rgba(16, 185, 129, 0.8) 195deg,
+      transparent 200deg,
+      rgba(16, 185, 129, 0.8) 205deg,
+      transparent 210deg,
+      rgba(16, 185, 129, 0.8) 215deg,
+      transparent 220deg,
+      rgba(16, 185, 129, 0.8) 225deg,
+      transparent 230deg,
+      rgba(16, 185, 129, 0.8) 235deg,
+      transparent 240deg,
+      rgba(16, 185, 129, 0.8) 245deg,
+      transparent 250deg,
+      rgba(16, 185, 129, 0.8) 255deg,
+      transparent 260deg,
+      rgba(16, 185, 129, 0.8) 265deg,
+      transparent 270deg,
+      rgba(16, 185, 129, 0.8) 275deg,
+      transparent 280deg,
+      rgba(16, 185, 129, 0.8) 285deg,
+      transparent 290deg,
+      rgba(16, 185, 129, 0.8) 295deg,
+      transparent 300deg,
+      rgba(16, 185, 129, 0.8) 305deg,
+      transparent 310deg,
+      rgba(16, 185, 129, 0.8) 315deg,
+      transparent 320deg,
+      rgba(16, 185, 129, 0.8) 325deg,
+      transparent 330deg,
+      rgba(16, 185, 129, 0.8) 335deg,
+      transparent 340deg,
+      rgba(16, 185, 129, 0.8) 345deg,
+      transparent 350deg,
+      rgba(16, 185, 129, 0.8) 355deg,
+      transparent 360deg
+    );
+    mask-image: radial-gradient(circle, black 20%, transparent 70%);
+    animation: rotate-rays 12s linear infinite;
+    z-index: -1;
+    filter: blur(4px);
+  }
 }

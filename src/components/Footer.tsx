@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Facebook, Instagram, Youtube } from 'lucide-react';
+import { Facebook, Instagram, Youtube, Pill } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const { t } = useLanguage();
@@ -10,14 +10,14 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
           <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center mb-8">
-              <div className="bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/20">
-                <svg className="h-6 w-6 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
-                  <path d="m8.5 8.5 7 7" />
-                </svg>
+            <div className="flex items-center mb-8 group cursor-pointer">
+              <div className="logo-rays-container">
+                <div className="logo-rays"></div>
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.5)] group-hover:shadow-[0_0_30px_rgba(16,185,129,0.7)] transition-all duration-500 relative z-10">
+                  <Pill className="w-6 h-6 text-white" />
+                </div>
               </div>
-              <span className="ml-3 text-2xl font-bold tracking-tight">{t('app_name')}</span>
+              <span className="ml-3 text-2xl font-bold tracking-tight group-hover:text-emerald-400 transition-colors drop-shadow-[0_0_12px_rgba(16,185,129,0.5)]">{t('app_name')}</span>
             </div>
             <p className="text-zinc-500 text-sm leading-relaxed mb-8">
               {t('hero_subtitle')}

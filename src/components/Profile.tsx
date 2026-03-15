@@ -142,15 +142,16 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
           <h1 className="text-4xl font-black text-zinc-900 tracking-tight mb-2">Account Profile</h1>
           <p className="text-zinc-500">Manage your personal information and preferences.</p>
         </div>
-        <div className="hidden sm:flex items-center gap-3 bg-white px-4 py-2 rounded-2xl border border-zinc-200 shadow-sm">
-          <div className="p-2 bg-emerald-100 rounded-xl">
-            <svg className="h-6 w-6 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <div className="hidden sm:flex items-center gap-3 bg-white px-4 py-2 rounded-2xl border border-zinc-200 shadow-sm group cursor-pointer">
+          <div className="p-2 bg-emerald-100 rounded-xl group-hover:bg-emerald-200 transition-all duration-300 relative overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)] group-hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+            <div className="absolute inset-0 bg-white/30 animate-pulse group-hover:animate-none"></div>
+            <svg className="h-6 w-6 text-emerald-600 relative z-10 drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
               <path d="m8.5 8.5 7 7" />
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="text-lg font-black tracking-tight text-zinc-900 leading-none">{t('app_name')}</span>
+            <span className="text-lg font-black tracking-tight text-zinc-900 leading-none group-hover:text-emerald-700 transition-colors drop-shadow-[0_0_8px_rgba(16,185,129,0.1)]">{t('app_name')}</span>
             <span className="text-[10px] font-bold text-emerald-600 tracking-wider uppercase mt-0.5">by Mr.Hien</span>
           </div>
         </div>

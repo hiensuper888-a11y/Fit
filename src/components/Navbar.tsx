@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CurrentDate } from './CurrentDate';
-import { useLanguage } from '../i18n/LanguageContext';
-import { ShoppingCart, User, LogOut, Globe, Search } from 'lucide-react';
+import { useLanguage, Language } from '../i18n/LanguageContext';
+import { ShoppingCart, User, LogOut, Globe, Search, ChevronDown, Pill } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface NavbarProps {
@@ -15,6 +15,18 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, user, isAdmin, searchQuery = '', setSearchQuery }) => {
   const { t, language, setLanguage } = useLanguage();
+  const [showLangMenu, setShowLangMenu] = useState(false);
+
+  const languages: { code: Language; label: string; flag: string }[] = [
+    { code: 'en', label: 'English', flag: '🇺🇸' },
+    { code: 'vi', label: 'Tiếng Việt', flag: '🇻🇳' },
+    { code: 'zh', label: '中文', flag: '🇨🇳' },
+    { code: 'ja', label: '日本語', flag: '🇯🇵' },
+    { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+    { code: 'fr', label: 'Français', flag: '🇫🇷' },
+    { code: 'ru', label: 'Русский', flag: '🇷🇺' },
+    { code: 'es', label: 'Español', flag: '🇪🇸' },
+  ];
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -45,14 +57,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
             className="flex items-center cursor-pointer group shrink-0"
             onClick={() => setCurrentRoute('home')}
           >
-            <div className="p-2 bg-emerald-100 rounded-xl group-hover:bg-emerald-200 transition-colors">
-              <svg className="h-6 w-6 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
-                <path d="m8.5 8.5 7 7" />
-              </svg>
+            <div className="logo-rays-container">
+              <div className="logo-rays"></div>
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.5)] group-hover:shadow-[0_0_30px_rgba(16,185,129,0.7)] transition-all duration-500 relative z-10">
+                <Pill className="w-6 h-6 text-white" />
+              </div>
             </div>
             <div className="ml-3 hidden sm:flex flex-col">
-              <span className="text-xl font-black tracking-tight text-zinc-900 group-hover:text-emerald-700 transition-colors leading-none">{t('app_name')}</span>
+              <span className="text-xl font-black tracking-tight text-zinc-900 group-hover:text-emerald-700 transition-colors leading-none drop-shadow-[0_0_10px_rgba(16,185,129,0.2)]">{t('app_name')}</span>
               <span className="text-[10px] font-bold text-emerald-600 tracking-wider uppercase mt-0.5">by Mr.Hien</span>
             </div>
           </div>
@@ -107,14 +119,41 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
 
           <div className="flex items-center space-x-2 sm:space-x-4 shrink-0">
             <CurrentDate />
-            <button
-              onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')}
-              className="p-2 text-zinc-600 hover:text-emerald-600 transition-colors flex items-center gap-1"
-              title={t('language')}
-            >
-              <Globe className="w-5 h-5" />
-              <span className="text-xs font-bold uppercase">{language}</span>
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setShowLangMenu(!showLangMenu)}
+                className="p-2 text-zinc-600 hover:text-emerald-600 transition-colors flex items-center gap-1"
+                title={t('language')}
+              >
+                <Globe className="w-5 h-5" />
+                <span className="text-xs font-bold uppercase">{language}</span>
+                <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${showLangMenu ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showLangMenu && (
+                <div className="absolute right-0 mt-2 w-40 bg-white border border-zinc-200 rounded-2xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200">
+                  <div className="grid grid-cols-1 gap-1 px-2">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setLanguage(lang.code);
+                          setShowLangMenu(false);
+                        }}
+                        className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs transition-all ${
+                          language === lang.code 
+                            ? 'bg-emerald-50 text-white font-bold' 
+                            : 'text-zinc-600 hover:bg-zinc-100 hover:text-emerald-600'
+                        }`}
+                      >
+                        <span>{lang.flag}</span>
+                        <span>{lang.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
             <button className="p-2 text-zinc-600 hover:text-emerald-600 transition-colors relative">
               <ShoppingCart className="w-5 h-5" />
