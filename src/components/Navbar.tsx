@@ -73,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
             </div>
             <div className="ml-3 hidden sm:flex flex-col">
               <span className="text-xl font-black tracking-tight text-zinc-900 group-hover:text-emerald-700 transition-colors leading-none drop-shadow-[0_0_10px_rgba(16,185,129,0.2)]">{t('app_name')}</span>
-              <span className="text-[10px] font-bold text-emerald-600 tracking-wider uppercase mt-0.5">by Mr.Hien</span>
+              <span className="text-[10px] font-bold text-emerald-600 tracking-wider uppercase mt-0.5">{t('by_hien')}</span>
             </div>
           </div>
 
@@ -107,7 +107,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
                 onClick={() => setCurrentRoute('admin')}
                 className={`text-sm font-medium transition-colors ${currentRoute === 'admin' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
               >
-                Admin
+                {t('admin')}
               </button>
             )}
           </div>
@@ -166,7 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
             <button 
               onClick={() => setShowDonateModal(true)}
               className="p-2 text-zinc-600 hover:text-pink-600 transition-colors relative group"
-              title="Support the Creator"
+              title={t('support_creator')}
             >
               <Heart className="w-5 h-5 group-hover:fill-current" />
               <span className="absolute -top-1 -right-1 flex h-2 w-2">

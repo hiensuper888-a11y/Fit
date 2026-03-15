@@ -81,7 +81,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
 
     try {
       // Note: Supabase uses 'twitter' provider for both old Twitter and new X OAuth 2.0.
-      // The version used depends on your Supabase Dashboard configuration.
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -95,7 +94,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
       console.error('OAuth Error:', err);
       let errorMessage = err.message || t('auth_error');
       if (errorMessage.includes('provider_not_enabled')) {
-        errorMessage = `Nhà cung cấp ${provider === 'twitter' ? 'X 2.0' : 'Google'} chưa được bật trong cấu hình Supabase của bạn.`;
+        errorMessage = t('provider_not_enabled').replace('{provider}', provider === 'twitter' ? 'X 2.0' : 'Google');
       }
       setError(errorMessage);
       setLoading(false);
@@ -129,10 +128,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
               <span className="text-2xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors duration-300 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">{t('app_name')}</span>
             </div>
             <h3 className="text-3xl font-serif font-bold text-white mb-4 leading-tight">
-              {isLogin ? "Welcome back to your fitness journey." : "Unlock your true physical potential."}
+              {isLogin ? t('welcome_back') : t('unlock_potential')}
             </h3>
             <p className="text-zinc-400 text-sm leading-relaxed">
-              Join thousands of athletes and fitness enthusiasts who trust FitSupps for science-backed nutrition and training knowledge.
+              {t('join_community')}
             </p>
           </div>
         </div>
@@ -205,13 +204,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
               {isLogin ? t('login') : t('register')}
             </h2>
             <p className="text-zinc-400 mb-8 text-sm">
-              {isLogin ? 'Enter your credentials to access your account.' : 'Create an account to save your progress.'}
+              {isLogin ? t('login_subtitle') : t('register_subtitle')}
             </p>
 
             {(!supabase) && (
               <div className="bg-amber-500/10 border border-amber-500/50 text-amber-400 p-4 rounded-xl mb-6 text-sm">
-                <p className="font-bold mb-1">Supabase not configured</p>
-                <p>Please add <strong>VITE_SUPABASE_URL</strong> and <strong>VITE_SUPABASE_ANON_KEY</strong> to the Environment Variables.</p>
+                <p className="font-bold mb-1">{t('supabase_not_configured')}</p>
+                <p>{t('supabase_config_help')}</p>
               </div>
             )}
 
@@ -261,25 +260,25 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
                 <div className="w-full border-t border-zinc-800"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase tracking-widest">
-                <span className="px-4 bg-zinc-900 text-zinc-500 font-bold">{t('or_continue_with')} email</span>
+                <span className="px-4 bg-zinc-900 text-zinc-500 font-bold">{t('or_continue_with_email')}</span>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Email Address</label>
+                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">{t('email_address')}</label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all placeholder:text-zinc-600"
-                  placeholder="you@example.com"
+                  placeholder={t('email_placeholder')}
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Password</label>
+                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">{t('password_label')}</label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
