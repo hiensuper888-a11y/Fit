@@ -51,6 +51,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
     }
   };
 
+  useEffect(() => {
+    const handleOpenDonate = () => setIsDonateModalOpen(true);
+    window.addEventListener('open-donate-modal', handleOpenDonate);
+    return () => window.removeEventListener('open-donate-modal', handleOpenDonate);
+  }, []);
+
   return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

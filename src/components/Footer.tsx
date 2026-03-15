@@ -56,7 +56,7 @@ export const Footer: React.FC = () => {
 
           <div>
             <h4 className="text-sm font-bold uppercase tracking-widest mb-8 text-emerald-500">Contact & Support</h4>
-            <ul className="space-y-4 text-sm text-zinc-500 font-medium">
+            <ul className="space-y-4 text-sm text-zinc-500 font-medium mb-6">
               <li>
                 <a href="https://www.facebook.com/profile.php?id=61582965982019&locale=vi_VN" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
                   <Facebook className="w-4 h-4" /> Facebook Profile
@@ -64,8 +64,24 @@ export const Footer: React.FC = () => {
               </li>
               <li>Phone: 0973683410</li>
               <li>BIDV: 3142848355</li>
-              <li className="text-xs text-zinc-600 mt-4 italic">Support the creator to keep this project alive.</li>
             </ul>
+            <div className="flex flex-col gap-4">
+              <div className="bg-white p-3 rounded-2xl inline-block shadow-lg shadow-emerald-500/10 group cursor-pointer hover:scale-105 transition-transform duration-300 w-fit">
+                <img 
+                  src="https://img.vietqr.io/image/bidv-3142848355-compact.jpg?accountName=CAO%20MINH%20HIEN" 
+                  alt="Donate QR Code" 
+                  className="w-24 h-24 object-contain"
+                  referrerPolicy="no-referrer"
+                />
+                <p className="text-[8px] text-zinc-400 font-bold uppercase tracking-tighter mt-2 text-center group-hover:text-emerald-600 transition-colors">Scan to Support</p>
+              </div>
+              <button 
+                onClick={() => window.dispatchEvent(new CustomEvent('open-donate-modal'))}
+                className="text-[10px] font-bold uppercase tracking-widest bg-emerald-500 text-white px-4 py-2 rounded-xl hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/20 w-fit"
+              >
+                Donate Now
+              </button>
+            </div>
           </div>
         </div>
 

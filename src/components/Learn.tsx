@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { motion } from 'framer-motion';
-import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star, TrendingUp, Search, Dumbbell, Calendar, Flame, X, Moon, HeartPulse } from 'lucide-react';
+import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star, TrendingUp, Search, Dumbbell, Calendar, Flame, X, Moon, HeartPulse, Filter } from 'lucide-react';
 import { CreatineInfo } from './CreatineInfo';
 import { WheyInfo } from './WheyInfo';
 import { PreWorkoutInfo } from './PreWorkoutInfo';
@@ -11,14 +11,26 @@ import { MeditationInfo } from './MeditationInfo';
 import { HealthAndLongevityInfo } from './HealthAndLongevityInfo';
 import { InsomniaScience } from './InsomniaScience';
 import { ImpactChart } from './ImpactChart';
+import { ArticleMetricsChart } from './ArticleMetricsChart';
 
 interface LearnProps {
   searchQuery?: string;
   setSearchQuery?: (query: string) => void;
 }
 
+type Category = 'all' | 'muscle' | 'fatloss' | 'focus' | 'sleep';
+
 export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }) => {
   const { t } = useLanguage();
+  const [selectedCategory, setSelectedCategory] = React.useState<Category>('all');
+
+  const categories = [
+    { id: 'all', label: 'Tất cả', icon: BookOpen },
+    { id: 'muscle', label: 'Tăng cơ & Sức mạnh', icon: Dumbbell },
+    { id: 'fatloss', label: 'Giảm mỡ & Chuyển hóa', icon: Flame },
+    { id: 'focus', label: 'Tập trung & Trí não', icon: Brain },
+    { id: 'sleep', label: 'Giấc ngủ & Phục hồi', icon: Moon },
+  ];
 
   const creatineResearch = [
     {
@@ -347,6 +359,68 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
   const filteredWorkoutMethods = filterItems(workoutMethods, searchQuery);
   const filteredWorkoutSplits = filterItems(workoutSplits, searchQuery);
 
+  const shouldShow = (category: Category) => {
+    if (selectedCategory === 'all') return true;
+    return selectedCategory === category;
+  };
+
+  const metricsData = {
+    creatine: [
+      { name: 'Hiệu quả', value: 95 },
+      { name: 'Bằng chứng', value: 100 },
+      { name: 'An toàn', value: 98 },
+      { name: 'Giá trị', value: 90 },
+    ],
+    whey: [
+      { name: 'Hiệu quả', value: 90 },
+      { name: 'Bằng chứng', value: 100 },
+      { name: 'An toàn', value: 100 },
+      { name: 'Giá trị', value: 75 },
+    ],
+    preworkout: [
+      { name: 'Hiệu quả', value: 85 },
+      { name: 'Bằng chứng', value: 90 },
+      { name: 'An toàn', value: 80 },
+      { name: 'Giá trị', value: 70 },
+    ],
+    melatonin: [
+      { name: 'Hiệu quả', value: 85 },
+      { name: 'Bằng chứng', value: 95 },
+      { name: 'An toàn', value: 90 },
+      { name: 'Giá trị', value: 95 },
+    ],
+    yohimbe: [
+      { name: 'Hiệu quả', value: 75 },
+      { name: 'Bằng chứng', value: 70 },
+      { name: 'An toàn', value: 65 },
+      { name: 'Giá trị', value: 85 },
+    ],
+    meditation: [
+      { name: 'Hiệu quả', value: 80 },
+      { name: 'Bằng chứng', value: 90 },
+      { name: 'An toàn', value: 100 },
+      { name: 'Giá trị', value: 100 },
+    ],
+    health: [
+      { name: 'Hiệu quả', value: 85 },
+      { name: 'Bằng chứng', value: 85 },
+      { name: 'An toàn', value: 95 },
+      { name: 'Giá trị', value: 80 },
+    ],
+    insomnia: [
+      { name: 'Hiệu quả', value: 80 },
+      { name: 'Bằng chứng', value: 90 },
+      { name: 'An toàn', value: 100 },
+      { name: 'Giá trị', value: 100 },
+    ],
+    workouts: [
+      { name: 'Hiệu quả', value: 95 },
+      { name: 'Bằng chứng', value: 100 },
+      { name: 'An toàn', value: 90 },
+      { name: 'Giá trị', value: 100 },
+    ],
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -426,7 +500,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="relative max-w-xl mx-auto"
+            className="relative max-w-xl mx-auto mb-8"
           >
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-zinc-400" />
@@ -439,10 +513,33 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               className="block w-full pl-11 pr-4 py-4 bg-white border border-zinc-200 rounded-2xl text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent shadow-sm transition-all"
             />
           </motion.div>
+
+          {/* Category Filter */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="flex flex-wrap justify-center gap-3 mb-12"
+          >
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id as Category)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
+                  selectedCategory === cat.id
+                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 scale-105'
+                    : 'bg-white text-zinc-600 hover:bg-zinc-100 border border-zinc-200'
+                }`}
+              >
+                <cat.icon className="w-4 h-4" />
+                {cat.label}
+              </button>
+            ))}
+          </motion.div>
         </div>
 
         {/* Impact Chart Section */}
-        {!searchQuery && (
+        {!searchQuery && selectedCategory === 'all' && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -476,92 +573,101 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               </h2>
             </motion.div>
             
-            {(!searchQuery || filteredWorkoutResearch.length > 0) && (
+            {(!searchQuery || filteredWorkoutResearch.length > 0) && shouldShow('muscle') && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Dumbbell className="w-6 h-6 text-orange-500" />
                   Nghiên cứu về Tập luyện & Phát triển cơ bắp
                 </h3>
+                <ArticleMetricsChart data={metricsData.workouts} title="Chỉ số hiệu quả tập luyện" />
                 {renderResearchLinks(filteredWorkoutResearch)}
               </motion.div>
             )}
 
-            {(!searchQuery || filteredCreatine.length > 0) && (
+            {(!searchQuery || filteredCreatine.length > 0) && (shouldShow('muscle') || shouldShow('focus')) && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Zap className="w-6 h-6 text-yellow-500" />
                   Nghiên cứu về Creatine
                 </h3>
+                <ArticleMetricsChart data={metricsData.creatine} title="Chỉ số khoa học Creatine" />
                 {renderResearchLinks(filteredCreatine)}
               </motion.div>
             )}
 
-            {(!searchQuery || filteredWhey.length > 0) && (
+            {(!searchQuery || filteredWhey.length > 0) && shouldShow('muscle') && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <CheckCircle2 className="w-6 h-6 text-blue-500" />
                   Nghiên cứu về Whey Protein
                 </h3>
+                <ArticleMetricsChart data={metricsData.whey} title="Chỉ số khoa học Whey Protein" />
                 {renderResearchLinks(filteredWhey)}
               </motion.div>
             )}
 
-            {(!searchQuery || filteredPreworkout.length > 0) && (
+            {(!searchQuery || filteredPreworkout.length > 0) && (shouldShow('muscle') || shouldShow('focus')) && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Brain className="w-6 h-6 text-purple-500" />
                   Nghiên cứu về Pre-workout
                 </h3>
+                <ArticleMetricsChart data={metricsData.preworkout} title="Chỉ số khoa học Pre-workout" />
                 {renderResearchLinks(filteredPreworkout)}
               </motion.div>
             )}
 
-            {(!searchQuery || filteredMelatonin.length > 0) && (
+            {(!searchQuery || filteredMelatonin.length > 0) && shouldShow('sleep') && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Moon className="w-6 h-6 text-indigo-500" />
                   Nghiên cứu về Melatonin
                 </h3>
+                <ArticleMetricsChart data={metricsData.melatonin} title="Chỉ số khoa học Melatonin" />
                 {renderResearchLinks(filteredMelatonin)}
               </motion.div>
             )}
 
-            {(!searchQuery || filteredYohimbe.length > 0) && (
+            {(!searchQuery || filteredYohimbe.length > 0) && shouldShow('fatloss') && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <HeartPulse className="w-6 h-6 text-rose-500" />
                   Nghiên cứu về Yohimbe Bark
                 </h3>
+                <ArticleMetricsChart data={metricsData.yohimbe} title="Chỉ số khoa học Yohimbe" />
                 {renderResearchLinks(filteredYohimbe)}
               </motion.div>
             )}
 
-            {(!searchQuery || filteredMeditation.length > 0) && (
+            {(!searchQuery || filteredMeditation.length > 0) && (shouldShow('focus') || shouldShow('sleep')) && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Brain className="w-6 h-6 text-emerald-500" />
                   Nghiên cứu về Thiền định (Meditation)
                 </h3>
+                <ArticleMetricsChart data={metricsData.meditation} title="Chỉ số khoa học Thiền định" />
                 {renderResearchLinks(filteredMeditation)}
               </motion.div>
             )}
 
-            {(!searchQuery || filteredHealthLongevity.length > 0) && (
+            {(!searchQuery || filteredHealthLongevity.length > 0) && selectedCategory === 'all' && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Activity className="w-6 h-6 text-teal-500" />
                   Nghiên cứu về Sức khỏe & Kéo dài tuổi thọ
                 </h3>
+                <ArticleMetricsChart data={metricsData.health} title="Chỉ số khoa học Sức khỏe" />
                 {renderResearchLinks(filteredHealthLongevity)}
               </motion.div>
             )}
 
-            {(!searchQuery || filteredInsomnia.length > 0) && (
+            {(!searchQuery || filteredInsomnia.length > 0) && shouldShow('sleep') && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Moon className="w-6 h-6 text-indigo-500" />
                   Nghiên cứu về Mất ngủ & Giấc ngủ
                 </h3>
+                <ArticleMetricsChart data={metricsData.insomnia} title="Chỉ số khoa học Giấc ngủ" />
                 {renderResearchLinks(filteredInsomnia)}
               </motion.div>
             )}
@@ -569,7 +675,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
         )}
 
         {/* Workout Methods Section */}
-        {(!searchQuery || filteredWorkoutMethods.length > 0 || filteredWorkoutSplits.length > 0) && (
+        {(!searchQuery || filteredWorkoutMethods.length > 0 || filteredWorkoutSplits.length > 0) && (shouldShow('muscle') || shouldShow('fatloss')) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -590,6 +696,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
                   <Dumbbell className="w-6 h-6 text-zinc-600" />
                   Gym vs Calisthenics
                 </h3>
+                <ArticleMetricsChart data={metricsData.workouts} title="So sánh hiệu quả tập luyện" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {filteredWorkoutMethods.map((method, i) => (
                     <div key={i} className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:shadow-xl transition-all">
@@ -644,7 +751,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
         )}
 
         {/* Brands Section */}
-        {(!searchQuery || filteredBrands.length > 0) && (
+        {(!searchQuery || filteredBrands.length > 0) && selectedCategory === 'all' && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -713,7 +820,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
         )}
 
         {/* Detailed Info Sections */}
-        {(!searchQuery || "creatine".includes(searchQuery.toLowerCase())) && (
+        {(!searchQuery || "creatine".includes(searchQuery.toLowerCase())) && (shouldShow('muscle') || shouldShow('focus')) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -723,12 +830,13 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">4. Thông tin chi tiết về Creatine</h2>
+              <ArticleMetricsChart data={metricsData.creatine} title="Chỉ số khoa học Creatine" />
               <CreatineInfo />
             </motion.div>
           </motion.section>
         )}
         
-        {(!searchQuery || "whey protein".includes(searchQuery.toLowerCase())) && (
+        {(!searchQuery || "whey protein".includes(searchQuery.toLowerCase())) && shouldShow('muscle') && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -738,12 +846,13 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">5. Thông tin chi tiết về Whey Protein</h2>
+              <ArticleMetricsChart data={metricsData.whey} title="Chỉ số khoa học Whey Protein" />
               <WheyInfo />
             </motion.div>
           </motion.section>
         )}
 
-        {(!searchQuery || "pre-workout".includes(searchQuery.toLowerCase()) || "pre workout".includes(searchQuery.toLowerCase())) && (
+        {(!searchQuery || "pre-workout".includes(searchQuery.toLowerCase()) || "pre workout".includes(searchQuery.toLowerCase())) && (shouldShow('muscle') || shouldShow('focus')) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -753,12 +862,13 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">6. Thông tin chi tiết về Pre-workout</h2>
+              <ArticleMetricsChart data={metricsData.preworkout} title="Chỉ số khoa học Pre-workout" />
               <PreWorkoutInfo />
             </motion.div>
           </motion.section>
         )}
 
-        {(!searchQuery || "melatonin".includes(searchQuery.toLowerCase())) && (
+        {(!searchQuery || "melatonin".includes(searchQuery.toLowerCase())) && shouldShow('sleep') && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -768,12 +878,13 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">7. Thông tin chi tiết về Melatonin</h2>
+              <ArticleMetricsChart data={metricsData.melatonin} title="Chỉ số khoa học Melatonin" />
               <MelatoninInfo />
             </motion.div>
           </motion.section>
         )}
 
-        {(!searchQuery || "yohimbe".includes(searchQuery.toLowerCase())) && (
+        {(!searchQuery || "yohimbe".includes(searchQuery.toLowerCase())) && shouldShow('fatloss') && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -783,12 +894,13 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">8. Thông tin chi tiết về Yohimbe Bark</h2>
+              <ArticleMetricsChart data={metricsData.yohimbe} title="Chỉ số khoa học Yohimbe" />
               <YohimbeInfo />
             </motion.div>
           </motion.section>
         )}
 
-        {(!searchQuery || "thiền".includes(searchQuery.toLowerCase()) || "meditation".includes(searchQuery.toLowerCase())) && (
+        {(!searchQuery || "thiền".includes(searchQuery.toLowerCase()) || "meditation".includes(searchQuery.toLowerCase())) && (shouldShow('focus') || shouldShow('sleep')) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -798,12 +910,13 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">9. Thông tin chi tiết về Thiền định (Meditation)</h2>
+              <ArticleMetricsChart data={metricsData.meditation} title="Chỉ số khoa học Thiền định" />
               <MeditationInfo />
             </motion.div>
           </motion.section>
         )}
 
-        {(!searchQuery || "astaxanthin".includes(searchQuery.toLowerCase()) || "nac".includes(searchQuery.toLowerCase()) || "milk thistle".includes(searchQuery.toLowerCase()) || "omega".includes(searchQuery.toLowerCase()) || "vitamin d3".includes(searchQuery.toLowerCase()) || "lão hóa".includes(searchQuery.toLowerCase())) && (
+        {(!searchQuery || "astaxanthin".includes(searchQuery.toLowerCase()) || "nac".includes(searchQuery.toLowerCase()) || "milk thistle".includes(searchQuery.toLowerCase()) || "omega".includes(searchQuery.toLowerCase()) || "vitamin d3".includes(searchQuery.toLowerCase()) || "lão hóa".includes(searchQuery.toLowerCase())) && selectedCategory === 'all' && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -813,12 +926,13 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">10. Sức khỏe Toàn diện & Đảo ngược Lão hóa</h2>
+              <ArticleMetricsChart data={metricsData.health} title="Chỉ số khoa học Sức khỏe" />
               <HealthAndLongevityInfo />
             </motion.div>
           </motion.section>
         )}
 
-        {(!searchQuery || "mất ngủ".includes(searchQuery.toLowerCase()) || "insomnia".includes(searchQuery.toLowerCase()) || "giấc ngủ".includes(searchQuery.toLowerCase())) && (
+        {(!searchQuery || "mất ngủ".includes(searchQuery.toLowerCase()) || "insomnia".includes(searchQuery.toLowerCase()) || "giấc ngủ".includes(searchQuery.toLowerCase())) && shouldShow('sleep') && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -828,6 +942,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">11. Khoa học về Mất ngủ & Cách điều trị</h2>
+              <ArticleMetricsChart data={metricsData.insomnia} title="Chỉ số khoa học Giấc ngủ" />
               <InsomniaScience />
             </motion.div>
           </motion.section>
