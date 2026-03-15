@@ -98,7 +98,7 @@ export default function App() {
         )}
         {currentRoute === 'shop' && <Shop searchQuery={searchQuery} />}
         {currentRoute === 'workouts' && <Workouts />}
-        {currentRoute === 'learn' && <Learn />}
+        {currentRoute === 'learn' && <Learn searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}
         {currentRoute === 'admin' && isAdmin && <AdminDashboard />}
         {currentRoute === 'profile' && <Profile user={user} />}
       </main>

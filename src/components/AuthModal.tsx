@@ -102,15 +102,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
         )}
 
         <div className="flex justify-center mb-8 relative z-10">
-          <div className="relative">
+          <div className="relative flex flex-col items-center">
             <div className="absolute -inset-4 bg-emerald-500 rounded-full blur-xl opacity-20 animate-pulse"></div>
-            <div className="relative bg-zinc-800 p-4 rounded-2xl border border-emerald-500/30 shadow-inner">
+            <div className="relative bg-zinc-800 p-4 rounded-2xl border border-emerald-500/30 shadow-inner mb-3">
               <svg className="h-10 w-10 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <path d="M8 10h8"/>
-                <path d="M10 8v4"/>
-                <path d="M14 8v4"/>
+                <circle cx="12" cy="4" r="2" />
+                <path d="M7 9a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1" />
+                <path d="M17 9a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1" />
+                <path d="M7 9c0-2 2-3 5-3s5 1 5 3" />
+                <path d="M7 9v3l1.5 9a3.5 3.5 0 0 0 7 0L17 12V9" />
+                <path d="M7 12c1.5 0 2.5-1 5-1s3.5 1 5 1" />
+                <path d="M12 11v10" />
+                <path d="M9 15h6" />
+                <path d="M9.5 18h5" />
               </svg>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-2xl font-black tracking-tight text-white leading-none">{t('app_name')}</span>
+              <span className="text-xs font-bold text-emerald-500 tracking-widest uppercase mt-1">by Mr.Hien</span>
             </div>
           </div>
         </div>

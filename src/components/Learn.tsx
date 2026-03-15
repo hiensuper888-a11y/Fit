@@ -1,11 +1,17 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { motion } from 'framer-motion';
-import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star } from 'lucide-react';
+import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star, TrendingUp, Search, Dumbbell, Calendar, Flame, X } from 'lucide-react';
 import { CreatineInfo } from './CreatineInfo';
 import { WheyInfo } from './WheyInfo';
+import { ImpactChart } from './ImpactChart';
 
-export const Learn: React.FC = () => {
+interface LearnProps {
+  searchQuery?: string;
+  setSearchQuery?: (query: string) => void;
+}
+
+export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }) => {
   const { t } = useLanguage();
 
   const creatineResearch = [
@@ -50,6 +56,63 @@ export const Learn: React.FC = () => {
       source: "Sports Medicine (Europe)",
       url: "https://pubmed.ncbi.nlm.nih.gov/29527526/",
       desc: "Phân tích toàn diện về tác dụng của Caffeine (thành phần chính trong Pre-workout) đối với hiệu suất thể thao."
+    }
+  ];
+
+  const workoutResearch = [
+    {
+      title: "Maximizing Muscle Hypertrophy: A Systematic Review of Advanced Resistance Training Techniques and Methods",
+      source: "International Journal of Environmental Research and Public Health (Europe)",
+      url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6950543/",
+      desc: "Phân tích toàn diện về các kỹ thuật tập luyện kháng lực nâng cao để tối đa hóa sự phì đại cơ bắp (Hypertrophy)."
+    },
+    {
+      title: "Effects of Resistance Training Frequency on Measures of Muscle Hypertrophy",
+      source: "Sports Medicine (USA)",
+      url: "https://pubmed.ncbi.nlm.nih.gov/27102172/",
+      desc: "Nghiên cứu về tần suất tập luyện. Cho thấy tập mỗi nhóm cơ 2 lần/tuần hiệu quả hơn 1 lần/tuần trong việc phát triển cơ bắp."
+    },
+    {
+      title: "The Effects of Calisthenics Training Interventions on Physical Fitness",
+      source: "Sports (MDPI - Europe)",
+      url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9312210/",
+      desc: "Đánh giá hiệu quả của Calisthenics (thể dục trọng lượng cơ thể) đối với sức mạnh và thành phần cơ thể so với tập tạ truyền thống."
+    }
+  ];
+
+  const workoutMethods = [
+    {
+      title: "Gym (Tập Tạ Truyền Thống)",
+      desc: "Sử dụng tạ đơn, tạ đòn và máy tập để tạo áp lực lên cơ bắp. Dễ dàng áp dụng nguyên tắc Progressive Overload (Tăng tiến khối lượng) để kích thích cơ bắp phát triển tối đa.",
+      pros: ["Dễ tăng tiến mức tạ", "Cô lập từng nhóm cơ tốt", "Phù hợp mọi cấp độ từ người mới đến VĐV"],
+      cons: ["Cần đến phòng tập hoặc mua thiết bị", "Dễ chấn thương nếu sai tư thế"]
+    },
+    {
+      title: "Calisthenics (Thể thao đường phố)",
+      desc: "Sử dụng chính trọng lượng cơ thể (Bodyweight) để tập luyện (Hít đất, kéo xà, dips, muscle-up). Đòi hỏi sự kiểm soát cơ thể và sức mạnh cốt lõi (core) cực tốt.",
+      pros: ["Tập được mọi nơi, không cần thiết bị phức tạp", "Phát triển sức mạnh toàn diện, sự dẻo dai và core", "Ít tốn kém"],
+      cons: ["Khó tăng tiến độ khó (phải đổi biến thể bài tập thay vì thêm tạ)", "Khó phát triển tối đa kích thước cơ bắp chân"]
+    }
+  ];
+
+  const workoutSplits = [
+    {
+      name: "Push / Pull / Legs (PPL)",
+      freq: "6 buổi/tuần (PPLPPL-Rest)",
+      desc: "Chia theo nhóm cơ đẩy (Ngực, Vai, Tay sau), kéo (Lưng, Tay trước) và chân. Hiệu quả nhất cho người tập trung bình - khá vì mỗi nhóm cơ được tập 2 lần/tuần.",
+      efficiency: "Rất cao (Theo nghiên cứu, tập 2 lần/tuần/nhóm cơ tối ưu cho Hypertrophy)."
+    },
+    {
+      name: "Upper / Lower",
+      freq: "4 buổi/tuần (UL-Rest-UL-Rest)",
+      desc: "Chia thành ngày tập phần thân trên và ngày tập phần thân dưới. Rất tốt cho người bận rộn nhưng vẫn muốn đảm bảo tần suất 2 lần/tuần.",
+      efficiency: "Cao, cân bằng tuyệt vời giữa tập luyện và phục hồi hệ thần kinh."
+    },
+    {
+      name: "Bro Split (Mỗi ngày 1 nhóm cơ)",
+      freq: "5-6 buổi/tuần",
+      desc: "Mỗi ngày chỉ tập trung vào 1 nhóm cơ duy nhất (Thứ 2: Ngực, Thứ 3: Lưng, Thứ 4: Chân...).",
+      efficiency: "Trung bình. Phù hợp với VĐV chuyên nghiệp, người bình thường dễ bị lãng phí thời gian phục hồi (cơ bắp chỉ cần 48-72h để phục hồi)."
     }
   ];
 
@@ -156,125 +219,369 @@ export const Learn: React.FC = () => {
     }
   ];
 
-  const renderResearchLinks = (links: any[]) => (
-    <div className="space-y-4">
-      {links.map((link, i) => (
-        <a 
-          key={i}
-          href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block p-4 bg-white border border-zinc-200 rounded-2xl hover:border-emerald-500 transition-colors group"
-        >
-          <div className="flex justify-between items-start">
+  const filterItems = (items: any[], query: string) => {
+    if (!query) return items;
+    const lowerQuery = query.toLowerCase();
+    return items.filter(item => 
+      (item.title && item.title.toLowerCase().includes(lowerQuery)) ||
+      (item.desc && item.desc.toLowerCase().includes(lowerQuery)) ||
+      (item.name && item.name.toLowerCase().includes(lowerQuery))
+    );
+  };
+
+  const filteredCreatine = filterItems(creatineResearch, searchQuery);
+  const filteredWhey = filterItems(wheyResearch, searchQuery);
+  const filteredPreworkout = filterItems(preworkoutResearch, searchQuery);
+  const filteredBrands = filterItems(brands, searchQuery);
+  const filteredWorkoutResearch = filterItems(workoutResearch, searchQuery);
+  const filteredWorkoutMethods = filterItems(workoutMethods, searchQuery);
+  const filteredWorkoutSplits = filterItems(workoutSplits, searchQuery);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+
+  const renderResearchLinks = (links: any[]) => {
+    if (links.length === 0) return <p className="text-zinc-500 italic">Không tìm thấy kết quả phù hợp.</p>;
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {links.map((link, i) => (
+          <motion.a 
+            variants={itemVariants}
+            key={i}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col justify-between p-6 bg-white border border-zinc-200 rounded-3xl hover:border-emerald-500 hover:shadow-xl hover:-translate-y-1 transition-all group"
+          >
             <div>
-              <h4 className="font-bold text-zinc-900 group-hover:text-emerald-600 transition-colors">{link.title}</h4>
-              <p className="text-xs text-zinc-500 mb-2">{link.source}</p>
+              <h4 className="font-bold text-zinc-900 group-hover:text-emerald-600 transition-colors mb-2 leading-tight">{link.title}</h4>
+              <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-4">{link.source}</p>
               <p className="text-sm text-zinc-600 m-0">{link.desc}</p>
             </div>
-            <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-emerald-500 shrink-0 ml-4" />
-          </div>
-        </a>
-      ))}
-    </div>
-  );
+            <div className="mt-4 flex items-center text-sm font-bold text-zinc-400 group-hover:text-emerald-500 transition-colors">
+              Đọc nghiên cứu <ExternalLink className="w-4 h-4 ml-1" />
+            </div>
+          </motion.a>
+        ))}
+      </div>
+    );
+  };
 
   return (
-    <div className="py-24 bg-zinc-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="py-24 bg-zinc-50 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-emerald-50 to-zinc-50 pointer-events-none"></div>
+      <div className="absolute -top-48 -right-48 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="mb-16 text-center">
+        <div className="mb-12 text-center max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 text-emerald-600 font-bold text-sm uppercase tracking-widest mb-4"
+            className="inline-flex items-center gap-2 text-emerald-600 font-bold text-sm uppercase tracking-widest mb-6 bg-emerald-100/50 px-4 py-2 rounded-full"
           >
             <BookOpen className="w-4 h-4" />
             <span>FitSupps Academy</span>
           </motion.div>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-zinc-900 mb-6 tracking-tight">
-            Kiến Thức Thể Hình & Dinh Dưỡng
-          </h1>
-          <p className="text-lg text-zinc-600 leading-relaxed">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-5xl md:text-7xl font-extrabold text-zinc-900 mb-6 tracking-tight leading-tight"
+          >
+            Kiến Thức Thể Hình & <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Dinh Dưỡng</span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl text-zinc-600 leading-relaxed mb-10"
+          >
             Khám phá sức mạnh của các loại thực phẩm bổ sung dựa trên các nghiên cứu khoa học uy tín từ Mỹ, Anh và Châu Âu.
-          </p>
-        </div>
+          </motion.p>
 
-        {/* Article Content */}
-        <div className="prose prose-zinc prose-lg max-w-none">
-          
-          {/* Research Section */}
-          <section className="mb-16">
-            <h2 className="flex items-center gap-3 text-2xl font-bold text-zinc-900 mb-6">
-              <Activity className="text-emerald-500" />
-              1. Các Nghiên cứu Khoa học Uy tín (US & EU)
-            </h2>
-            
-            <h3 className="text-xl font-bold text-zinc-800 mt-8 mb-4">Nghiên cứu về Creatine</h3>
-            {renderResearchLinks(creatineResearch)}
-
-            <h3 className="text-xl font-bold text-zinc-800 mt-8 mb-4">Nghiên cứu về Whey Protein</h3>
-            {renderResearchLinks(wheyResearch)}
-
-            <h3 className="text-xl font-bold text-zinc-800 mt-8 mb-4">Nghiên cứu về Pre-workout</h3>
-            {renderResearchLinks(preworkoutResearch)}
-          </section>
-
-          {/* Brands Section */}
-          <section className="mb-16">
-            <h2 className="flex items-center gap-3 text-2xl font-bold text-zinc-900 mb-6">
-              <Award className="text-emerald-500" />
-              2. Top 10 Hãng Thực phẩm Bổ sung Uy tín Toàn cầu
-            </h2>
-            <p className="text-zinc-600 mb-8">
-              Danh sách dựa trên các chứng nhận an toàn (NSF, Informed Choice, GMP) và đánh giá khách quan từ các chuyên trang hàng đầu như Labdoor, Bodybuilding.com, và Trustpilot.
-            </p>
-            <div className="grid grid-cols-1 gap-6">
-              {brands.map((brand, i) => (
-                <div key={i} className="flex flex-col md:flex-row gap-6 p-6 bg-white border border-zinc-200 rounded-3xl hover:shadow-lg transition-shadow">
-                  <div className="w-full md:w-32 flex items-center justify-center p-4 bg-zinc-50 rounded-2xl shrink-0">
-                    <img src={brand.logo} alt={brand.name} className="max-w-full max-h-16 object-contain" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/100?text=' + brand.name.split(' ')[0] }} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <h4 className="text-xl font-bold text-zinc-900 m-0">{brand.name}</h4>
-                      <span className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
-                        {brand.cert}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 mb-3">
-                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      <span className="text-sm font-bold text-zinc-900">{brand.rating}</span>
-                      <span className="text-sm text-zinc-500">bởi {brand.reviewer}</span>
-                    </div>
-                    <p className="text-zinc-600 mb-4 text-sm leading-relaxed">{brand.desc}</p>
-                    <a 
-                      href={brand.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-emerald-600 font-bold text-sm hover:underline"
-                    >
-                      Trang chủ hãng <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                  <div className="w-full md:w-48 flex items-center justify-center p-2 bg-zinc-50 rounded-2xl shrink-0 overflow-hidden">
-                    <img src={brand.productImage} alt={`${brand.name} product`} className="w-full h-32 object-cover rounded-xl" referrerPolicy="no-referrer" />
-                  </div>
-                </div>
-              ))}
+          {/* Search Bar */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="relative max-w-xl mx-auto"
+          >
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-zinc-400" />
             </div>
-          </section>
-
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold text-zinc-900 mb-6">3. Thông tin chi tiết về Creatine</h2>
-            <CreatineInfo />
-          </section>
-          
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold text-zinc-900 mb-6">4. Thông tin chi tiết về Whey Protein</h2>
-            <WheyInfo />
-          </section>
+            <input
+              type="text"
+              placeholder="Tìm kiếm bài viết, nghiên cứu, hãng..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
+              className="block w-full pl-11 pr-4 py-4 bg-white border border-zinc-200 rounded-2xl text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent shadow-sm transition-all"
+            />
+          </motion.div>
         </div>
+
+        {/* Impact Chart Section */}
+        {!searchQuery && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8 justify-center">
+              <TrendingUp className="w-8 h-8 text-emerald-500" />
+              <h2 className="text-3xl font-bold text-zinc-900">Tác động lên Thể chất & Tinh thần</h2>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <ImpactChart />
+            </motion.div>
+          </motion.section>
+        )}
+
+        {/* Research Section */}
+        {(!searchQuery || filteredCreatine.length > 0 || filteredWhey.length > 0 || filteredPreworkout.length > 0) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
+              <Activity className="w-8 h-8 text-emerald-500" />
+              <h2 className="text-3xl font-bold text-zinc-900">
+                1. Các Nghiên cứu Khoa học Uy tín (US & EU)
+              </h2>
+            </motion.div>
+            
+            {(!searchQuery || filteredWorkoutResearch.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <Dumbbell className="w-6 h-6 text-orange-500" />
+                  Nghiên cứu về Tập luyện & Phát triển cơ bắp
+                </h3>
+                {renderResearchLinks(filteredWorkoutResearch)}
+              </motion.div>
+            )}
+
+            {(!searchQuery || filteredCreatine.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <Zap className="w-6 h-6 text-yellow-500" />
+                  Nghiên cứu về Creatine
+                </h3>
+                {renderResearchLinks(filteredCreatine)}
+              </motion.div>
+            )}
+
+            {(!searchQuery || filteredWhey.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <CheckCircle2 className="w-6 h-6 text-blue-500" />
+                  Nghiên cứu về Whey Protein
+                </h3>
+                {renderResearchLinks(filteredWhey)}
+              </motion.div>
+            )}
+
+            {(!searchQuery || filteredPreworkout.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <Brain className="w-6 h-6 text-purple-500" />
+                  Nghiên cứu về Pre-workout
+                </h3>
+                {renderResearchLinks(filteredPreworkout)}
+              </motion.div>
+            )}
+          </motion.section>
+        )}
+
+        {/* Workout Methods Section */}
+        {(!searchQuery || filteredWorkoutMethods.length > 0 || filteredWorkoutSplits.length > 0) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
+              <Flame className="w-8 h-8 text-emerald-500" />
+              <h2 className="text-3xl font-bold text-zinc-900">
+                2. Phương pháp Tập luyện & Chia lịch tập
+              </h2>
+            </motion.div>
+            
+            {(!searchQuery || filteredWorkoutMethods.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <Dumbbell className="w-6 h-6 text-zinc-600" />
+                  Gym vs Calisthenics
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {filteredWorkoutMethods.map((method, i) => (
+                    <div key={i} className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:shadow-xl transition-all">
+                      <h4 className="text-2xl font-black text-zinc-900 mb-4">{method.title}</h4>
+                      <p className="text-zinc-600 mb-6 leading-relaxed">{method.desc}</p>
+                      <div className="space-y-4">
+                        <div>
+                          <h5 className="font-bold text-emerald-600 mb-2 flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4" /> Ưu điểm
+                          </h5>
+                          <ul className="list-disc list-inside text-sm text-zinc-600 space-y-1">
+                            {method.pros.map((pro: string, j: number) => <li key={j}>{pro}</li>)}
+                          </ul>
+                        </div>
+                        <div>
+                          <h5 className="font-bold text-red-500 mb-2 flex items-center gap-2">
+                            <X className="w-4 h-4" /> Nhược điểm
+                          </h5>
+                          <ul className="list-disc list-inside text-sm text-zinc-600 space-y-1">
+                            {method.cons.map((con: string, j: number) => <li key={j}>{con}</li>)}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {(!searchQuery || filteredWorkoutSplits.length > 0) && (
+              <motion.div variants={itemVariants}>
+                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <Calendar className="w-6 h-6 text-blue-500" />
+                  Cách chia lịch tập (Workout Splits)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {filteredWorkoutSplits.map((split, i) => (
+                    <div key={i} className="bg-white p-6 rounded-3xl border border-zinc-200 shadow-sm hover:border-emerald-500 transition-all group">
+                      <h4 className="text-xl font-bold text-zinc-900 mb-2 group-hover:text-emerald-600 transition-colors">{split.name}</h4>
+                      <p className="text-xs font-bold text-emerald-500 uppercase tracking-wider mb-4">{split.freq}</p>
+                      <p className="text-sm text-zinc-600 mb-4">{split.desc}</p>
+                      <div className="bg-zinc-50 p-4 rounded-2xl">
+                        <span className="text-xs font-bold text-zinc-400 uppercase block mb-1">Hiệu quả phì đại cơ</span>
+                        <span className="text-sm font-medium text-zinc-900">{split.efficiency}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </motion.section>
+        )}
+
+        {/* Brands Section */}
+        {(!searchQuery || filteredBrands.length > 0) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
+              <Award className="w-8 h-8 text-emerald-500" />
+              <h2 className="text-3xl font-bold text-zinc-900">
+                3. Top 10 Hãng Thực phẩm Bổ sung Uy tín Toàn cầu
+              </h2>
+            </motion.div>
+            <motion.p variants={itemVariants} className="text-lg text-zinc-600 mb-10 max-w-3xl">
+              Danh sách dựa trên các chứng nhận an toàn (NSF, Informed Choice, GMP) và đánh giá khách quan từ các chuyên trang hàng đầu như Labdoor, Bodybuilding.com, và Trustpilot.
+            </motion.p>
+            
+            {filteredBrands.length === 0 ? (
+              <p className="text-zinc-500 italic">Không tìm thấy hãng nào phù hợp.</p>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {filteredBrands.map((brand, i) => (
+                  <motion.div 
+                    variants={itemVariants}
+                    key={i} 
+                    className="flex flex-col sm:flex-row gap-6 p-6 bg-white border border-zinc-200 rounded-3xl hover:shadow-2xl hover:shadow-emerald-500/10 transition-all hover:-translate-y-1 group"
+                  >
+                    <div className="w-full sm:w-32 flex flex-col items-center gap-4 shrink-0">
+                      <div className="w-full aspect-square flex items-center justify-center p-4 bg-zinc-50 rounded-2xl border border-zinc-100">
+                        <img src={brand.logo} alt={brand.name} className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/100?text=' + brand.name.split(' ')[0] }} />
+                      </div>
+                      <div className="w-full aspect-square rounded-2xl overflow-hidden border border-zinc-100">
+                        <img src={brand.productImage} alt={`${brand.name} product`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 flex flex-col justify-center">
+                      <div className="flex flex-wrap items-center gap-2 mb-3">
+                        <h4 className="text-2xl font-bold text-zinc-900 m-0">{brand.name}</h4>
+                      </div>
+                      <div className="mb-4">
+                        <span className="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-emerald-200">
+                          {brand.cert}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mb-4 bg-zinc-50 w-fit px-3 py-1.5 rounded-xl">
+                        <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        <span className="text-sm font-bold text-zinc-900">{brand.rating}</span>
+                        <span className="text-xs text-zinc-500 uppercase tracking-wider">bởi {brand.reviewer}</span>
+                      </div>
+                      <p className="text-zinc-600 mb-6 text-sm leading-relaxed">{brand.desc}</p>
+                      <a 
+                        href={brand.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-emerald-600 font-bold text-sm hover:text-emerald-700 transition-colors mt-auto"
+                      >
+                        Truy cập trang chủ <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </motion.section>
+        )}
+
+        {/* Detailed Info Sections */}
+        {(!searchQuery || "creatine".includes(searchQuery.toLowerCase())) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants}>
+              <h2 className="text-3xl font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">4. Thông tin chi tiết về Creatine</h2>
+              <CreatineInfo />
+            </motion.div>
+          </motion.section>
+        )}
+        
+        {(!searchQuery || "whey protein".includes(searchQuery.toLowerCase())) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants}>
+              <h2 className="text-3xl font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">5. Thông tin chi tiết về Whey Protein</h2>
+              <WheyInfo />
+            </motion.div>
+          </motion.section>
+        )}
       </div>
     </div>
   );

@@ -23,7 +23,17 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      setCurrentRoute('shop');
+      const lowerQuery = searchQuery.toLowerCase();
+      if (currentRoute === 'learn' || currentRoute === 'shop') {
+        // Stay on current page and let it filter
+        return;
+      }
+      
+      if (lowerQuery.includes('creatine') || lowerQuery.includes('whey') || lowerQuery.includes('protein') || lowerQuery.includes('pre')) {
+        setCurrentRoute('learn');
+      } else {
+        setCurrentRoute('shop');
+      }
     }
   };
 
@@ -37,13 +47,21 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
           >
             <div className="p-2 bg-emerald-100 rounded-xl group-hover:bg-emerald-200 transition-colors">
               <svg className="h-6 w-6 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <path d="M8 10h8"/>
-                <path d="M10 8v4"/>
-                <path d="M14 8v4"/>
+                <circle cx="12" cy="4" r="2" />
+                <path d="M7 9a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1" />
+                <path d="M17 9a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1" />
+                <path d="M7 9c0-2 2-3 5-3s5 1 5 3" />
+                <path d="M7 9v3l1.5 9a3.5 3.5 0 0 0 7 0L17 12V9" />
+                <path d="M7 12c1.5 0 2.5-1 5-1s3.5 1 5 1" />
+                <path d="M12 11v10" />
+                <path d="M9 15h6" />
+                <path d="M9.5 18h5" />
               </svg>
             </div>
-            <span className="ml-3 text-xl font-black tracking-tight text-zinc-900 group-hover:text-emerald-700 transition-colors hidden sm:block">{t('app_name')}</span>
+            <div className="ml-3 hidden sm:flex flex-col">
+              <span className="text-xl font-black tracking-tight text-zinc-900 group-hover:text-emerald-700 transition-colors leading-none">{t('app_name')}</span>
+              <span className="text-[10px] font-bold text-emerald-600 tracking-wider uppercase mt-0.5">by Mr.Hien</span>
+            </div>
           </div>
 
           <div className="hidden lg:flex space-x-8 mx-4">
