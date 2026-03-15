@@ -71,7 +71,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
     }
   };
 
-  const handleOAuthLogin = async (provider: 'google' | 'twitter') => {
+  const handleOAuthLogin = async (provider: 'google' | 'twitter' | 'x') => {
     if (!supabase) {
       setError('Supabase is not configured. Please check your settings.');
       return;
@@ -80,7 +80,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
     setError(null);
 
     try {
-      // Note: Supabase uses 'twitter' provider for both old Twitter and new X OAuth 2.0.
+      // Note: Supabase uses 'twitter' or 'x' provider depending on configuration.
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -94,7 +94,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
       console.error('OAuth Error:', err);
       let errorMessage = err.message || t('auth_error');
       if (errorMessage.includes('provider_not_enabled')) {
-        errorMessage = t('provider_not_enabled').replace('{provider}', provider === 'twitter' ? 'X 2.0' : 'Google');
+        errorMessage = t('provider_not_enabled').replace('{provider}', provider === 'twitter' || provider === 'x' ? 'X 2.0' : 'Google');
       }
       setError(errorMessage);
       setLoading(false);
@@ -243,7 +243,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
               </button>
               
               <button
-                onClick={() => handleOAuthLogin('twitter')}
+                onClick={() => handleOAuthLogin('x')}
                 disabled={loading}
                 title={t('continue_with_x')}
                 className="flex-1 h-12 bg-zinc-800 hover:bg-zinc-700 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed border border-zinc-700 text-white font-semibold text-sm"
