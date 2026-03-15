@@ -5,6 +5,7 @@ import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star
 import { CreatineInfo } from './CreatineInfo';
 import { WheyInfo } from './WheyInfo';
 import { PreWorkoutInfo } from './PreWorkoutInfo';
+import { NutrexOutliftInfo } from './NutrexOutliftInfo';
 import { MelatoninInfo } from './MelatoninInfo';
 import { YohimbeInfo } from './YohimbeInfo';
 import { MeditationInfo } from './MeditationInfo';
@@ -616,6 +617,9 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
                 </h3>
                 <ArticleMetricsChart data={metricsData.preworkout} title="Chỉ số khoa học Pre-workout" />
                 {renderResearchLinks(filteredPreworkout)}
+                <div className="mt-8">
+                  <NutrexOutliftInfo />
+                </div>
               </motion.div>
             )}
 
