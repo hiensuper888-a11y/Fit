@@ -112,10 +112,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
           <img 
             src="https://images.unsplash.com/photo-1571019613454-1cb5f99b7d8b?q=80&w=2070&auto=format&fit=crop" 
             alt="Fitness Motivation" 
-            className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay"
+            className="absolute inset-0 w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          <div className="absolute inset-0 bg-black/20"></div>
           
           <div className="relative z-10 w-full">
             <div className="flex items-center gap-3 mb-6 group">

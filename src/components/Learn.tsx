@@ -391,7 +391,17 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
 
   const shouldShow = (category: Category) => {
     if (selectedCategory === 'all') return true;
-    return selectedCategory === category;
+    if (selectedCategory === category) return true;
+    
+    // Mapping categories to content
+    if (selectedCategory === 'muscle' && ['creatine', 'whey', 'others'].includes(category)) return true;
+    if (selectedCategory === 'fatloss' && ['yohimbe', 'others'].includes(category)) return true;
+    if (selectedCategory === 'focus' && ['preworkout', 'others'].includes(category)) return true;
+    if (selectedCategory === 'sleep' && ['others'].includes(category)) return true;
+    if (selectedCategory === 'side-effects' && ['creatine', 'whey', 'preworkout', 'yohimbe'].includes(category)) return true;
+    if (selectedCategory === 'interactions' && ['creatine', 'whey', 'preworkout', 'yohimbe'].includes(category)) return true;
+    
+    return false;
   };
 
   const metricsData = {

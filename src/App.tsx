@@ -80,7 +80,7 @@ export default function App() {
   if (!user) {
     return (
       <div className="min-h-screen bg-zinc-950 bg-[url('https://images.unsplash.com/photo-1540497077202-7c8a3994ada6?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat relative">
-        <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-zinc-950/20"></div>
         <AuthModal 
           isOpen={true} 
           onClose={() => {}} 
