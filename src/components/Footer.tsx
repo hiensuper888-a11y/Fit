@@ -24,7 +24,7 @@ export const Footer: React.FC = () => {
             </p>
             <div className="flex space-x-6">
               <a href="#" className="text-zinc-500 hover:text-white transition-colors"><Instagram className="w-5 h-5" /></a>
-              <a href="#" className="text-zinc-500 hover:text-white transition-colors"><Facebook className="w-5 h-5" /></a>
+              <a href="https://www.facebook.com/profile.php?id=61582965982019&locale=vi_VN" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors"><Facebook className="w-5 h-5" /></a>
               <a href="#" className="text-zinc-500 hover:text-white transition-colors">
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -55,11 +55,16 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-widest mb-8 text-emerald-500">Contact</h4>
+            <h4 className="text-sm font-bold uppercase tracking-widest mb-8 text-emerald-500">Contact & Support</h4>
             <ul className="space-y-4 text-sm text-zinc-500 font-medium">
-              <li>support@fitsupps.com</li>
-              <li>+1 (555) 123-4567</li>
-              <li>123 Fitness Way, Gym City</li>
+              <li>
+                <a href="https://www.facebook.com/profile.php?id=61582965982019&locale=vi_VN" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
+                  <Facebook className="w-4 h-4" /> Facebook Profile
+                </a>
+              </li>
+              <li>Phone: 0973683410</li>
+              <li>BIDV: 3142848355</li>
+              <li className="text-xs text-zinc-600 mt-4 italic">Support the creator to keep this project alive.</li>
             </ul>
           </div>
         </div>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { CurrentDate } from './CurrentDate';
 import { useLanguage, Language } from '../i18n/LanguageContext';
-import { ShoppingCart, User, LogOut, Globe, Search, ChevronDown, Pill } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Globe, Search, ChevronDown, Pill, Heart } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { DonateModal } from './DonateModal';
 
 interface NavbarProps {
   currentRoute: string;
@@ -16,6 +17,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, user, isAdmin, searchQuery = '', setSearchQuery }) => {
   const { t, language, setLanguage } = useLanguage();
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [showDonateModal, setShowDonateModal] = useState(false);
 
   const languages: { code: Language; label: string; flag: string }[] = [
     { code: 'en', label: 'English', flag: '🇺🇸' },
@@ -155,6 +157,18 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
               )}
             </div>
 
+            <button 
+              onClick={() => setShowDonateModal(true)}
+              className="p-2 text-zinc-600 hover:text-pink-600 transition-colors relative group"
+              title="Support the Creator"
+            >
+              <Heart className="w-5 h-5 group-hover:fill-current" />
+              <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
+              </span>
+            </button>
+
             <button className="p-2 text-zinc-600 hover:text-emerald-600 transition-colors relative">
               <ShoppingCart className="w-5 h-5" />
               <span className="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">0</span>
@@ -180,6 +194,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
           </div>
         </div>
       </div>
+      <DonateModal isOpen={showDonateModal} onClose={() => setShowDonateModal(false)} />
     </nav>
   );
 };
