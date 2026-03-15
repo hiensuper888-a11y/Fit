@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Zap, Brain, ShieldAlert, ExternalLink, Award, CheckCircle2 } from 'lucide-react';
+import { supabase } from '../services/supabaseClient';
 
 export const NutrexOutliftInfo: React.FC = () => {
+  const [article, setArticle] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .eq('slug', 'nutrex-outlift')
+        .single();
+
+      if (!error && data) {
+        setArticle(data);
+      }
+    };
+    fetchArticle();
+  }, []);
+
   return (
     <div className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm">
       <div className="flex items-center gap-6 mb-8">
         <div className="w-20 h-20 bg-white rounded-2xl p-2 border border-zinc-100 flex items-center justify-center shrink-0">
-          <img src="https://nutrex.com/cdn/shop/files/Nutrex_Logo_Black_300x.png?v=1614365780" alt="Nutrex Logo" className="max-w-full max-h-full object-contain" referrerPolicy="no-referrer" />
+          <img src={article?.logo_url || "https://nutrex.com/cdn/shop/files/Nutrex_Logo_Black_300x.png?v=1614365780"} alt="Nutrex Logo" className="max-w-full max-h-full object-contain" referrerPolicy="no-referrer" />
         </div>
         <div>
           <h3 className="text-3xl font-serif font-bold text-zinc-900 flex items-center gap-2">
-            Nutrex Research: Outlift
+            {article?.title || "Nutrex Research: Outlift"}
           </h3>
           <p className="text-zinc-500">Pre-workout theo liều lượng lâm sàng (Clinical Dose)</p>
         </div>
@@ -46,7 +64,7 @@ export const NutrexOutliftInfo: React.FC = () => {
         </div>
 
         <div className="bg-zinc-50 rounded-2xl p-4 flex flex-col items-center justify-center border border-zinc-100">
-          <img src="https://nutrex.com/cdn/shop/products/outlift-blueberry-lemonade_1024x1024.png?v=1675276632" alt="Outlift Product" className="max-w-full h-auto rounded-xl mb-4" referrerPolicy="no-referrer" />
+          <img src={article?.product_image_url || "https://nutrex.com/cdn/shop/products/outlift-blueberry-lemonade_1024x1024.png?v=1675276632"} alt="Outlift Product" className="max-w-full h-auto rounded-xl mb-4" referrerPolicy="no-referrer" />
           <h4 className="font-bold text-zinc-900">Phân tích sự phối hợp (Synergy)</h4>
           <div className="mt-4 space-y-3 text-sm text-zinc-600">
             <p><strong>Thể chất:</strong> Citrulline (pump), Beta-Alanine (bền) và Creatine (sức mạnh) tạo nền tảng tập nặng hơn.</p>
