@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CurrentDate } from './CurrentDate';
 import { useLanguage } from '../i18n/LanguageContext';
-import { ShoppingCart, User, LogOut, Globe } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Globe, Search } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface NavbarProps {
@@ -9,13 +9,22 @@ interface NavbarProps {
   setCurrentRoute: (route: any) => void;
   user: any;
   isAdmin?: boolean;
+  searchQuery?: string;
+  setSearchQuery?: (query: string) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, user, isAdmin }) => {
+export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, user, isAdmin, searchQuery = '', setSearchQuery }) => {
   const { t, language, setLanguage } = useLanguage();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setCurrentRoute('shop');
+    }
   };
 
   return (
@@ -23,7 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div 
-            className="flex items-center cursor-pointer group"
+            className="flex items-center cursor-pointer group shrink-0"
             onClick={() => setCurrentRoute('home')}
           >
             <div className="p-2 bg-emerald-100 rounded-xl group-hover:bg-emerald-200 transition-colors">
@@ -34,10 +43,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
                 <path d="M14 8v4"/>
               </svg>
             </div>
-            <span className="ml-3 text-xl font-black tracking-tight text-zinc-900 group-hover:text-emerald-700 transition-colors">{t('app_name')}</span>
+            <span className="ml-3 text-xl font-black tracking-tight text-zinc-900 group-hover:text-emerald-700 transition-colors hidden sm:block">{t('app_name')}</span>
           </div>
 
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden lg:flex space-x-8 mx-4">
             <button 
               onClick={() => setCurrentRoute('home')}
               className={`text-sm font-medium transition-colors ${currentRoute === 'home' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
@@ -45,10 +54,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
               {t('nav_home')}
             </button>
             <button 
-              onClick={() => setCurrentRoute('creatine')}
-              className={`text-sm font-medium transition-colors ${currentRoute === 'creatine' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
+              onClick={() => setCurrentRoute('shop')}
+              className={`text-sm font-medium transition-colors ${currentRoute === 'shop' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
             >
-              {t('nav_creatine')}
+              {t('nav_shop')}
+            </button>
+            <button 
+              onClick={() => setCurrentRoute('learn')}
+              className={`text-sm font-medium transition-colors ${currentRoute === 'learn' ? 'text-emerald-600' : 'text-zinc-600 hover:text-emerald-600'}`}
+            >
+              {t('nav_learn')}
             </button>
             <button 
               onClick={() => setCurrentRoute('workouts')}
@@ -66,7 +81,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
             )}
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex-1 max-w-xs mx-4 hidden md:block">
+            <form onSubmit={handleSearch} className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
+                placeholder={t('search_placeholder')}
+                className="w-full bg-zinc-100 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-emerald-500/50 transition-all"
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+            </form>
+          </div>
+
+          <div className="flex items-center space-x-2 sm:space-x-4 shrink-0">
             <CurrentDate />
             <button
               onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')}

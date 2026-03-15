@@ -14,6 +14,7 @@ import { Loader2 } from 'lucide-react';
 
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState<'home' | 'shop' | 'workouts' | 'learn' | 'profile' | 'admin'>('home');
+  const [searchQuery, setSearchQuery] = useState('');
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
@@ -83,17 +84,19 @@ export default function App() {
         setCurrentRoute={setCurrentRoute} 
         user={user}
         isAdmin={isAdmin}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
       />
       <main>
         {currentRoute === 'home' && (
           <>
             <Hero />
-            <Shop />
+            <Shop searchQuery={searchQuery} />
             <Workouts />
             <Activities />
           </>
         )}
-        {currentRoute === 'shop' && <Shop />}
+        {currentRoute === 'shop' && <Shop searchQuery={searchQuery} />}
         {currentRoute === 'workouts' && <Workouts />}
         {currentRoute === 'learn' && <Learn />}
         {currentRoute === 'admin' && isAdmin && <AdminDashboard />}

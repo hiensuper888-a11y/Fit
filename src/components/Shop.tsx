@@ -5,7 +5,11 @@ import { ShoppingCart, Star, TrendingUp, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Product } from '../types/database';
 
-export const Shop: React.FC = () => {
+interface ShopProps {
+  searchQuery?: string;
+}
+
+export const Shop: React.FC<ShopProps> = ({ searchQuery = '' }) => {
   const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,6 +41,11 @@ export const Shop: React.FC = () => {
     fetchProducts();
   }, []);
 
+  const filteredProducts = products.filter(product => 
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <section className="py-24 bg-zinc-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +56,7 @@ export const Shop: React.FC = () => {
               <span>{t('shop_title')}</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 tracking-tight">
-              {t('popular_products') || 'Popular Products'}
+              {searchQuery ? `Search Results for "${searchQuery}"` : (t('popular_products') || 'Popular Products')}
             </h2>
           </div>
           <button className="text-emerald-600 font-bold hover:text-emerald-700 transition-colors flex items-center gap-2 group">
@@ -66,13 +75,13 @@ export const Shop: React.FC = () => {
             <p className="text-sm">{error}</p>
             <p className="mt-4 text-xs text-red-400">Make sure the 'products' table exists in your Supabase database.</p>
           </div>
-        ) : products.length === 0 ? (
+        ) : filteredProducts.length === 0 ? (
           <div className="text-center py-20 text-zinc-500">
-            No products found. Please add some to your Supabase 'products' table.
+            No products found matching your search.
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.map((product, index) => (
+            {filteredProducts.map((product, index) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 30 }}
