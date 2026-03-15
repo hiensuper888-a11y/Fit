@@ -49,6 +49,11 @@ export default function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setAuthLoading(false);
+      
+      if (session?.user) {
+        // Update last_seen
+        supabase.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', session.user.id).then();
+      }
     });
 
     return () => {

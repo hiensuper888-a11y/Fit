@@ -21,10 +21,12 @@ export const DonateModal: React.FC<DonateModalProps> = ({ isOpen, onClose }) => 
           />
           
           <motion.div
+            drag
+            dragConstraints={{ left: -200, right: 200, top: -200, bottom: 200 }}
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+            className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col cursor-grab active:cursor-grabbing"
           >
             <div className="absolute top-4 right-4 z-20">
               <button
