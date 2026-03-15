@@ -1,28 +1,9 @@
 import React from 'react';
-import { Activity, Brain, Shield, Heart, Dna, Sparkles, ShieldCheck } from 'lucide-react';
+import { Activity, Brain, Shield, Heart, Dna, Sparkles, ShieldCheck, BookOpen } from 'lucide-react';
 
 export const HealthAndLongevityInfo: React.FC = () => {
   return (
     <div className="space-y-12 prose-article">
-      {/* Astaxanthin */}
-      <section className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
-        <div className="flex items-center gap-4 mb-6">
-          <Sparkles className="w-8 h-8 text-red-500" />
-          <h3 className="text-2xl font-serif font-bold m-0">Astaxanthin (Vua chống oxy hóa)</h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4 text-zinc-600 text-sm">
-            <p><strong>Thể chất & Cơ bắp:</strong> Mạnh hơn Vitamin C 6000 lần. Giảm thiểu tổn thương cơ bắp và viêm nhiễm sau tập nặng, tăng sức bền đáng kể bằng cách bảo vệ ty thể.</p>
-            <p><strong>Trí não:</strong> Là một trong số ít chất chống oxy hóa có thể vượt qua hàng rào máu não (Blood-Brain Barrier), bảo vệ tế bào thần kinh khỏi thoái hóa (Alzheimer, Parkinson).</p>
-            <p><strong>Nam giới & Ung thư:</strong> Cải thiện rõ rệt chất lượng và độ di động của tinh trùng. Các nghiên cứu in-vitro cho thấy khả năng thúc đẩy quá trình tự chết (apoptosis) của tế bào ung thư.</p>
-          </div>
-          <div className="bg-red-50 p-6 rounded-2xl border border-red-100">
-            <h4 className="font-serif font-bold text-red-800 mb-2">Đảo ngược lão hóa</h4>
-            <p className="text-red-900 text-sm">Bảo vệ DNA khỏi tổn thương do gốc tự do, bảo vệ da khỏi tia UV từ bên trong, làm chậm quá trình lão hóa tế bào toàn diện.</p>
-          </div>
-        </div>
-      </section>
-
       {/* NAC */}
       <section className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
         <div className="flex items-center gap-4 mb-6">
@@ -61,44 +42,6 @@ export const HealthAndLongevityInfo: React.FC = () => {
         </div>
       </section>
 
-      {/* Omega-3 */}
-      <section className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
-        <div className="flex items-center gap-4 mb-6">
-          <Heart className="w-8 h-8 text-blue-500" />
-          <h3 className="text-2xl font-serif font-bold m-0">Dầu cá Omega-3 (EPA & DHA)</h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4 text-zinc-600 text-sm">
-            <p><strong>Thể chất & Cơ bắp:</strong> Chống viêm toàn thân. Tăng cường độ nhạy insulin, kích hoạt con đường mTOR giúp tăng tổng hợp protein cơ bắp. Giảm đau nhức xương khớp.</p>
-            <p><strong>Trí não:</strong> DHA chiếm phần lớn cấu trúc não bộ. EPA được chứng minh lâm sàng có hiệu quả tương đương thuốc chống trầm cảm nhẹ. Cải thiện trí nhớ và sự tập trung.</p>
-            <p><strong>Nam giới & Ung thư:</strong> Cải thiện lưu thông máu (hỗ trợ rối loạn cương dương). Chế độ ăn giàu Omega-3 liên quan đến việc giảm nguy cơ mắc ung thư ruột kết và tuyến tiền liệt.</p>
-          </div>
-          <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100">
-            <h4 className="font-serif font-bold text-blue-800 mb-2">Đảo ngược lão hóa</h4>
-            <p className="text-blue-900 text-sm">Nghiên cứu cho thấy nồng độ Omega-3 trong máu cao có liên quan trực tiếp đến việc bảo tồn chiều dài Telomere (thước đo sinh học của sự lão hóa).</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Vitamin D3 */}
-      <section className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
-        <div className="flex items-center gap-4 mb-6">
-          <Activity className="w-8 h-8 text-yellow-500" />
-          <h3 className="text-2xl font-serif font-bold m-0">Vitamin D3 (Hormone ánh sáng)</h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4 text-zinc-600 text-sm">
-            <p><strong>Thể chất & Cơ bắp:</strong> Hoạt động như một hormone. Cần thiết cho sự hấp thụ canxi, sức mạnh của sợi cơ type II (sợi cơ nhanh, to). Tăng cường hệ miễn dịch tối đa.</p>
-            <p><strong>Trí não:</strong> Có các thụ thể Vitamin D trên khắp não bộ. Thiếu hụt D3 liên quan mật thiết đến trầm cảm, lo âu và suy giảm nhận thức.</p>
-            <p><strong>Nam giới & Ung thư:</strong> Nồng độ D3 tối ưu tỷ lệ thuận với mức Testosterone tự nhiên. D3 đóng vai trò quan trọng trong việc điều chỉnh sự phát triển tế bào, giảm đáng kể nguy cơ ung thư đại trực tràng và các bệnh tự miễn.</p>
-          </div>
-          <div className="bg-yellow-50 p-6 rounded-2xl border border-yellow-100">
-            <h4 className="font-serif font-bold text-yellow-800 mb-2">Đảo ngược lão hóa</h4>
-            <p className="text-yellow-900 text-sm">Mức Vitamin D3 đầy đủ liên quan đến việc giảm tỷ lệ tử vong do mọi nguyên nhân (all-cause mortality), giúp kéo dài tuổi thọ khỏe mạnh.</p>
-          </div>
-        </div>
-      </section>
-
       {/* Meditation & Longevity */}
       <section className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
@@ -132,6 +75,25 @@ export const HealthAndLongevityInfo: React.FC = () => {
             </div>
           </div>
         </div>
+      </section>
+      {/* 10 Top Studies */}
+      <section className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center gap-4 mb-6">
+          <BookOpen className="w-8 h-8 text-emerald-600" />
+          <h3 className="text-2xl font-serif font-bold m-0">10 Nghiên cứu hàng đầu về Chống oxy hóa & Lão hóa</h3>
+        </div>
+        <ul className="list-disc list-inside text-zinc-600 space-y-2 text-sm">
+          <li><strong>NAC (Glutathione):</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/15513326/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">J Clin Invest</a></li>
+          <li><strong>NAC (Psychiatry):</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/21262044/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">J Psychiatry Neurosci</a></li>
+          <li><strong>Milk Thistle (Liver):</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/32295055/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">Antioxidants</a></li>
+          <li><strong>Milk Thistle (Cancer):</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/18339498/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">Cancer Lett</a></li>
+          <li><strong>Astaxanthin:</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/24496084/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">Marine Drugs</a></li>
+          <li><strong>Omega-3:</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/30905193/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">Circulation</a></li>
+          <li><strong>Vitamin D3:</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/21527855/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">J Investig Med</a></li>
+          <li><strong>Meditation (Telomeres):</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/21381931/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">Ann NY Acad Sci</a></li>
+          <li><strong>Meditation (Brain Aging):</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/25674064/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">Front Aging Neurosci</a></li>
+          <li><strong>Meditation (Inflammation):</strong> <a href="https://pubmed.ncbi.nlm.nih.gov/23583363/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">Brain Behav Immun</a></li>
+        </ul>
       </section>
     </div>
   );

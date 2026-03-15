@@ -1,13 +1,18 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { motion } from 'framer-motion';
-import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star, TrendingUp, Search, Dumbbell, Calendar, Flame, X, Moon, HeartPulse, Filter, AlertTriangle, ShieldAlert } from 'lucide-react';
+import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star, TrendingUp, Search, Dumbbell, Calendar, Flame, X, Moon, HeartPulse, Filter, AlertTriangle, ShieldAlert, Sparkles, Shield, ShieldCheck, Dna, Heart } from 'lucide-react';
 import { CreatineInfo } from './CreatineInfo';
 import { WheyInfo } from './WheyInfo';
 import { PreWorkoutInfo } from './PreWorkoutInfo';
 import { PandemicPreWorkoutInfo } from './PandemicPreWorkoutInfo';
 import { NutrexOutliftInfo } from './NutrexOutliftInfo';
 import { MelatoninInfo } from './MelatoninInfo';
+import { AstaxanthinInfo } from './AstaxanthinInfo';
+import { Omega3Info } from './Omega3Info';
+import { VitaminD3Info } from './VitaminD3Info';
+import { NACInfo } from './NACInfo';
+import { MilkThistleInfo } from './MilkThistleInfo';
 import { YohimbeInfo } from './YohimbeInfo';
 import { MeditationInfo } from './MeditationInfo';
 import { HealthAndLongevityInfo } from './HealthAndLongevityInfo';
@@ -20,7 +25,7 @@ interface LearnProps {
   setSearchQuery?: (query: string) => void;
 }
 
-type Category = 'all' | 'muscle' | 'fatloss' | 'focus' | 'sleep' | 'side-effects' | 'interactions' | 'creatine' | 'whey' | 'preworkout' | 'others';
+type Category = 'all' | 'muscle' | 'fatloss' | 'focus' | 'sleep' | 'side-effects' | 'interactions' | 'creatine' | 'whey' | 'preworkout' | 'astaxanthin' | 'yohimbe' | 'omega3' | 'vitamind3' | 'nac' | 'milkthistle' | 'others';
 
 const SectionWrapper: React.FC<{ title: string; icon: React.ReactNode; chartData?: any; children: React.ReactNode }> = ({ title, icon, chartData, children }) => (
   <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="mb-16 bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm">
@@ -42,6 +47,12 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
     { id: 'creatine', label: 'Creatine', icon: Zap },
     { id: 'whey', label: 'Whey Protein', icon: CheckCircle2 },
     { id: 'preworkout', label: 'Pre-workout', icon: Brain },
+    { id: 'astaxanthin', label: 'Astaxanthin', icon: Sparkles },
+    { id: 'yohimbe', label: 'Yohimbe', icon: Activity },
+    { id: 'omega3', label: 'Omega-3', icon: HeartPulse },
+    { id: 'vitamind3', label: 'Vitamin D3', icon: Activity },
+    { id: 'nac', label: 'NAC', icon: Shield },
+    { id: 'milkthistle', label: 'Milk Thistle', icon: ShieldCheck },
     { id: 'others', label: 'Các chất khác', icon: Activity },
     { id: 'muscle', label: 'Tăng cơ & Sức mạnh', icon: Dumbbell },
     { id: 'fatloss', label: 'Giảm mỡ & Chuyển hóa', icon: Flame },
@@ -606,12 +617,18 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
             {(selectedCategory === 'all' || selectedCategory === 'creatine') && (
               <SectionWrapper title="Nghiên cứu về Creatine" icon={<Zap className="w-6 h-6 text-yellow-500" />} chartData={metricsData.creatine}>
                 {renderResearchLinks(filteredCreatine)}
+                <div className="mt-8">
+                  <CreatineInfo />
+                </div>
               </SectionWrapper>
             )}
 
             {(selectedCategory === 'all' || selectedCategory === 'whey') && (
               <SectionWrapper title="Nghiên cứu về Whey Protein" icon={<CheckCircle2 className="w-6 h-6 text-blue-500" />} chartData={metricsData.whey}>
                 {renderResearchLinks(filteredWhey)}
+                <div className="mt-8">
+                  <WheyInfo />
+                </div>
               </SectionWrapper>
             )}
 
@@ -619,6 +636,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               <SectionWrapper title="Nghiên cứu về Pre-workout" icon={<Brain className="w-6 h-6 text-purple-500" />} chartData={metricsData.preworkout}>
                 {renderResearchLinks(filteredPreworkout)}
                 <div className="mt-8 space-y-8">
+                  <PreWorkoutInfo />
                   <NutrexOutliftInfo />
                   <PandemicPreWorkoutInfo />
                 </div>
@@ -631,9 +649,42 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               </SectionWrapper>
             )}
 
-            {(selectedCategory === 'all' || selectedCategory === 'others') && (
+            {(selectedCategory === 'all' || selectedCategory === 'astaxanthin') && (
+              <SectionWrapper title="Nghiên cứu về Astaxanthin" icon={<Sparkles className="w-6 h-6 text-red-500" />} chartData={metricsData.health}>
+                <AstaxanthinInfo />
+              </SectionWrapper>
+            )}
+
+            {(selectedCategory === 'all' || selectedCategory === 'yohimbe') && (
               <SectionWrapper title="Nghiên cứu về Yohimbe Bark" icon={<HeartPulse className="w-6 h-6 text-rose-500" />} chartData={metricsData.yohimbe}>
                 {renderResearchLinks(filteredYohimbe)}
+                <div className="mt-8">
+                  <YohimbeInfo />
+                </div>
+              </SectionWrapper>
+            )}
+
+            {(selectedCategory === 'all' || selectedCategory === 'omega3') && (
+              <SectionWrapper title="Nghiên cứu về Omega-3" icon={<HeartPulse className="w-6 h-6 text-blue-500" />} chartData={metricsData.health}>
+                <Omega3Info />
+              </SectionWrapper>
+            )}
+
+            {(selectedCategory === 'all' || selectedCategory === 'vitamind3') && (
+              <SectionWrapper title="Nghiên cứu về Vitamin D3" icon={<Activity className="w-6 h-6 text-yellow-500" />} chartData={metricsData.health}>
+                <VitaminD3Info />
+              </SectionWrapper>
+            )}
+
+            {(selectedCategory === 'all' || selectedCategory === 'nac') && (
+              <SectionWrapper title="Nghiên cứu về NAC" icon={<Shield className="w-6 h-6 text-emerald-600" />} chartData={metricsData.health}>
+                <NACInfo />
+              </SectionWrapper>
+            )}
+
+            {(selectedCategory === 'all' || selectedCategory === 'milkthistle') && (
+              <SectionWrapper title="Nghiên cứu về Milk Thistle" icon={<ShieldCheck className="w-6 h-6 text-green-600" />} chartData={metricsData.health}>
+                <MilkThistleInfo />
               </SectionWrapper>
             )}
 

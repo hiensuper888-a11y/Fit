@@ -79,7 +79,7 @@ export default function App() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-zinc-950 bg-[url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat relative">
+      <div className="min-h-screen bg-zinc-950 bg-[url('https://images.unsplash.com/photo-1540497077202-7c8a3994ada6?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat relative">
         <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm"></div>
         <AuthModal 
           isOpen={true} 

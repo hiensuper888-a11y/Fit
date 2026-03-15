@@ -8,6 +8,7 @@ export const CreatineInfo: React.FC = () => {
   return (
     <div className="space-y-8 prose-article">
       <section className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
+        <img src="https://picsum.photos/seed/muscle/800/400" alt="Creatine" className="w-full h-64 object-cover rounded-2xl mb-6" referrerPolicy="no-referrer" />
         <div className="flex items-center gap-4 mb-6">
           <Activity className="w-8 h-8 text-emerald-600" />
           <h3 className="text-2xl font-serif font-bold m-0">Tác dụng Thể chất & Tinh thần</h3>

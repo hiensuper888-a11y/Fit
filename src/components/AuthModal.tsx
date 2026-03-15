@@ -110,7 +110,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
         {/* Left Side - Image & Branding */}
         <div className="hidden md:flex md:w-5/12 relative bg-zinc-950 overflow-hidden items-end p-10">
           <img 
-            src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80" 
+            src="https://images.unsplash.com/photo-1571019613454-1cb5f99b7d8b?q=80&w=2070&auto=format&fit=crop" 
             alt="Fitness Motivation" 
             className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay"
             referrerPolicy="no-referrer"
