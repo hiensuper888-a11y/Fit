@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { motion } from 'framer-motion';
-import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star, TrendingUp, Search, Dumbbell, Calendar, Flame, X, Moon, HeartPulse, Filter } from 'lucide-react';
+import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star, TrendingUp, Search, Dumbbell, Calendar, Flame, X, Moon, HeartPulse, Filter, AlertTriangle, ShieldAlert } from 'lucide-react';
 import { CreatineInfo } from './CreatineInfo';
 import { WheyInfo } from './WheyInfo';
 import { PreWorkoutInfo } from './PreWorkoutInfo';
@@ -18,7 +18,7 @@ interface LearnProps {
   setSearchQuery?: (query: string) => void;
 }
 
-type Category = 'all' | 'muscle' | 'fatloss' | 'focus' | 'sleep';
+type Category = 'all' | 'muscle' | 'fatloss' | 'focus' | 'sleep' | 'side-effects' | 'interactions';
 
 export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }) => {
   const { t } = useLanguage();
@@ -30,6 +30,8 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
     { id: 'fatloss', label: 'Giảm mỡ & Chuyển hóa', icon: Flame },
     { id: 'focus', label: 'Tập trung & Trí não', icon: Brain },
     { id: 'sleep', label: 'Giấc ngủ & Phục hồi', icon: Moon },
+    { id: 'side-effects', label: 'Tác dụng phụ', icon: AlertTriangle },
+    { id: 'interactions', label: 'Tương tác thuốc', icon: ShieldAlert },
   ];
 
   const creatineResearch = [
@@ -584,7 +586,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               </motion.div>
             )}
 
-            {(!searchQuery || filteredCreatine.length > 0) && (shouldShow('muscle') || shouldShow('focus')) && (
+            {(!searchQuery || filteredCreatine.length > 0) && (shouldShow('muscle') || shouldShow('focus') || shouldShow('side-effects') || shouldShow('interactions')) && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Zap className="w-6 h-6 text-yellow-500" />
@@ -595,7 +597,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               </motion.div>
             )}
 
-            {(!searchQuery || filteredWhey.length > 0) && shouldShow('muscle') && (
+            {(!searchQuery || filteredWhey.length > 0) && (shouldShow('muscle') || shouldShow('side-effects')) && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <CheckCircle2 className="w-6 h-6 text-blue-500" />
@@ -606,7 +608,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               </motion.div>
             )}
 
-            {(!searchQuery || filteredPreworkout.length > 0) && (shouldShow('muscle') || shouldShow('focus')) && (
+            {(!searchQuery || filteredPreworkout.length > 0) && (shouldShow('muscle') || shouldShow('focus') || shouldShow('side-effects') || shouldShow('interactions')) && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Brain className="w-6 h-6 text-purple-500" />
@@ -617,7 +619,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               </motion.div>
             )}
 
-            {(!searchQuery || filteredMelatonin.length > 0) && shouldShow('sleep') && (
+            {(!searchQuery || filteredMelatonin.length > 0) && (shouldShow('sleep') || shouldShow('side-effects') || shouldShow('interactions')) && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Moon className="w-6 h-6 text-indigo-500" />
@@ -628,7 +630,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               </motion.div>
             )}
 
-            {(!searchQuery || filteredYohimbe.length > 0) && shouldShow('fatloss') && (
+            {(!searchQuery || filteredYohimbe.length > 0) && (shouldShow('fatloss') || shouldShow('side-effects') || shouldShow('interactions')) && (
               <motion.div variants={itemVariants} className="mb-12">
                 <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <HeartPulse className="w-6 h-6 text-rose-500" />
@@ -820,7 +822,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
         )}
 
         {/* Detailed Info Sections */}
-        {(!searchQuery || "creatine".includes(searchQuery.toLowerCase())) && (shouldShow('muscle') || shouldShow('focus')) && (
+        {(!searchQuery || "creatine".includes(searchQuery.toLowerCase())) && (shouldShow('muscle') || shouldShow('focus') || shouldShow('side-effects') || shouldShow('interactions')) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -836,7 +838,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           </motion.section>
         )}
         
-        {(!searchQuery || "whey protein".includes(searchQuery.toLowerCase())) && shouldShow('muscle') && (
+        {(!searchQuery || "whey protein".includes(searchQuery.toLowerCase())) && (shouldShow('muscle') || shouldShow('side-effects')) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -852,7 +854,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           </motion.section>
         )}
 
-        {(!searchQuery || "pre-workout".includes(searchQuery.toLowerCase()) || "pre workout".includes(searchQuery.toLowerCase())) && (shouldShow('muscle') || shouldShow('focus')) && (
+        {(!searchQuery || "pre-workout".includes(searchQuery.toLowerCase()) || "pre workout".includes(searchQuery.toLowerCase())) && (shouldShow('muscle') || shouldShow('focus') || shouldShow('side-effects') || shouldShow('interactions')) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -868,7 +870,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           </motion.section>
         )}
 
-        {(!searchQuery || "melatonin".includes(searchQuery.toLowerCase())) && shouldShow('sleep') && (
+        {(!searchQuery || "melatonin".includes(searchQuery.toLowerCase())) && (shouldShow('sleep') || shouldShow('side-effects') || shouldShow('interactions')) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -884,7 +886,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           </motion.section>
         )}
 
-        {(!searchQuery || "yohimbe".includes(searchQuery.toLowerCase())) && shouldShow('fatloss') && (
+        {(!searchQuery || "yohimbe".includes(searchQuery.toLowerCase())) && (shouldShow('fatloss') || shouldShow('side-effects') || shouldShow('interactions')) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"

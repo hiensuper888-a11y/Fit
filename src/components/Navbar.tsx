@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CurrentDate } from './CurrentDate';
 import { useLanguage, Language } from '../i18n/LanguageContext';
 import { ShoppingCart, User, LogOut, Globe, Search, ChevronDown, Pill, Heart } from 'lucide-react';
@@ -52,7 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, setCurrentRoute, u
   };
 
   useEffect(() => {
-    const handleOpenDonate = () => setIsDonateModalOpen(true);
+    const handleOpenDonate = () => setShowDonateModal(true);
     window.addEventListener('open-donate-modal', handleOpenDonate);
     return () => window.removeEventListener('open-donate-modal', handleOpenDonate);
   }, []);
