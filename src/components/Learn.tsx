@@ -21,6 +21,17 @@ interface LearnProps {
 
 type Category = 'all' | 'muscle' | 'fatloss' | 'focus' | 'sleep' | 'side-effects' | 'interactions';
 
+const SectionWrapper: React.FC<{ title: string; icon: React.ReactNode; chartData?: any; children: React.ReactNode }> = ({ title, icon, chartData, children }) => (
+  <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="mb-16 bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm">
+    <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
+      {icon}
+      {title}
+    </h3>
+    {chartData && <ArticleMetricsChart data={chartData} title={`Chỉ số khoa học ${title.split(' ').pop()}`} />}
+    {children}
+  </motion.div>
+);
+
 export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }) => {
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = React.useState<Category>('all');
@@ -587,95 +598,55 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
               </motion.div>
             )}
 
-            {(!searchQuery || filteredCreatine.length > 0) && (shouldShow('muscle') || shouldShow('focus') || shouldShow('side-effects') || shouldShow('interactions')) && (
-              <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
-                  <Zap className="w-6 h-6 text-yellow-500" />
-                  Nghiên cứu về Creatine
-                </h3>
-                <ArticleMetricsChart data={metricsData.creatine} title="Chỉ số khoa học Creatine" />
+            {(selectedCategory === 'all' || selectedCategory === 'muscle') && (
+              <SectionWrapper title="Nghiên cứu về Creatine" icon={<Zap className="w-6 h-6 text-yellow-500" />} chartData={metricsData.creatine}>
                 {renderResearchLinks(filteredCreatine)}
-              </motion.div>
+              </SectionWrapper>
             )}
 
-            {(!searchQuery || filteredWhey.length > 0) && (shouldShow('muscle') || shouldShow('side-effects')) && (
-              <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
-                  <CheckCircle2 className="w-6 h-6 text-blue-500" />
-                  Nghiên cứu về Whey Protein
-                </h3>
-                <ArticleMetricsChart data={metricsData.whey} title="Chỉ số khoa học Whey Protein" />
+            {(selectedCategory === 'all' || selectedCategory === 'muscle') && (
+              <SectionWrapper title="Nghiên cứu về Whey Protein" icon={<CheckCircle2 className="w-6 h-6 text-blue-500" />} chartData={metricsData.whey}>
                 {renderResearchLinks(filteredWhey)}
-              </motion.div>
+              </SectionWrapper>
             )}
 
-            {(!searchQuery || filteredPreworkout.length > 0) && (shouldShow('muscle') || shouldShow('focus') || shouldShow('side-effects') || shouldShow('interactions')) && (
-              <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
-                  <Brain className="w-6 h-6 text-purple-500" />
-                  Nghiên cứu về Pre-workout
-                </h3>
-                <ArticleMetricsChart data={metricsData.preworkout} title="Chỉ số khoa học Pre-workout" />
+            {(selectedCategory === 'all' || selectedCategory === 'muscle' || selectedCategory === 'focus') && (
+              <SectionWrapper title="Nghiên cứu về Pre-workout" icon={<Brain className="w-6 h-6 text-purple-500" />} chartData={metricsData.preworkout}>
                 {renderResearchLinks(filteredPreworkout)}
                 <div className="mt-8">
                   <NutrexOutliftInfo />
                 </div>
-              </motion.div>
+              </SectionWrapper>
             )}
 
-            {(!searchQuery || filteredMelatonin.length > 0) && (shouldShow('sleep') || shouldShow('side-effects') || shouldShow('interactions')) && (
-              <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
-                  <Moon className="w-6 h-6 text-indigo-500" />
-                  Nghiên cứu về Melatonin
-                </h3>
-                <ArticleMetricsChart data={metricsData.melatonin} title="Chỉ số khoa học Melatonin" />
+            {(selectedCategory === 'all' || selectedCategory === 'sleep') && (
+              <SectionWrapper title="Nghiên cứu về Melatonin" icon={<Moon className="w-6 h-6 text-indigo-500" />} chartData={metricsData.melatonin}>
                 {renderResearchLinks(filteredMelatonin)}
-              </motion.div>
+              </SectionWrapper>
             )}
 
-            {(!searchQuery || filteredYohimbe.length > 0) && (shouldShow('fatloss') || shouldShow('side-effects') || shouldShow('interactions')) && (
-              <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
-                  <HeartPulse className="w-6 h-6 text-rose-500" />
-                  Nghiên cứu về Yohimbe Bark
-                </h3>
-                <ArticleMetricsChart data={metricsData.yohimbe} title="Chỉ số khoa học Yohimbe" />
+            {(selectedCategory === 'all' || selectedCategory === 'fatloss') && (
+              <SectionWrapper title="Nghiên cứu về Yohimbe Bark" icon={<HeartPulse className="w-6 h-6 text-rose-500" />} chartData={metricsData.yohimbe}>
                 {renderResearchLinks(filteredYohimbe)}
-              </motion.div>
+              </SectionWrapper>
             )}
 
-            {(!searchQuery || filteredMeditation.length > 0) && (shouldShow('focus') || shouldShow('sleep')) && (
-              <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
-                  <Brain className="w-6 h-6 text-emerald-500" />
-                  Nghiên cứu về Thiền định (Meditation)
-                </h3>
-                <ArticleMetricsChart data={metricsData.meditation} title="Chỉ số khoa học Thiền định" />
+            {(selectedCategory === 'all' || selectedCategory === 'focus' || selectedCategory === 'sleep') && (
+              <SectionWrapper title="Nghiên cứu về Thiền định (Meditation)" icon={<Brain className="w-6 h-6 text-emerald-500" />} chartData={metricsData.meditation}>
                 {renderResearchLinks(filteredMeditation)}
-              </motion.div>
+              </SectionWrapper>
             )}
 
-            {(!searchQuery || filteredHealthLongevity.length > 0) && selectedCategory === 'all' && (
-              <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
-                  <Activity className="w-6 h-6 text-teal-500" />
-                  Nghiên cứu về Sức khỏe & Kéo dài tuổi thọ
-                </h3>
-                <ArticleMetricsChart data={metricsData.health} title="Chỉ số khoa học Sức khỏe" />
+            {(selectedCategory === 'all') && (
+              <SectionWrapper title="Nghiên cứu về Sức khỏe & Kéo dài tuổi thọ" icon={<Activity className="w-6 h-6 text-teal-500" />} chartData={metricsData.health}>
                 {renderResearchLinks(filteredHealthLongevity)}
-              </motion.div>
+              </SectionWrapper>
             )}
 
-            {(!searchQuery || filteredInsomnia.length > 0) && shouldShow('sleep') && (
-              <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
-                  <Moon className="w-6 h-6 text-indigo-500" />
-                  Nghiên cứu về Mất ngủ & Giấc ngủ
-                </h3>
-                <ArticleMetricsChart data={metricsData.insomnia} title="Chỉ số khoa học Giấc ngủ" />
+            {(selectedCategory === 'all' || selectedCategory === 'sleep') && (
+              <SectionWrapper title="Nghiên cứu về Mất ngủ & Giấc ngủ" icon={<Moon className="w-6 h-6 text-indigo-500" />} chartData={metricsData.insomnia}>
                 {renderResearchLinks(filteredInsomnia)}
-              </motion.div>
+              </SectionWrapper>
             )}
           </motion.section>
         )}

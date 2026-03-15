@@ -5,8 +5,8 @@ export const NutrexOutliftInfo: React.FC = () => {
   return (
     <div className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm">
       <div className="flex items-center gap-6 mb-8">
-        <div className="w-20 h-20 bg-zinc-50 rounded-2xl p-4 border border-zinc-100 flex items-center justify-center shrink-0">
-          <img src="https://logo.clearbit.com/nutrex.com" alt="Nutrex Logo" className="max-w-full max-h-full object-contain" referrerPolicy="no-referrer" />
+        <div className="w-20 h-20 bg-white rounded-2xl p-2 border border-zinc-100 flex items-center justify-center shrink-0">
+          <img src="https://nutrex.com/cdn/shop/files/Nutrex_Logo_Black_300x.png?v=1614365780" alt="Nutrex Logo" className="max-w-full max-h-full object-contain" referrerPolicy="no-referrer" />
         </div>
         <div>
           <h3 className="text-3xl font-serif font-bold text-zinc-900 flex items-center gap-2">
@@ -22,28 +22,37 @@ export const NutrexOutliftInfo: React.FC = () => {
             Nutrex Research "Outlift" nổi tiếng với định hướng "Clinical Dose", sử dụng các thành phần với hàm lượng tương đương các nghiên cứu khoa học, không dùng hỗn hợp bí mật (proprietary blends).
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-zinc-50 p-6 rounded-2xl">
-              <h4 className="font-bold text-zinc-900 mb-3">Thành phần chính</h4>
-              <ul className="text-sm text-zinc-600 space-y-2 list-disc list-inside">
-                <li>Citrulline Malate (8g): Tăng lưu thông máu, pump cơ.</li>
-                <li>Beta-Alanine (3.2g): Trì hoãn mỏi cơ.</li>
-                <li>Creatine Monohydrate (3g): Tăng sức mạnh.</li>
-                <li>Caffeine (350mg): Tăng tỉnh táo, tập trung.</li>
-              </ul>
-            </div>
-            <div className="bg-zinc-50 p-6 rounded-2xl">
-              <h4 className="font-bold text-zinc-900 mb-3">Tác dụng & Ảnh hưởng</h4>
-              <ul className="text-sm text-zinc-600 space-y-2 list-disc list-inside">
-                <li>Thể chất: Tăng sức mạnh, sức bền, căng cơ.</li>
-                <li>Tinh thần: Tăng sự tập trung, giảm mệt mỏi.</li>
-              </ul>
-            </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left border-collapse border border-zinc-200 rounded-2xl overflow-hidden">
+              <thead>
+                <tr className="bg-zinc-50 text-zinc-500 uppercase text-xs">
+                  <th className="p-3 border-b">Thành phần</th>
+                  <th className="p-3 border-b">Liều lượng</th>
+                  <th className="p-3 border-b">Tác dụng chính</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-100">
+                <tr><td className="p-3 font-medium">Citrulline Malate</td><td className="p-3">8g</td><td className="p-3">Tăng NO, pump cơ, bền bỉ.</td></tr>
+                <tr><td className="p-3 font-medium">Beta-Alanine</td><td className="p-3">3.2g</td><td className="p-3">Đệm axit, giảm mỏi cơ.</td></tr>
+                <tr><td className="p-3 font-medium">Creatine Monohydrate</td><td className="p-3">3g</td><td className="p-3">Tăng sức mạnh, ATP.</td></tr>
+                <tr><td className="p-3 font-medium">L-Leucine</td><td className="p-3">3g</td><td className="p-3">Tổng hợp protein, phục hồi.</td></tr>
+                <tr><td className="p-3 font-medium">Taurine</td><td className="p-3">2g</td><td className="p-3">Hydrat hóa, sức bền.</td></tr>
+                <tr><td className="p-3 font-medium">Caffeine</td><td className="p-3">350mg</td><td className="p-3">Tỉnh táo, tập trung.</td></tr>
+                <tr><td className="p-3 font-medium">N-Acetyl-L-Tyrosine</td><td className="p-3">150mg</td><td className="p-3">Tập trung trí não.</td></tr>
+                <tr><td className="p-3 font-medium">BioPerine</td><td className="p-3">5mg</td><td className="p-3">Tăng khả năng hấp thụ.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div className="bg-zinc-50 rounded-2xl p-4 flex items-center justify-center border border-zinc-100">
-          <img src="https://images.unsplash.com/photo-1594882645126-14020914d58d?auto=format&fit=crop&w=400&q=80" alt="Outlift Product" className="max-w-full h-auto rounded-xl" referrerPolicy="no-referrer" />
+        <div className="bg-zinc-50 rounded-2xl p-4 flex flex-col items-center justify-center border border-zinc-100">
+          <img src="https://nutrex.com/cdn/shop/products/outlift-blueberry-lemonade_1024x1024.png?v=1675276632" alt="Outlift Product" className="max-w-full h-auto rounded-xl mb-4" referrerPolicy="no-referrer" />
+          <h4 className="font-bold text-zinc-900">Phân tích sự phối hợp (Synergy)</h4>
+          <div className="mt-4 space-y-3 text-sm text-zinc-600">
+            <p><strong>Thể chất:</strong> Citrulline (pump), Beta-Alanine (bền) và Creatine (sức mạnh) tạo nền tảng tập nặng hơn.</p>
+            <p><strong>Tinh thần:</strong> Caffeine + Tyrosine duy trì sự tập trung sắc bén.</p>
+            <p><strong>Phục hồi:</strong> Leucine bảo vệ cơ bắp ngay trong lúc tập.</p>
+          </div>
         </div>
       </div>
 
