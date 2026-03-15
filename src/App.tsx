@@ -19,6 +19,15 @@ export default function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
 
+  const fetchProfile = async (userId: string) => {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .single();
+    setIsAdmin(profile?.role === 'admin');
+  };
+
   useEffect(() => {
     if (!supabase) {
       setAuthLoading(false);
@@ -30,12 +39,7 @@ export default function App() {
       .then(async ({ data: { session } }) => {
         setUser(session?.user ?? null);
         if (session?.user) {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', session.user.id)
-            .single();
-          setIsAdmin(profile?.role === 'admin');
+          await fetchProfile(session.user.id);
         }
       })
       .catch((err) => {
@@ -53,6 +57,10 @@ export default function App() {
       if (session?.user) {
         // Update last_seen
         supabase.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', session.user.id).then();
+        // Re-fetch profile on auth change
+        fetchProfile(session.user.id);
+      } else {
+        setIsAdmin(false);
       }
     });
 
