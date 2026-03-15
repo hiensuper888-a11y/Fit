@@ -68,6 +68,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
     setError(null);
 
     try {
+      // Note: Supabase uses 'twitter' provider for both old Twitter and new X OAuth 2.0.
+      // The version used depends on your Supabase Dashboard configuration.
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -81,7 +83,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isMandato
       console.error('OAuth Error:', err);
       let errorMessage = err.message || t('auth_error');
       if (errorMessage.includes('provider_not_enabled')) {
-        errorMessage = `Nhà cung cấp ${provider === 'twitter' ? 'X' : 'Google'} chưa được bật trong cấu hình Supabase của bạn.`;
+        errorMessage = `Nhà cung cấp ${provider === 'twitter' ? 'X 2.0' : 'Google'} chưa được bật trong cấu hình Supabase của bạn.`;
       }
       setError(errorMessage);
       setLoading(false);
