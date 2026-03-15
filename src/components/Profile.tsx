@@ -144,16 +144,9 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
         </div>
         <div className="hidden sm:flex items-center gap-3 bg-white px-4 py-2 rounded-2xl border border-zinc-200 shadow-sm">
           <div className="p-2 bg-emerald-100 rounded-xl">
-            <svg className="h-6 w-6 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="4" r="2" />
-              <path d="M7 9a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1" />
-              <path d="M17 9a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1" />
-              <path d="M7 9c0-2 2-3 5-3s5 1 5 3" />
-              <path d="M7 9v3l1.5 9a3.5 3.5 0 0 0 7 0L17 12V9" />
-              <path d="M7 12c1.5 0 2.5-1 5-1s3.5 1 5 1" />
-              <path d="M12 11v10" />
-              <path d="M9 15h6" />
-              <path d="M9.5 18h5" />
+            <svg className="h-6 w-6 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
+              <path d="m8.5 8.5 7 7" />
             </svg>
           </div>
           <div className="flex flex-col">
@@ -214,7 +207,7 @@ export const Profile: React.FC<{ user: any }> = ({ user }) => {
               <div className="p-2 bg-emerald-100 rounded-xl">
                 <User className="w-6 h-6 text-emerald-600" />
               </div>
-              <h2 className="text-2xl font-bold text-zinc-900">Personal Information</h2>
+              <h2 className="text-2xl font-serif font-bold text-zinc-900">Personal Information</h2>
             </div>
             
             {message && (

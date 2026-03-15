@@ -55,7 +55,7 @@ export const Shop: React.FC<ShopProps> = ({ searchQuery = '' }) => {
               <TrendingUp className="w-4 h-4" />
               <span>{t('shop_title')}</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-zinc-900 tracking-tight">
               {searchQuery ? `Search Results for "${searchQuery}"` : (t('popular_products') || 'Popular Products')}
             </h2>
           </div>
@@ -121,7 +121,7 @@ export const Shop: React.FC<ShopProps> = ({ searchQuery = '' }) => {
                       <span>({product.reviews})</span>
                     </div>
                   </div>
-                  <h3 className="text-lg font-bold text-zinc-900 mb-4 line-clamp-1">{product.name}</h3>
+                  <h3 className="text-lg font-serif font-bold text-zinc-900 mb-4 line-clamp-1">{product.name}</h3>
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-zinc-900">${product.price}</span>
                   </div>

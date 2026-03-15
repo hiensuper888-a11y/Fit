@@ -28,7 +28,7 @@ export const Activities: React.FC = () => {
     <section className="py-24 bg-zinc-950 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">Hoạt động Thể thao</h2>
+          <h2 className="text-4xl md:text-5xl font-serif font-black mb-6 tracking-tight">Hoạt động Thể thao</h2>
           <p className="text-zinc-400 text-lg max-w-2xl mx-auto">Khám phá các bộ môn giúp bạn nâng cao sức khỏe và tinh thần mỗi ngày.</p>
         </div>
 
@@ -46,7 +46,7 @@ export const Activities: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
               <div className="absolute bottom-0 left-0 p-8">
                 <act.icon className="w-10 h-10 text-emerald-500 mb-4" />
-                <h3 className="text-2xl font-bold mb-2">{act.title}</h3>
+                <h3 className="text-2xl font-serif font-bold mb-2">{act.title}</h3>
                 <p className="text-zinc-300 text-sm">{act.desc}</p>
               </div>
             </motion.div>

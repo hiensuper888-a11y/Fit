@@ -1,9 +1,14 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { motion } from 'framer-motion';
-import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star, TrendingUp, Search, Dumbbell, Calendar, Flame, X } from 'lucide-react';
+import { BookOpen, CheckCircle2, ExternalLink, Award, Brain, Zap, Activity, Star, TrendingUp, Search, Dumbbell, Calendar, Flame, X, Moon, HeartPulse } from 'lucide-react';
 import { CreatineInfo } from './CreatineInfo';
 import { WheyInfo } from './WheyInfo';
+import { PreWorkoutInfo } from './PreWorkoutInfo';
+import { MelatoninInfo } from './MelatoninInfo';
+import { YohimbeInfo } from './YohimbeInfo';
+import { MeditationInfo } from './MeditationInfo';
+import { HealthAndLongevityInfo } from './HealthAndLongevityInfo';
 import { ImpactChart } from './ImpactChart';
 
 interface LearnProps {
@@ -56,6 +61,90 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
       source: "Sports Medicine (Europe)",
       url: "https://pubmed.ncbi.nlm.nih.gov/29527526/",
       desc: "Phân tích toàn diện về tác dụng của Caffeine (thành phần chính trong Pre-workout) đối với hiệu suất thể thao."
+    }
+  ];
+
+  const melatoninResearch = [
+    {
+      title: "Melatonin, the Hormone of Darkness: From Sleep Promotion to Ebola Treatment",
+      source: "Brain Research Bulletin (Europe)",
+      url: "https://pubmed.ncbi.nlm.nih.gov/25959674/",
+      desc: "Tổng quan về vai trò của Melatonin trong việc điều hòa giấc ngủ và các lợi ích sức khỏe khác."
+    },
+    {
+      title: "Efficacy and Safety of Melatonin for Sleep Disorders",
+      source: "Sleep Medicine Reviews (USA)",
+      url: "https://pubmed.ncbi.nlm.nih.gov/28460563/",
+      desc: "Đánh giá hiệu quả và độ an toàn của việc bổ sung Melatonin đối với các chứng rối loạn giấc ngủ."
+    }
+  ];
+
+  const yohimbeResearch = [
+    {
+      title: "Yohimbine: the effects on body composition and exercise performance in soccer players",
+      source: "Research in Sports Medicine (Europe)",
+      url: "https://pubmed.ncbi.nlm.nih.gov/17214405/",
+      desc: "Nghiên cứu cho thấy Yohimbine giúp giảm đáng kể tỷ lệ mỡ cơ thể ở các vận động viên chuyên nghiệp."
+    },
+    {
+      title: "Yohimbine for erectile dysfunction: A systematic review and meta-analysis",
+      source: "Journal of Urology (USA)",
+      url: "https://pubmed.ncbi.nlm.nih.gov/9643111/",
+      desc: "Đánh giá hiệu quả của Yohimbine trong việc điều trị rối loạn cương dương so với giả dược."
+    }
+  ];
+
+  const meditationResearch = [
+    {
+      title: "Brief, daily meditation enhances attention, memory, mood, and emotional regulation in non-experienced meditators",
+      source: "Behavioural Brain Research (USA)",
+      url: "https://pubmed.ncbi.nlm.nih.gov/30153464/",
+      desc: "Nghiên cứu chứng minh thiền định hàng ngày giúp cải thiện sự tập trung, trí nhớ và điều chỉnh cảm xúc."
+    },
+    {
+      title: "Mindfulness meditation and physical performance: A systematic review",
+      source: "Psychology of Sport and Exercise (Europe)",
+      url: "https://www.sciencedirect.com/science/article/pii/S146902921930492X",
+      desc: "Phân tích tác động của thiền chánh niệm đối với hiệu suất thể thao, tốc độ phản ứng và trạng thái Flow."
+    }
+  ];
+
+  const healthLongevityResearch = [
+    {
+      title: "Astaxanthin: A Review of its Chemistry and Applications",
+      source: "Marine Drugs (MDPI - Europe)",
+      url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3917265/",
+      desc: "Nghiên cứu tổng quan về khả năng chống oxy hóa vượt trội của Astaxanthin và ứng dụng y học."
+    },
+    {
+      title: "N-acetylcysteine in psychiatry: current therapeutic evidence and potential mechanisms of action",
+      source: "Journal of Psychiatry & Neuroscience (Canada/US)",
+      url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3044191/",
+      desc: "Đánh giá hiệu quả của NAC trong điều trị các bệnh lý tâm thần và bảo vệ thần kinh."
+    },
+    {
+      title: "Silymarin as a Natural Antioxidant: An Overview of its Phytochemistry, Biological Activities, and Pharmacological Properties",
+      source: "Antioxidants (MDPI - Europe)",
+      url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7140758/",
+      desc: "Tổng hợp các nghiên cứu về đặc tính bảo vệ gan và chống ung thư của Silymarin (Milk Thistle)."
+    },
+    {
+      title: "Omega-3 Fatty Acids and Cardiovascular Disease",
+      source: "Circulation (AHA - USA)",
+      url: "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000709",
+      desc: "Khuyến nghị của Hiệp hội Tim mạch Hoa Kỳ về lợi ích của Omega-3 đối với sức khỏe tim mạch."
+    },
+    {
+      title: "Vitamin D and the Immune System",
+      source: "Journal of Investigative Medicine (USA)",
+      url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3166406/",
+      desc: "Nghiên cứu chi tiết về vai trò thiết yếu của Vitamin D3 trong việc điều hòa và tăng cường hệ miễn dịch."
+    },
+    {
+      title: "Can meditation slow rate of cellular aging? Cognitive stress, mindfulness, and telomeres",
+      source: "Annals of the New York Academy of Sciences (USA)",
+      url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3057175/",
+      desc: "Nghiên cứu đột phá chứng minh thiền định có thể làm chậm quá trình lão hóa tế bào bằng cách bảo vệ Telomere."
     }
   ];
 
@@ -232,6 +321,10 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
   const filteredCreatine = filterItems(creatineResearch, searchQuery);
   const filteredWhey = filterItems(wheyResearch, searchQuery);
   const filteredPreworkout = filterItems(preworkoutResearch, searchQuery);
+  const filteredMelatonin = filterItems(melatoninResearch, searchQuery);
+  const filteredYohimbe = filterItems(yohimbeResearch, searchQuery);
+  const filteredMeditation = filterItems(meditationResearch, searchQuery);
+  const filteredHealthLongevity = filterItems(healthLongevityResearch, searchQuery);
   const filteredBrands = filterItems(brands, searchQuery);
   const filteredWorkoutResearch = filterItems(workoutResearch, searchQuery);
   const filteredWorkoutMethods = filterItems(workoutMethods, searchQuery);
@@ -264,7 +357,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
             className="flex flex-col justify-between p-6 bg-white border border-zinc-200 rounded-3xl hover:border-emerald-500 hover:shadow-xl hover:-translate-y-1 transition-all group"
           >
             <div>
-              <h4 className="font-bold text-zinc-900 group-hover:text-emerald-600 transition-colors mb-2 leading-tight">{link.title}</h4>
+              <h4 className="font-serif font-bold text-zinc-900 group-hover:text-emerald-600 transition-colors mb-2 leading-tight">{link.title}</h4>
               <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-4">{link.source}</p>
               <p className="text-sm text-zinc-600 m-0">{link.desc}</p>
             </div>
@@ -298,7 +391,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-extrabold text-zinc-900 mb-6 tracking-tight leading-tight"
+            className="text-5xl md:text-7xl font-serif font-extrabold text-zinc-900 mb-6 tracking-tight leading-tight"
           >
             Kiến Thức Thể Hình & <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Dinh Dưỡng</span>
           </motion.h1>
@@ -342,7 +435,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8 justify-center">
               <TrendingUp className="w-8 h-8 text-emerald-500" />
-              <h2 className="text-3xl font-bold text-zinc-900">Tác động lên Thể chất & Tinh thần</h2>
+              <h2 className="text-3xl font-serif font-bold text-zinc-900">Tác động lên Thể chất & Tinh thần</h2>
             </motion.div>
             <motion.div variants={itemVariants}>
               <ImpactChart />
@@ -351,7 +444,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
         )}
 
         {/* Research Section */}
-        {(!searchQuery || filteredCreatine.length > 0 || filteredWhey.length > 0 || filteredPreworkout.length > 0) && (
+        {(!searchQuery || filteredCreatine.length > 0 || filteredWhey.length > 0 || filteredPreworkout.length > 0 || filteredMelatonin.length > 0 || filteredYohimbe.length > 0 || filteredMeditation.length > 0) && (
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -361,14 +454,14 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
               <Activity className="w-8 h-8 text-emerald-500" />
-              <h2 className="text-3xl font-bold text-zinc-900">
+              <h2 className="text-3xl font-serif font-bold text-zinc-900">
                 1. Các Nghiên cứu Khoa học Uy tín (US & EU)
               </h2>
             </motion.div>
             
             {(!searchQuery || filteredWorkoutResearch.length > 0) && (
               <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Dumbbell className="w-6 h-6 text-orange-500" />
                   Nghiên cứu về Tập luyện & Phát triển cơ bắp
                 </h3>
@@ -378,7 +471,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
 
             {(!searchQuery || filteredCreatine.length > 0) && (
               <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Zap className="w-6 h-6 text-yellow-500" />
                   Nghiên cứu về Creatine
                 </h3>
@@ -388,7 +481,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
 
             {(!searchQuery || filteredWhey.length > 0) && (
               <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <CheckCircle2 className="w-6 h-6 text-blue-500" />
                   Nghiên cứu về Whey Protein
                 </h3>
@@ -398,11 +491,51 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
 
             {(!searchQuery || filteredPreworkout.length > 0) && (
               <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Brain className="w-6 h-6 text-purple-500" />
                   Nghiên cứu về Pre-workout
                 </h3>
                 {renderResearchLinks(filteredPreworkout)}
+              </motion.div>
+            )}
+
+            {(!searchQuery || filteredMelatonin.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <Moon className="w-6 h-6 text-indigo-500" />
+                  Nghiên cứu về Melatonin
+                </h3>
+                {renderResearchLinks(filteredMelatonin)}
+              </motion.div>
+            )}
+
+            {(!searchQuery || filteredYohimbe.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <HeartPulse className="w-6 h-6 text-rose-500" />
+                  Nghiên cứu về Yohimbe Bark
+                </h3>
+                {renderResearchLinks(filteredYohimbe)}
+              </motion.div>
+            )}
+
+            {(!searchQuery || filteredMeditation.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <Brain className="w-6 h-6 text-emerald-500" />
+                  Nghiên cứu về Thiền định (Meditation)
+                </h3>
+                {renderResearchLinks(filteredMeditation)}
+              </motion.div>
+            )}
+
+            {(!searchQuery || filteredHealthLongevity.length > 0) && (
+              <motion.div variants={itemVariants} className="mb-12">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                  <Activity className="w-6 h-6 text-teal-500" />
+                  Nghiên cứu về Sức khỏe & Kéo dài tuổi thọ
+                </h3>
+                {renderResearchLinks(filteredHealthLongevity)}
               </motion.div>
             )}
           </motion.section>
@@ -419,21 +552,21 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
               <Flame className="w-8 h-8 text-emerald-500" />
-              <h2 className="text-3xl font-bold text-zinc-900">
+              <h2 className="text-3xl font-serif font-bold text-zinc-900">
                 2. Phương pháp Tập luyện & Chia lịch tập
               </h2>
             </motion.div>
             
             {(!searchQuery || filteredWorkoutMethods.length > 0) && (
               <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Dumbbell className="w-6 h-6 text-zinc-600" />
                   Gym vs Calisthenics
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {filteredWorkoutMethods.map((method, i) => (
                     <div key={i} className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:shadow-xl transition-all">
-                      <h4 className="text-2xl font-black text-zinc-900 mb-4">{method.title}</h4>
+                      <h4 className="text-2xl font-serif font-black text-zinc-900 mb-4">{method.title}</h4>
                       <p className="text-zinc-600 mb-6 leading-relaxed">{method.desc}</p>
                       <div className="space-y-4">
                         <div>
@@ -461,14 +594,14 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
 
             {(!searchQuery || filteredWorkoutSplits.length > 0) && (
               <motion.div variants={itemVariants}>
-                <h3 className="text-2xl font-bold text-zinc-800 mb-6 flex items-center gap-2">
+                <h3 className="text-2xl font-serif font-bold text-zinc-800 mb-6 flex items-center gap-2">
                   <Calendar className="w-6 h-6 text-blue-500" />
                   Cách chia lịch tập (Workout Splits)
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {filteredWorkoutSplits.map((split, i) => (
                     <div key={i} className="bg-white p-6 rounded-3xl border border-zinc-200 shadow-sm hover:border-emerald-500 transition-all group">
-                      <h4 className="text-xl font-bold text-zinc-900 mb-2 group-hover:text-emerald-600 transition-colors">{split.name}</h4>
+                      <h4 className="text-xl font-serif font-bold text-zinc-900 mb-2 group-hover:text-emerald-600 transition-colors">{split.name}</h4>
                       <p className="text-xs font-bold text-emerald-500 uppercase tracking-wider mb-4">{split.freq}</p>
                       <p className="text-sm text-zinc-600 mb-4">{split.desc}</p>
                       <div className="bg-zinc-50 p-4 rounded-2xl">
@@ -494,7 +627,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
           >
             <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
               <Award className="w-8 h-8 text-emerald-500" />
-              <h2 className="text-3xl font-bold text-zinc-900">
+              <h2 className="text-3xl font-serif font-bold text-zinc-900">
                 3. Top 10 Hãng Thực phẩm Bổ sung Uy tín Toàn cầu
               </h2>
             </motion.div>
@@ -523,7 +656,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
                     
                     <div className="flex-1 flex flex-col justify-center">
                       <div className="flex flex-wrap items-center gap-2 mb-3">
-                        <h4 className="text-2xl font-bold text-zinc-900 m-0">{brand.name}</h4>
+                        <h4 className="text-2xl font-serif font-bold text-zinc-900 m-0">{brand.name}</h4>
                       </div>
                       <div className="mb-4">
                         <span className="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-emerald-200">
@@ -562,7 +695,7 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
             className="mb-24"
           >
             <motion.div variants={itemVariants}>
-              <h2 className="text-3xl font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">4. Thông tin chi tiết về Creatine</h2>
+              <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">4. Thông tin chi tiết về Creatine</h2>
               <CreatineInfo />
             </motion.div>
           </motion.section>
@@ -577,8 +710,83 @@ export const Learn: React.FC<LearnProps> = ({ searchQuery = '', setSearchQuery }
             className="mb-24"
           >
             <motion.div variants={itemVariants}>
-              <h2 className="text-3xl font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">5. Thông tin chi tiết về Whey Protein</h2>
+              <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">5. Thông tin chi tiết về Whey Protein</h2>
               <WheyInfo />
+            </motion.div>
+          </motion.section>
+        )}
+
+        {(!searchQuery || "pre-workout".includes(searchQuery.toLowerCase()) || "pre workout".includes(searchQuery.toLowerCase())) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants}>
+              <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">6. Thông tin chi tiết về Pre-workout</h2>
+              <PreWorkoutInfo />
+            </motion.div>
+          </motion.section>
+        )}
+
+        {(!searchQuery || "melatonin".includes(searchQuery.toLowerCase())) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants}>
+              <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">7. Thông tin chi tiết về Melatonin</h2>
+              <MelatoninInfo />
+            </motion.div>
+          </motion.section>
+        )}
+
+        {(!searchQuery || "yohimbe".includes(searchQuery.toLowerCase())) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants}>
+              <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">8. Thông tin chi tiết về Yohimbe Bark</h2>
+              <YohimbeInfo />
+            </motion.div>
+          </motion.section>
+        )}
+
+        {(!searchQuery || "thiền".includes(searchQuery.toLowerCase()) || "meditation".includes(searchQuery.toLowerCase())) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants}>
+              <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">9. Thông tin chi tiết về Thiền định (Meditation)</h2>
+              <MeditationInfo />
+            </motion.div>
+          </motion.section>
+        )}
+
+        {(!searchQuery || "astaxanthin".includes(searchQuery.toLowerCase()) || "nac".includes(searchQuery.toLowerCase()) || "milk thistle".includes(searchQuery.toLowerCase()) || "omega".includes(searchQuery.toLowerCase()) || "vitamin d3".includes(searchQuery.toLowerCase()) || "lão hóa".includes(searchQuery.toLowerCase())) && (
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-24"
+          >
+            <motion.div variants={itemVariants}>
+              <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-8 border-b border-zinc-200 pb-4">10. Sức khỏe Toàn diện & Đảo ngược Lão hóa</h2>
+              <HealthAndLongevityInfo />
             </motion.div>
           </motion.section>
         )}

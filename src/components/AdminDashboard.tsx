@@ -21,7 +21,7 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 flex items-center gap-2"><Users /> Admin Dashboard</h1>
+      <h1 className="text-3xl font-serif font-bold mb-6 flex items-center gap-2"><Users /> Admin Dashboard</h1>
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <table className="min-w-full">
           <thead className="bg-zinc-100">

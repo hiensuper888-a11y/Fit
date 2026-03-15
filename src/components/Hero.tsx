@@ -47,7 +47,7 @@ export const Hero: React.FC = () => {
               </span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6 tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-serif font-extrabold text-white leading-tight mb-6 tracking-tight">
               Khai Phá <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">Sức Mạnh</span> Tiềm Ẩn
             </h1>
             

@@ -46,7 +46,7 @@ export const Workouts: React.FC = () => {
               <Dumbbell className="w-4 h-4" />
               <span>{t('workout_title')}</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-zinc-900 tracking-tight">
               {t('featured_workouts') || 'Featured Workouts'}
             </h2>
           </div>
@@ -99,7 +99,7 @@ export const Workouts: React.FC = () => {
                     </span>
                   </div>
                   
-                  <h3 className="text-3xl font-bold text-white mb-6 group-hover:translate-x-2 transition-transform">{workout.title}</h3>
+                  <h3 className="text-3xl font-serif font-bold text-white mb-6 group-hover:translate-x-2 transition-transform">{workout.title}</h3>
                   
                   <div className="flex items-center gap-6 text-zinc-400 text-sm font-medium mb-8">
                     <div className="flex items-center gap-2">
